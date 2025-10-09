@@ -1,0 +1,85 @@
+.home {
+  --header-height: 64px;
+
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.topBar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--header-height);
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin: 0;
+  padding: 3rem;
+  z-index: 100;
+  background: transparent;
+}
+
+.logo {
+  margin: 0;
+  padding: 0;
+  font-weight: 900;
+  font-size: 3rem;
+  line-height: 1; /* keep tight to top edge */
+  color: var(--color-black);
+}
+
+.hero {
+  /* Occupy exactly the space below fixed header */
+  margin-top: var(--header-height);
+  min-height: calc(100dvh - var(--header-height));
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 1rem;
+  padding: 1.5rem;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: clamp(28px, 6vw, 64px);
+  line-height: 1.05;
+  color: var(--color-black);
+}
+
+.subtitle {
+  margin: 0;
+  max-width: 800px;
+  color: var(--color-secondary-text);
+  font-size: clamp(16px, 2.2vw, 20px);
+}
+
+.cta {
+  margin-top: 0.25rem;
+  background: var(--color-black);
+  color: var(--color-white);
+  border: 0;
+  padding: 1.2rem 2.4rem; /* sizeable button */
+  font-weight: 500;
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: transform 0.1s ease, opacity 0.2s ease;
+}
+
+.cta:hover {
+  opacity: 0.9;
+}
+
+.cta:active {
+  transform: translateY(1px) scale(0.995);
+}
