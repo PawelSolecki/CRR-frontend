@@ -18,7 +18,7 @@ export default function Home() {
           Create a professional CV tailored to your dream job in just few simple
           steps
         </p>
-        <Link to="/page-one" className={styles.cta}>
+        <Link to="/upload-cv" className={styles.cta}>
           Let's go
         </Link>
       </section>
