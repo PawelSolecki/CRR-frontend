@@ -10,7 +10,11 @@
     "preview": "vite preview",
     "test": "vitest",
     "test:ui": "vitest --ui",
-    "test:run": "vitest run"
+    "test:run": "vitest run",
+    "gen:career": "SERVICE_NAME=career openapi-ts -f ./src/api/openapi.config.ts",
+    "gen:ai": "SERVICE_NAME=ai openapi-ts -f ./src/api/openapi.config.ts",
+    "gen:all": "npm run gen:career && npm run gen:ai",
+    "gen:clean": "rm -rf ./src/api/career-service && rm -rf ./src/api/career-ai-service"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.90.2",
@@ -38,6 +42,7 @@
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.45.0",
     "vite": "^7.1.7",
-    "vitest": "^3.2.4"
+    "vitest": "^3.2.4",
+    "@hey-api/openapi-ts": "0.85.1"
   }
 }
