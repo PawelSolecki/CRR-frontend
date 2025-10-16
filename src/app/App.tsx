@@ -6,7 +6,19 @@ import Home from "../pages/Home/Home";
 import PageOne from "../pages/PageOne/PageOne";
 import PageTwo from "../pages/PageTwo/PageTwo";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000, // 5 minutes
+      retry: 1,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: true,
+    },
+    mutations: {
+      retry: false,
+    },
+  },
+});
 
 const router = createBrowserRouter([
   {
