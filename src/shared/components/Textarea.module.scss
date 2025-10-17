@@ -1,0 +1,48 @@
+.textareaWrapper {
+  margin-bottom: 1rem;
+}
+
+.label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #1a1a1a;
+}
+
+.textarea {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  border: 1.5px solid #000;
+  border-radius: 0;
+  font-size: 1rem;
+  background-color: #d3d3d3;
+  transition: all 0.2s ease;
+  resize: vertical;
+  min-height: 100px;
+  font-family: inherit;
+  color: #1a1a1a;
+
+  &::placeholder {
+    color: #6b6b6b;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: #000;
+    background-color: #d3d3d3;
+    box-shadow: none;
+  }
+
+  &.textareaError {
+    border-color: #ef4444;
+    background-color: #fef2f2;
+  }
+}
+
+.error {
+  color: #ef4444;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+  font-weight: 500;
+}
