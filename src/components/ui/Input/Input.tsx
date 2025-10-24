@@ -2,19 +2,19 @@ import type { ComponentProps } from "react";
 import Icon from "../Icon/Icon";
 import classes from "./Input.module.scss";
 
-type BaseInputProps = {
+type BaseInputProps<T> = {
   id: string;
   label?: string;
   placeholder?: string;
-  value: string | number | undefined;
-  onChange: (value: string | number) => void;
+  value: T;
+  onChange: (value: T) => void;
   onBlur?: () => void;
   error?: boolean | string;
   className?: string;
   style?: React.CSSProperties;
 };
 
-type TextInputProps = BaseInputProps & {
+type TextInputProps = BaseInputProps<string> & {
   type?: "text" | "password" | "email" | "tel";
   leftIcon?: string;
   rightIcon?: string;
@@ -25,21 +25,21 @@ type TextInputProps = BaseInputProps & {
     "id" | "value" | "onChange" | "onBlur" | "className" | "style"
   >;
 
-type NumberInputProps = BaseInputProps & {
+type NumberInputProps = BaseInputProps<number | string> & {
   type: "number";
 } & Omit<
     ComponentProps<"input">,
     "id" | "value" | "onChange" | "onBlur" | "className" | "style" | "type"
   >;
 
-type DateInputProps = BaseInputProps & {
+type DateInputProps = BaseInputProps<string> & {
   type: "date";
 } & Omit<
     ComponentProps<"input">,
     "id" | "value" | "onChange" | "onBlur" | "className" | "style" | "type"
   >;
 
-type TextareaProps = BaseInputProps & {
+type TextareaProps = BaseInputProps<string> & {
   type: "textarea";
   rows?: number;
 } & Omit<
@@ -73,19 +73,21 @@ export default function Input(props: InputProps) {
   const getWidth = () => {
     if (type === "number") return "8rem";
     if (type === "textarea" || type === "text") return "25rem";
-    return "14 rem";
+    return "14rem";
   };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     if (type === "number") {
-      const num = e.target.value === "" ? "" : Number(e.target.value);
-      onChange(num);
+      const numValue = e.target.value === "" ? "" : Number(e.target.value);
+      (onChange as (value: number | string) => void)(numValue);
     } else {
-      onChange(e.target.value);
+      (onChange as (value: string) => void)(e.target.value);
     }
   };
+
+  const displayValue = value ?? "";
 
   return (
     <div style={{ width: getWidth(), ...style }} className={className}>
@@ -105,7 +107,7 @@ export default function Input(props: InputProps) {
           <textarea
             id={id}
             name={name}
-            value={value}
+            value={displayValue}
             onChange={handleChange}
             onBlur={onBlur}
             placeholder={placeholder}
@@ -118,7 +120,7 @@ export default function Input(props: InputProps) {
             id={id}
             name={name}
             type={type}
-            value={value || ""}
+            value={displayValue}
             onChange={handleChange}
             onBlur={onBlur}
             placeholder={placeholder}
@@ -135,7 +137,11 @@ export default function Input(props: InputProps) {
         )}
       </div>
 
-      {error && <span className={classes.error}>Invalid input</span>}
+      {error && (
+        <span className={classes.error}>
+          {typeof error === "string" ? error : "Invalid input"}
+        </span>
+      )}
     </div>
   );
 }
