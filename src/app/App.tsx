@@ -6,6 +6,10 @@ import Home from "../pages/Home/Home";
 import JobOffer, { action as jobOfferAction } from "../pages/JobOffer/JobOffer";
 import PageOne from "../pages/PageOne/PageOne";
 import PageTwo from "../pages/PageTwo/PageTwo";
+import ReviewBio, {
+  action as reviewBioAction,
+  loader as reviewBioLoader,
+} from "../pages/ReviewBio/ReviewBio";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +27,12 @@ const router = createBrowserRouter([
       { path: "upload-cv", element: <PageOne /> },
       { path: "enhance-tags", element: <PageTwo /> },
       { path: "job-offer", element: <JobOffer />, action: jobOfferAction },
+      {
+        path: "review-bio",
+        element: <ReviewBio />,
+        action: reviewBioAction,
+        loader: reviewBioLoader,
+      },
     ],
   },
 ]);
