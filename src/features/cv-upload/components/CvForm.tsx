@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { Form, useSubmit } from "react-router-dom";
 import { zUserCv } from "../../../api/career-service/zod.gen";
+import { useCvData } from "../../../shared/hooks/useCvData";
 import PersonalInfoSection from "./form-sections/PersonalInfoSection";
 import SkillsLanguagesCertsSection from "./form-sections/SkillsLanguagesCertsSection";
 import ExperienceSection from "./form-sections/ExperienceSection";
@@ -12,13 +14,15 @@ import styles from "./CvForm.module.scss";
 
 type UserCvForm = z.infer<typeof zUserCv>;
 
-enum FormStep {
-  PERSONAL_INFO = 0,
-  SKILLS_LANGUAGES_CERTS = 1,
-  EDUCATION = 2,
-  EXPERIENCE = 3,
-  PROJECTS = 4,
-}
+const FormStep = {
+  PERSONAL_INFO: 0,
+  SKILLS_LANGUAGES_CERTS: 1,
+  EDUCATION: 2,
+  EXPERIENCE: 3,
+  PROJECTS: 4,
+} as const;
+
+type FormStep = (typeof FormStep)[keyof typeof FormStep];
 
 const STEP_TITLES = {
   [FormStep.PERSONAL_INFO]: "Personal Information",
@@ -28,25 +32,23 @@ const STEP_TITLES = {
   [FormStep.PROJECTS]: "Projects",
 };
 
-interface CvFormProps {
-  onSubmit: (data: UserCvForm) => void;
-  defaultValues?: Partial<UserCvForm>;
-}
-
-export default function CvForm({ onSubmit, defaultValues }: CvFormProps) {
+export default function CvForm() {
+  const { cvData, updateCvData } = useCvData();
   const [currentStep, setCurrentStep] = useState<FormStep>(
     FormStep.PERSONAL_INFO
   );
+  const submit = useSubmit();
 
   const {
     register,
     control,
-    handleSubmit,
+    getValues,
     formState: { errors },
     trigger,
+    reset,
   } = useForm<UserCvForm>({
     resolver: zodResolver(zUserCv),
-    defaultValues: defaultValues || {
+    defaultValues: cvData || {
       personalInfo: {},
       skills: [],
       languages: [],
@@ -57,40 +59,46 @@ export default function CvForm({ onSubmit, defaultValues }: CvFormProps) {
     },
   });
 
+  useEffect(() => {
+    if (cvData) {
+      reset(cvData);
+    }
+  }, [cvData, reset]);
+
   const skillsArray = useFieldArray({
     control,
-    name: "skills",
-  });
+    name: "skills" as any,
+  }) as any;
 
   const languagesArray = useFieldArray({
     control,
-    name: "languages",
-  });
+    name: "languages" as any,
+  }) as any;
 
   const certificationsArray = useFieldArray({
     control,
-    name: "certifications",
-  });
+    name: "certifications" as any,
+  }) as any;
 
   const experienceArray = useFieldArray({
     control,
-    name: "experience",
-  });
+    name: "experience" as any,
+  }) as any;
 
   const educationArray = useFieldArray({
     control,
-    name: "education",
-  });
+    name: "education" as any,
+  }) as any;
 
   const projectsArray = useFieldArray({
     control,
-    name: "projects",
-  });
+    name: "projects" as any,
+  }) as any;
 
   const handleNext = async () => {
     let isValid = false;
 
-    // Walidacja tylko dla aktualnego kroku
+    // Validation for the current step
     switch (currentStep) {
       case FormStep.PERSONAL_INFO:
         isValid = await trigger(["personalInfo"]);
@@ -110,14 +118,24 @@ export default function CvForm({ onSubmit, defaultValues }: CvFormProps) {
     }
 
     if (isValid && currentStep < FormStep.PROJECTS) {
-      setCurrentStep(currentStep + 1);
+      setCurrentStep((prevStep) => (prevStep + 1) as FormStep);
     }
   };
 
   const handleBack = () => {
     if (currentStep > FormStep.PERSONAL_INFO) {
-      setCurrentStep(currentStep - 1);
+      setCurrentStep((prevStep) => (prevStep - 1) as FormStep);
     }
+  };
+
+  const handleSubmitClick = () => {
+    const data = getValues();
+    updateCvData(data);
+
+    const formData = new FormData();
+    formData.append("cvData", JSON.stringify(data));
+
+    submit(formData, { method: "post", action: "/upload-cv" });
   };
 
   const renderCurrentStep = () => {
@@ -166,7 +184,12 @@ export default function CvForm({ onSubmit, defaultValues }: CvFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className={styles.cvForm}>
+    <Form
+      method="post"
+      action="/upload-cv"
+      className={styles.cvForm}
+      onSubmit={(event) => event.preventDefault()}
+    >
       <div className={styles.stepIndicator}>
         <h2>{STEP_TITLES[currentStep]}</h2>
         <p>
@@ -195,11 +218,15 @@ export default function CvForm({ onSubmit, defaultValues }: CvFormProps) {
             Next
           </button>
         ) : (
-          <button type="submit" className={styles.submitButton}>
+          <button
+            type="button"
+            onClick={handleSubmitClick}
+            className={styles.submitButton}
+          >
             Submit CV
           </button>
         )}
       </div>
-    </form>
+    </Form>
   );
 }

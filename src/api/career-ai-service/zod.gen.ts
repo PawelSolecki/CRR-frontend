@@ -3,14 +3,14 @@
 import { z } from 'zod';
 
 export const zUserCv = z.object({
-    personal_info: z.object({
-        first_name: z.string(),
-        last_name: z.string(),
+    personalInfo: z.object({
+        firstName: z.string(),
+        lastName: z.string(),
         email: z.optional(z.email()),
         phone: z.optional(z.string()),
         role: z.optional(z.string()),
         summary: z.optional(z.string()),
-        linked_in: z.optional(z.string()),
+        linkedIn: z.optional(z.string()),
         github: z.optional(z.string()),
         website: z.optional(z.string()),
         other: z.optional(z.string())
@@ -21,8 +21,8 @@ export const zUserCv = z.object({
         company: z.optional(z.string()),
         url: z.optional(z.string()),
         location: z.optional(z.string()),
-        start_date: z.optional(z.iso.date()),
-        end_date: z.optional(z.iso.date()),
+        startDate: z.optional(z.iso.date()),
+        endDate: z.optional(z.iso.date()),
         summaries: z.optional(z.array(z.object({
             text: z.optional(z.string()),
             technologies: z.optional(z.array(z.string()))
@@ -31,9 +31,9 @@ export const zUserCv = z.object({
     education: z.optional(z.array(z.object({
         school: z.optional(z.string()),
         degree: z.optional(z.string()),
-        field_of_study: z.optional(z.string()),
-        start_date: z.optional(z.iso.date()),
-        end_date: z.optional(z.iso.date())
+        fieldOfStudy: z.optional(z.string()),
+        startDate: z.optional(z.iso.date()),
+        endDate: z.optional(z.iso.date())
     }))),
     languages: z.optional(z.array(z.object({
         language: z.optional(z.string()),
@@ -69,11 +69,11 @@ export const zJobOffer = z.object({
 });
 
 export const zSkillResult = z.object({
-    hard_skills: z.optional(z.array(z.object({
+    hardSkills: z.optional(z.array(z.object({
         name: z.string(),
         score: z.number()
     }))),
-    soft_skills: z.optional(z.array(z.object({
+    softSkills: z.optional(z.array(z.object({
         name: z.string(),
         score: z.number()
     }))),
@@ -121,14 +121,14 @@ export const zGetHealthResponse = z.object({
 
 export const zPostApiV1CvAnalyzeCvData = z.object({
     body: z.object({
-        personal_info: z.object({
-            first_name: z.string(),
-            last_name: z.string(),
+        personalInfo: z.object({
+            firstName: z.string(),
+            lastName: z.string(),
             email: z.optional(z.email()),
             phone: z.optional(z.string()),
             role: z.optional(z.string()),
             summary: z.optional(z.string()),
-            linked_in: z.optional(z.string()),
+            linkedIn: z.optional(z.string()),
             github: z.optional(z.string()),
             website: z.optional(z.string()),
             other: z.optional(z.string())
@@ -139,8 +139,8 @@ export const zPostApiV1CvAnalyzeCvData = z.object({
             company: z.optional(z.string()),
             url: z.optional(z.string()),
             location: z.optional(z.string()),
-            start_date: z.optional(z.iso.date()),
-            end_date: z.optional(z.iso.date()),
+            startDate: z.optional(z.iso.date()),
+            endDate: z.optional(z.iso.date()),
             summaries: z.optional(z.array(z.object({
                 text: z.optional(z.string()),
                 technologies: z.optional(z.array(z.string()))
@@ -149,9 +149,9 @@ export const zPostApiV1CvAnalyzeCvData = z.object({
         education: z.optional(z.array(z.object({
             school: z.optional(z.string()),
             degree: z.optional(z.string()),
-            field_of_study: z.optional(z.string()),
-            start_date: z.optional(z.iso.date()),
-            end_date: z.optional(z.iso.date())
+            fieldOfStudy: z.optional(z.string()),
+            startDate: z.optional(z.iso.date()),
+            endDate: z.optional(z.iso.date())
         }))),
         languages: z.optional(z.array(z.object({
             language: z.optional(z.string()),
@@ -190,14 +190,14 @@ export const zPostApiV1CvAnalyzeCvData = z.object({
  * Successfully analyzed CV
  */
 export const zPostApiV1CvAnalyzeCvResponse = z.object({
-    personal_info: z.object({
-        first_name: z.string(),
-        last_name: z.string(),
+    personalInfo: z.object({
+        firstName: z.string(),
+        lastName: z.string(),
         email: z.optional(z.email()),
         phone: z.optional(z.string()),
         role: z.optional(z.string()),
         summary: z.optional(z.string()),
-        linked_in: z.optional(z.string()),
+        linkedIn: z.optional(z.string()),
         github: z.optional(z.string()),
         website: z.optional(z.string()),
         other: z.optional(z.string())
@@ -208,8 +208,8 @@ export const zPostApiV1CvAnalyzeCvResponse = z.object({
         company: z.optional(z.string()),
         url: z.optional(z.string()),
         location: z.optional(z.string()),
-        start_date: z.optional(z.iso.date()),
-        end_date: z.optional(z.iso.date()),
+        startDate: z.optional(z.iso.date()),
+        endDate: z.optional(z.iso.date()),
         summaries: z.optional(z.array(z.object({
             text: z.optional(z.string()),
             technologies: z.optional(z.array(z.string()))
@@ -218,9 +218,9 @@ export const zPostApiV1CvAnalyzeCvResponse = z.object({
     education: z.optional(z.array(z.object({
         school: z.optional(z.string()),
         degree: z.optional(z.string()),
-        field_of_study: z.optional(z.string()),
-        start_date: z.optional(z.iso.date()),
-        end_date: z.optional(z.iso.date())
+        fieldOfStudy: z.optional(z.string()),
+        startDate: z.optional(z.iso.date()),
+        endDate: z.optional(z.iso.date())
     }))),
     languages: z.optional(z.array(z.object({
         language: z.optional(z.string()),
@@ -251,14 +251,14 @@ export const zPostApiV1CvAnalyzeCvResponse = z.object({
 export const zPostApiV1CvGenerateBioData = z.object({
     body: z.object({
         user_cv: z.object({
-            personal_info: z.object({
-                first_name: z.string(),
-                last_name: z.string(),
+            personalInfo: z.object({
+                firstName: z.string(),
+                lastName: z.string(),
                 email: z.optional(z.email()),
                 phone: z.optional(z.string()),
                 role: z.optional(z.string()),
                 summary: z.optional(z.string()),
-                linked_in: z.optional(z.string()),
+                linkedIn: z.optional(z.string()),
                 github: z.optional(z.string()),
                 website: z.optional(z.string()),
                 other: z.optional(z.string())
@@ -269,8 +269,8 @@ export const zPostApiV1CvGenerateBioData = z.object({
                 company: z.optional(z.string()),
                 url: z.optional(z.string()),
                 location: z.optional(z.string()),
-                start_date: z.optional(z.iso.date()),
-                end_date: z.optional(z.iso.date()),
+                startDate: z.optional(z.iso.date()),
+                endDate: z.optional(z.iso.date()),
                 summaries: z.optional(z.array(z.object({
                     text: z.optional(z.string()),
                     technologies: z.optional(z.array(z.string()))
@@ -279,9 +279,9 @@ export const zPostApiV1CvGenerateBioData = z.object({
             education: z.optional(z.array(z.object({
                 school: z.optional(z.string()),
                 degree: z.optional(z.string()),
-                field_of_study: z.optional(z.string()),
-                start_date: z.optional(z.iso.date()),
-                end_date: z.optional(z.iso.date())
+                fieldOfStudy: z.optional(z.string()),
+                startDate: z.optional(z.iso.date()),
+                endDate: z.optional(z.iso.date())
             }))),
             languages: z.optional(z.array(z.object({
                 language: z.optional(z.string()),
@@ -309,11 +309,11 @@ export const zPostApiV1CvGenerateBioData = z.object({
             })))
         }),
         skill_result: z.object({
-            hard_skills: z.optional(z.array(z.object({
+            hardSkills: z.optional(z.array(z.object({
                 name: z.string(),
                 score: z.number()
             }))),
-            soft_skills: z.optional(z.array(z.object({
+            softSkills: z.optional(z.array(z.object({
                 name: z.string(),
                 score: z.number()
             }))),
@@ -357,11 +357,11 @@ export const zPostApiV1OfferAnalyzeOfferData = z.object({
  * Successfully analyzed job offer
  */
 export const zPostApiV1OfferAnalyzeOfferResponse = z.object({
-    hard_skills: z.optional(z.array(z.object({
+    hardSkills: z.optional(z.array(z.object({
         name: z.string(),
         score: z.number()
     }))),
-    soft_skills: z.optional(z.array(z.object({
+    softSkills: z.optional(z.array(z.object({
         name: z.string(),
         score: z.number()
     }))),

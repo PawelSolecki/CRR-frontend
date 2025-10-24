@@ -5,14 +5,14 @@ export type ClientOptions = {
 };
 
 export type UserCv = {
-    personal_info: {
-        first_name: string;
-        last_name: string;
+    personalInfo: {
+        firstName: string;
+        lastName: string;
         email?: string;
         phone?: string;
         role?: string;
         summary?: string;
-        linked_in?: string;
+        linkedIn?: string;
         github?: string;
         website?: string;
         other?: string;
@@ -23,8 +23,8 @@ export type UserCv = {
         company?: string;
         url?: string;
         location?: string;
-        start_date?: string;
-        end_date?: string;
+        startDate?: string;
+        endDate?: string;
         summaries?: Array<{
             text?: string;
             technologies?: Array<string>;
@@ -33,9 +33,9 @@ export type UserCv = {
     education?: Array<{
         school?: string;
         degree?: string;
-        field_of_study?: string;
-        start_date?: string;
-        end_date?: string;
+        fieldOfStudy?: string;
+        startDate?: string;
+        endDate?: string;
     }>;
     languages?: Array<{
         language?: string;
@@ -64,11 +64,11 @@ export type JobOffer = {
 };
 
 export type SkillResult = {
-    hard_skills?: Array<{
+    hardSkills?: Array<{
         name: string;
         score: number;
     }>;
-    soft_skills?: Array<{
+    softSkills?: Array<{
         name: string;
         score: number;
     }>;
@@ -126,14 +126,14 @@ export type GetHealthResponse = GetHealthResponses[keyof GetHealthResponses];
 
 export type PostApiV1CvAnalyzeCvData = {
     body: {
-        personal_info: {
-            first_name: string;
-            last_name: string;
+        personalInfo: {
+            firstName: string;
+            lastName: string;
             email?: string;
             phone?: string;
             role?: string;
             summary?: string;
-            linked_in?: string;
+            linkedIn?: string;
             github?: string;
             website?: string;
             other?: string;
@@ -144,8 +144,8 @@ export type PostApiV1CvAnalyzeCvData = {
             company?: string;
             url?: string;
             location?: string;
-            start_date?: string;
-            end_date?: string;
+            startDate?: string;
+            endDate?: string;
             summaries?: Array<{
                 text?: string;
                 technologies?: Array<string>;
@@ -154,9 +154,9 @@ export type PostApiV1CvAnalyzeCvData = {
         education?: Array<{
             school?: string;
             degree?: string;
-            field_of_study?: string;
-            start_date?: string;
-            end_date?: string;
+            fieldOfStudy?: string;
+            startDate?: string;
+            endDate?: string;
         }>;
         languages?: Array<{
             language?: string;
@@ -207,14 +207,14 @@ export type PostApiV1CvAnalyzeCvResponses = {
      * Successfully analyzed CV
      */
     200: {
-        personal_info: {
-            first_name: string;
-            last_name: string;
+        personalInfo: {
+            firstName: string;
+            lastName: string;
             email?: string;
             phone?: string;
             role?: string;
             summary?: string;
-            linked_in?: string;
+            linkedIn?: string;
             github?: string;
             website?: string;
             other?: string;
@@ -225,8 +225,8 @@ export type PostApiV1CvAnalyzeCvResponses = {
             company?: string;
             url?: string;
             location?: string;
-            start_date?: string;
-            end_date?: string;
+            startDate?: string;
+            endDate?: string;
             summaries?: Array<{
                 text?: string;
                 technologies?: Array<string>;
@@ -235,9 +235,9 @@ export type PostApiV1CvAnalyzeCvResponses = {
         education?: Array<{
             school?: string;
             degree?: string;
-            field_of_study?: string;
-            start_date?: string;
-            end_date?: string;
+            fieldOfStudy?: string;
+            startDate?: string;
+            endDate?: string;
         }>;
         languages?: Array<{
             language?: string;
@@ -264,14 +264,14 @@ export type PostApiV1CvAnalyzeCvResponse = PostApiV1CvAnalyzeCvResponses[keyof P
 export type PostApiV1CvGenerateBioData = {
     body: {
         user_cv: {
-            personal_info: {
-                first_name: string;
-                last_name: string;
+            personalInfo: {
+                firstName: string;
+                lastName: string;
                 email?: string;
                 phone?: string;
                 role?: string;
                 summary?: string;
-                linked_in?: string;
+                linkedIn?: string;
                 github?: string;
                 website?: string;
                 other?: string;
@@ -282,8 +282,8 @@ export type PostApiV1CvGenerateBioData = {
                 company?: string;
                 url?: string;
                 location?: string;
-                start_date?: string;
-                end_date?: string;
+                startDate?: string;
+                endDate?: string;
                 summaries?: Array<{
                     text?: string;
                     technologies?: Array<string>;
@@ -292,9 +292,9 @@ export type PostApiV1CvGenerateBioData = {
             education?: Array<{
                 school?: string;
                 degree?: string;
-                field_of_study?: string;
-                start_date?: string;
-                end_date?: string;
+                fieldOfStudy?: string;
+                startDate?: string;
+                endDate?: string;
             }>;
             languages?: Array<{
                 language?: string;
@@ -315,11 +315,11 @@ export type PostApiV1CvGenerateBioData = {
             }>;
         };
         skill_result: {
-            hard_skills?: Array<{
+            hardSkills?: Array<{
                 name: string;
                 score: number;
             }>;
-            soft_skills?: Array<{
+            softSkills?: Array<{
                 name: string;
                 score: number;
             }>;
@@ -407,11 +407,11 @@ export type PostApiV1OfferAnalyzeOfferResponses = {
      * Successfully analyzed job offer
      */
     200: {
-        hard_skills?: Array<{
+        hardSkills?: Array<{
             name: string;
             score: number;
         }>;
-        soft_skills?: Array<{
+        softSkills?: Array<{
             name: string;
             score: number;
         }>;
