@@ -17,27 +17,9 @@
     width: 100%;
 }
 
-.navigation {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 2rem;
-    padding-top: 2rem;
-}
-
 @media (max-width: 768px) {
     .formContainer {
         padding: 1.5rem;
-    }
-
-    .navigation {
-        flex-direction: column;
-        gap: 1rem;
-
-        .backButton,
-        .nextButton {
-            width: 100%;
-        }
     }
 }
 

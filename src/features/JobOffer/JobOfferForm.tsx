@@ -1,7 +1,7 @@
 import { Form, useNavigation } from "react-router-dom";
-import Button from "../../components/ui/Button/Button";
 import Input from "../../components/ui/Input/Input";
 import { useInput } from "../../hooks/useInput";
+import { FormNavigation } from "../navigation";
 import classes from "./JobOfferForm.module.scss";
 
 export default function JobOfferForm() {
@@ -17,10 +17,6 @@ export default function JobOfferForm() {
       return false;
     }
   });
-
-  const handleBack = () => {
-    window.history.back();
-  };
 
   return (
     <Form method="post" noValidate className={classes.form}>
@@ -45,20 +41,12 @@ export default function JobOfferForm() {
         </div>
       </div>
 
-      <div className={classes.navigation}>
-        <Button type="secondary" onClick={handleBack} disabled={isLoading}>
-          Back
-        </Button>
-        <Button
-          type="primary"
-          buttonType="submit"
-          disabled={
-            isLoading || jobUrlInput.hasError || !jobUrlInput.value.trim()
-          }
-        >
-          {isLoading ? "Scraping job offer..." : "Next"}
-        </Button>
-      </div>
+      <FormNavigation
+        nextButtonType="submit"
+        nextText={isLoading ? "Scraping job offer..." : "Next"}
+        nextDisabled={jobUrlInput.hasError || !jobUrlInput.value.trim()}
+        isLoading={isLoading}
+      />
     </Form>
   );
 }
