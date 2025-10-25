@@ -10,6 +10,7 @@ import ReviewBio, {
   action as reviewBioAction,
   loader as reviewBioLoader,
 } from "../pages/ReviewBio/ReviewBio";
+import ReviewCV from "../pages/ReviewCV/ReviewCV";
 
 const queryClient = new QueryClient();
 
@@ -32,6 +33,12 @@ const router = createBrowserRouter([
         element: <ReviewBio />,
         action: reviewBioAction,
         loader: reviewBioLoader,
+      },
+      {
+        path: "review-cv",
+        element: <ReviewCV />,
+        // action: reviewCvAction,
+        // loader: reviewCvLoader,
       },
     ],
   },

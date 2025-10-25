@@ -1,0 +1,241 @@
+.experienceModalItem {
+    background-color: var(--color-gray-50);
+    padding: 1.5rem;
+    border-radius: 0;
+    border: 1px solid var(--color-border);
+    margin-bottom: 1rem;
+}
+
+.modalContent {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.modalActions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+.itemHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.formGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    width: 100%;
+}
+
+.sectionHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.summariesSection {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-border);
+}
+
+.summariesHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.summariesHeader h5 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin: 0;
+}
+
+.summaryItem {
+    background-color: white;
+    padding: 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: 0;
+    margin-bottom: 1rem;
+}
+
+.summaryHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+}
+
+.technologiesSection {
+    margin-top: 1rem;
+}
+
+.technologiesLabel {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.technologiesList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.techTag {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    background-color: var(--color-primary-light);
+    color: var(--color-primary-dark);
+    border-radius: 0;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.techRemoveButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    border: none;
+    border-radius: 0;
+    background-color: transparent;
+    color: var(--color-error);
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background-color: var(--color-error);
+        color: white;
+        transform: scale(1.1);
+    }
+    svg {
+        width: 10px;
+        height: 10px;
+    }
+}
+
+.addTechSection {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-end;
+}
+
+.addTechSection > div {
+    flex: 1;
+}
+
+.addTechButton {
+    padding: 0.75rem;
+    white-space: nowrap;
+}
+
+.addTechButton svg {
+    width: 14px;
+    height: 14px;
+}
+
+.addButton {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    padding: 0.5rem 1rem;
+    white-space: nowrap;
+}
+
+.removeButton {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.75rem;
+    padding: 0.375rem 0.75rem;
+    color: var(--color-error);
+    border-color: var(--color-error);
+}
+
+.removeButton:hover {
+    background-color: var(--color-error);
+    color: white;
+}
+
+.addButton svg,
+.removeButton svg {
+    width: 14px;
+    height: 14px;
+}
+
+@media (max-width: 768px) {
+    .formGrid {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+
+    .modalActions {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .modalContent {
+        gap: 1.25rem;
+    }
+
+    .summaryHeader {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+
+    .removeButton {
+        align-self: flex-end;
+    }
+
+    .technologiesList {
+        gap: 0.375rem;
+    }
+
+    .addTechSection {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+    }
+
+    .addTechButton {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .technologiesList {
+        gap: 0.25rem;
+    }
+
+    .techTag {
+        font-size: 0.7rem;
+        padding: 0.2rem 0.4rem;
+    }
+
+    .techRemoveButton {
+        width: 14px;
+        height: 14px;
+    }
+}

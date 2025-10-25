@@ -16,8 +16,9 @@ export default function Icon({
   styles,
   fill = "none",
 }: IconProps) {
-  const { theme } = useTheme();
-  const defaultColor = theme === "light" ? "#2ec4b6" : "#2ec4b6";
+  // const { theme } = useTheme();
+  // const defaultColor = theme === "light" ? "#2ec4b6" : "#2ec4b6";
+  const defaultColor = "#2ec4b6";
   const normalizedIconName =
     iconName.charAt(0).toUpperCase() + iconName.slice(1);
   const IconComponent =

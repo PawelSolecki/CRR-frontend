@@ -72,7 +72,7 @@ export default function Input(props: InputProps) {
 
   const getWidth = () => {
     if (type === "number") return "8rem";
-    if (type === "textarea" || type === "text") return "25rem";
+    if (type === "textarea" || type === "text") return "20rem";
     return "14rem";
   };
 
