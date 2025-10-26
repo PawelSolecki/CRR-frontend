@@ -1,0 +1,90 @@
+.uploadView {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.dropzone {
+  border: 2px dashed #7c8490;
+  border-radius: 12px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  background: #f6f8fa;
+  color: #0f172a;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+  max-width: 420px;
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.dropzoneActive {
+  border-color: #2563eb;
+  background-color: #eff3ff;
+}
+
+.dropzoneError {
+  border-color: #dc2626;
+  background-color: #fef2f2;
+}
+
+.instructions {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.supportText {
+  margin: 0.5rem 0 0;
+  color: #475569;
+  font-size: 0.9rem;
+}
+
+.statusMessage {
+  color: #2563eb;
+  font-size: 0.9rem;
+}
+
+.errorMessage {
+  color: #dc2626;
+  font-size: 0.9rem;
+}
+
+.fileInfo {
+  background: #e2e8f0;
+  border-radius: 8px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  color: #0f172a;
+  width: 100%;
+  max-width: 420px;
+}
+
+.submitButton {
+  align-self: center;
+  background-color: #2563eb;
+  border: none;
+  border-radius: 8px;
+  color: #ffffff;
+  cursor: pointer;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  transition: background-color 0.2s ease;
+}
+
+.submitButton:disabled {
+  background-color: #94a3b8;
+  cursor: not-allowed;
+}
+
+.submitButton:not(:disabled):hover {
+  background-color: #1d4ed8;
+}
