@@ -16,7 +16,9 @@ const service = services[serviceName as keyof typeof services];
 
 if (!service) {
   throw new Error(
-    `Unknown service: ${serviceName}. Available: ${Object.keys(services).join(", ")}`,
+    `Unknown service: ${serviceName}. Available: ${Object.keys(services).join(
+      ", "
+    )}`
   );
 }
 
@@ -24,11 +26,11 @@ export default defineConfig({
   input: service.input,
   output: service.output,
   plugins: [
+    "zod",
     {
-      name: "@hey-api/schemas",
-      type: "json",
+      name: "@hey-api/sdk",
+      validator: true,
     },
-    "@hey-api/sdk",
     "@hey-api/typescript",
     {
       name: "@hey-api/client-fetch",
