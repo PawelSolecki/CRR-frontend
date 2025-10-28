@@ -24,7 +24,7 @@ export default function ReviewBioForm() {
 
   return (
     <Form method="post">
-      <input type="hidden" name="enhancedBio" value="" />
+      <input type="hidden" name="enhancedBio" value={bio} />
 
       <div className={classes.bioSection}>
         <div className={classes.bioContainer}>
