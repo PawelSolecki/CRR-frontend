@@ -27,13 +27,17 @@ export async function action({ request }: { request: Request }) {
   const jobUrl = formData.get("jobUrl") as string;
 
   try {
-    console.log("Job URL submitted:", jobUrl);
-    await scrape({
+    const response = await scrape({
       query: { url: jobUrl },
     });
+    if (response.response.status !== 200) {
+      return {
+        error:
+          "Failed to scrape job offer. Please check the URL and try again.",
+      };
+    }
     return redirect("/review-bio");
-  } catch (error) {
-    console.error("Error scraping job offer:", error);
+  } catch {
     return {
       error: "Failed to scrape job offer. Please check the URL and try again.",
     };
