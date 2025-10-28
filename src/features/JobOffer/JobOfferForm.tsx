@@ -1,6 +1,6 @@
 import { Form, useNavigation } from "react-router-dom";
 import Input from "../../components/ui/Input/Input";
-import { useInput } from "../../hooks/useInput";
+import { useInput } from "../../shared/hooks/useInput";
 import { FormNavigation } from "../navigation";
 import classes from "./JobOfferForm.module.scss";
 
