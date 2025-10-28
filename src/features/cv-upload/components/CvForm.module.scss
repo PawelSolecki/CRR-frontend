@@ -1,0 +1,73 @@
+.cvForm {
+  max-width: 800px;
+  margin: 0 auto 8rem auto;
+  padding: 2rem;
+  background: #fff;
+  border: 2px solid #000;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.stepIndicator {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-bottom: 0;
+  border-bottom: none;
+
+  h2 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    color: #666;
+    font-size: 0.9rem;
+  }
+}
+
+.navigationButtons {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 0;
+  border-top: none;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+}
+
+.backButton,
+.nextButton,
+.submitButton {
+  padding: 1rem 2rem;
+  border: 1px solid #000;
+  border-radius: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 150px;
+}
+
+.backButton {
+  background: #6c757d;
+  color: white;
+
+  &:hover {
+    background: #5a6268;
+  }
+}
+
+.nextButton,
+.submitButton {
+  background: #000;
+  color: white;
+  margin-left: auto;
+
+  &:hover {
+    background: #333;
+  }
+}

@@ -1,0 +1,227 @@
+.formSection {
+  margin-bottom: 2rem;
+
+  h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+
+  h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+  }
+}
+
+.sectionTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-top: 2rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 0.5rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.arrayItem {
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  background: #f9f9f9;
+  border: 2px solid #000;
+  border-radius: 0;
+  position: relative;
+}
+
+.experienceItem,
+.educationItem,
+.projectItem {
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  background: #f9f9f9;
+  border: 2px solid #000;
+  border-radius: 0;
+  position: relative;
+}
+
+.deleteButton {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.5rem;
+  background: transparent;
+  color: #000;
+  border: 1px solid #000;
+  border-radius: 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  max-width: 36px;
+  min-height: 36px;
+  max-height: 36px;
+
+  &:hover {
+    background: #f0f0f0;
+  }
+}
+
+.summariesSection {
+  margin-top: 1.5rem;
+
+  h4 {
+    margin-bottom: 1rem;
+  }
+}
+
+.bulletPointsList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.selectLabel {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #000;
+  border-radius: 0;
+  font-size: 1rem;
+  background-color: #f5f5f5;
+  transition: all 0.2s ease;
+
+  &:focus {
+    outline: none;
+    border-color: #000;
+    background-color: #fff;
+  }
+}
+
+.addButton {
+  display: block;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: #000;
+  color: white;
+  border: 1px solid #000;
+  border-radius: 0;
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin-top: 0.5rem;
+
+  &:hover {
+    background: #333;
+  }
+}
+
+.removeButton {
+  padding: 0.5rem 1rem;
+  background: #dc3545;
+  color: white;
+  border: 1px solid #000;
+  border-radius: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin-top: 0.5rem;
+
+  &:hover {
+    background: #c82333;
+  }
+}
+
+.inlineItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.skillsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.inlineInput {
+  flex: 1;
+}
+
+.inlineInputGroup {
+  display: flex;
+  gap: 1rem;
+  flex: 1;
+}
+
+.certItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+  background: #f9f9f9;
+  border: 2px solid #000;
+}
+
+.certInputs {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.iconButton {
+  padding: 0.5rem;
+  background: transparent;
+  color: #000;
+  border: 1px solid #000;
+  border-radius: 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  max-width: 36px;
+  min-height: 36px;
+  max-height: 36px;
+  flex-shrink: 0;
+
+  &:hover {
+    background: #f0f0f0;
+  }
+}
