@@ -1,5 +1,8 @@
-import { redirect, useActionData } from "react-router-dom";
+import { redirect, useActionData, useLoaderData } from "react-router-dom";
+import type { UserCv } from "../../api/career-service";
+import Error from "../../components/ui/Error/Error";
 import ReviewCVForm from "../../features/ReviewCV/ReviewCVForm";
+import { CV_STORAGE_KEY } from "../../shared/hooks/useCvData";
 import classes from "./ReviewCV.module.scss";
 
 interface ActionData {
@@ -7,8 +10,14 @@ interface ActionData {
   error?: string;
 }
 
+interface LoaderData {
+  userCv: UserCv;
+  error?: string;
+}
+
 export default function ReviewCV() {
-  const actionData = useActionData() as ActionData | undefined;
+  const actionData = useActionData() as ActionData;
+  const loaderData = useLoaderData() as LoaderData;
 
   return (
     <div className={classes.container}>
@@ -18,35 +27,26 @@ export default function ReviewCV() {
           Review and verify all sections of your CV. You can edit education,
           certifications, and other details below.
         </p>
-
-        {actionData?.error && (
-          <div className={classes.error}>{actionData.error}</div>
-        )}
-        {/*implement loader in form*/}
-        <ReviewCVForm cvData={{}} />
+        {loaderData?.error && <Error message={loaderData.error} />}
+        {actionData?.error && <Error message={actionData.error} />}
+        <ReviewCVForm userCv={loaderData.userCv} />
       </div>
     </div>
   );
 }
 
-//TODO: implement loader
-
-// TODO: Integrate with backend
-export async function action({ request }: { request: Request }) {
+export async function loader() {
   try {
-    const formData = await request.formData();
-    const cvData = formData.get("cvData") as string;
-
-    if (cvData) {
-      return redirect("/generate-pdf");
+    const data = window.localStorage.getItem(CV_STORAGE_KEY);
+    if (!data) {
+      return { error: "CV data is missing. Please complete your CV first." };
     }
-
-    return { success: false, error: "No CV data provided" };
-  } catch (error) {
-    console.error("Error processing CV review:", error);
-    return {
-      success: false,
-      error: "Failed to process CV review. Please try again.",
-    };
+    return { userCv: JSON.parse(data) };
+  } catch {
+    return { error: "Failed to load CV data. Please try again later." };
   }
+}
+
+export async function action() {
+  return redirect("/choose-template");
 }

@@ -20,10 +20,6 @@ import ProjectsModal from "./components/projects/ProjectsModal";
 import SkillsModal from "./components/skills/SkillsModal";
 import classes from "./ReviewCVForm.module.scss";
 
-interface ReviewCVFormProps {
-  cvData: UserCv;
-}
-
 type EditingSection =
   | "personalInfo"
   | "skills"
@@ -34,11 +30,11 @@ type EditingSection =
   | "certifications"
   | null;
 
-export default function ReviewCVForm({ cvData }: ReviewCVFormProps) {
+export default function ReviewCVForm({ userCv }: { userCv: UserCv }) {
   const navigation = useNavigation();
   const isLoading = navigation.state === "submitting";
 
-  const [formData, setFormData] = useState<UserCv>(cvData);
+  const [formData, setFormData] = useState<UserCv>(userCv);
   const [editingSection, setEditingSection] = useState<EditingSection>(null);
 
   const formatDate = (dateString: string) => {
@@ -164,7 +160,7 @@ export default function ReviewCVForm({ cvData }: ReviewCVFormProps) {
                 {exp.company} • {exp.location}
               </div>
               <div className={classes.experienceDate}>
-                {formatDate(exp.startDate)} -{" "}
+                {formatDate(exp.startDate ?? "")} -{" "}
                 {exp.endDate ? formatDate(exp.endDate) : "Present"}
               </div>
             </div>
@@ -209,7 +205,7 @@ export default function ReviewCVForm({ cvData }: ReviewCVFormProps) {
               </h3>
               <div className={classes.educationSchool}>{edu.school}</div>
               <div className={classes.educationDate}>
-                {formatDate(edu.startDate)} -{" "}
+                {formatDate(edu.startDate ?? "")} -{" "}
                 {edu.endDate ? formatDate(edu.endDate) : "Present"}
               </div>
             </div>
@@ -243,7 +239,7 @@ export default function ReviewCVForm({ cvData }: ReviewCVFormProps) {
               <h3 className={classes.certificationTitle}>{cert.name}</h3>
               <div className={classes.certificationIssuer}>{cert.issuer}</div>
               <div className={classes.certificationDate}>
-                {formatDate(cert.date)}
+                {formatDate(cert.date ?? "")}
               </div>
             </div>
           ))}
@@ -262,7 +258,7 @@ export default function ReviewCVForm({ cvData }: ReviewCVFormProps) {
       <SkillsModal
         isOpen={editingSection === "skills"}
         onClose={closeEditModal}
-        skills={formData.skills}
+        skills={formData.skills || []}
         onUpdate={updateSkills}
         isLoading={isLoading}
       />
@@ -270,7 +266,7 @@ export default function ReviewCVForm({ cvData }: ReviewCVFormProps) {
       <ExperienceModal
         isOpen={editingSection === "experience"}
         onClose={closeEditModal}
-        experience={formData.experience}
+        experience={formData.experience || []}
         onUpdate={updateExperience}
         isLoading={isLoading}
       />
@@ -278,7 +274,7 @@ export default function ReviewCVForm({ cvData }: ReviewCVFormProps) {
       <ProjectsModal
         isOpen={editingSection === "projects"}
         onClose={closeEditModal}
-        projects={formData.projects}
+        projects={formData.projects || []}
         onUpdate={updateProjects}
         isLoading={isLoading}
       />
@@ -286,7 +282,7 @@ export default function ReviewCVForm({ cvData }: ReviewCVFormProps) {
       <EducationModal
         isOpen={editingSection === "education"}
         onClose={closeEditModal}
-        education={formData.education}
+        education={formData.education || []}
         onUpdate={updateEducation}
         isLoading={isLoading}
       />
@@ -294,7 +290,7 @@ export default function ReviewCVForm({ cvData }: ReviewCVFormProps) {
       <LanguagesModal
         isOpen={editingSection === "languages"}
         onClose={closeEditModal}
-        languages={formData.languages}
+        languages={formData.languages || []}
         onUpdate={updateLanguages}
         isLoading={isLoading}
       />
@@ -302,7 +298,7 @@ export default function ReviewCVForm({ cvData }: ReviewCVFormProps) {
       <CertificationsModal
         isOpen={editingSection === "certifications"}
         onClose={closeEditModal}
-        certifications={formData.certifications}
+        certifications={formData.certifications || []}
         onUpdate={updateCertifications}
         isLoading={isLoading}
       />

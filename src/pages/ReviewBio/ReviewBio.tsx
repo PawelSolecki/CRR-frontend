@@ -37,7 +37,6 @@ export default function ReviewBio() {
 
 export async function loader() {
   const { jobOffer, skillResult } = useJobOfferStore.getState();
-  console.log("Job Offer in loader:", jobOffer);
   if (!jobOffer || !skillResult) {
     return {
       error: "Job offer data is missing. Please add a job offer first.",
@@ -55,7 +54,6 @@ export async function loader() {
         skillResult: skillResult || {},
       },
     });
-    console.log("Bio generation response:", response);
     if (response.response.status !== 200 || !response.data) {
       return { error: "Failed to generate bio. Please try again later." };
     }
