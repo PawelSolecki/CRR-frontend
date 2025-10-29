@@ -27,23 +27,16 @@ export default function ReviewBio() {
 
   useEffect(() => {
     const generateBio = async () => {
-      if (!jobOffer || !skillResult) {
-        const checkInterval = setInterval(() => {
-          const { jobOffer: currentJobOffer, skillResult: currentSkillResult } =
-            useJobOfferStore.getState();
-          if (currentJobOffer && currentSkillResult) {
-            clearInterval(checkInterval);
-            generateBioData(currentJobOffer, currentSkillResult);
-          }
-        }, 100);
-
-        // Timeout after 30 seconds
-        setTimeout(() => {
-          clearInterval(checkInterval);
-          setError("Job offer data is missing. Please add a job offer first.");
-          setIsLoading(false);
-        }, 30000);
-
+      if (!jobOffer) {
+        setError("Job offer data is missing. Please add a job offer first.");
+        setIsLoading(false);
+        return;
+      }
+      if (!skillResult) {
+        setError(
+          "Skill analysis data is missing. Please analyze the job offer first.",
+        );
+        setIsLoading(false);
         return;
       }
 
