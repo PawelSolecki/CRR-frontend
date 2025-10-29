@@ -6,8 +6,8 @@ const steps = [
   { id: 1, title: "Upload CV", link: "/upload-cv" },
   { id: 2, title: "Enhance Tags", link: "/enhance-tags" },
   { id: 3, title: "Job Offer", link: "/job-offer" },
-  { id: 4, title: "Review CV", link: "/review-cv" },
-  { id: 5, title: "Review Bio", link: "/review-bio" },
+  { id: 4, title: "Review Bio", link: "/review-bio" },
+  { id: 5, title: "Review CV", link: "/review-cv" },
   { id: 6, title: "Choose Template", link: "/choose-template" },
   { id: 7, title: "Download", link: "/download" },
 ];
@@ -17,8 +17,8 @@ function getCurrentStep(pathname: string): number {
     "/upload-cv": 1,
     "/enhance-tags": 2,
     "/job-offer": 3,
-    "/review-cv": 4,
-    "/review-bio": 5,
+    "/review-bio": 4,
+    "/review-cv": 5,
     "/choose-template": 6,
     "/download": 7,
   };

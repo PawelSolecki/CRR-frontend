@@ -1,0 +1,136 @@
+.bioSection {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.bioContainer {
+    width: 100%;
+    max-width: 600px;
+    padding: 2rem;
+    border: 1px solid var(--color-border);
+    border-radius: 0;
+    background-color: var(--color-background);
+}
+
+.sectionTitle {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+.textareaWrapper {
+    position: relative;
+    width: 100%;
+}
+
+.bioTextarea {
+    width: 100%;
+    min-height: 200px;
+    padding: 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: 0;
+    background-color: #f9fafb;
+    font-family: inherit;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--color-text-primary);
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.3s ease;
+
+    &:focus {
+        border-color: var(--color-primary);
+        box-shadow: 0 0 0 2px var(--color-secondary);
+    }
+
+    &::placeholder {
+        color: var(--color-text-secondary);
+    }
+}
+
+.charCounter {
+    margin-top: 0.75rem;
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    text-align: left;
+}
+
+.navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2rem;
+    padding-top: 2rem;
+}
+
+.backButton {
+    padding: 0.75rem 2rem;
+    border: 1px solid var(--color-border);
+    border-radius: 0;
+    background-color: transparent;
+    color: var(--color-text-secondary);
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+        border-color: var(--color-text-primary);
+        color: var(--color-text-primary);
+    }
+}
+
+.nextButton {
+    padding: 0.75rem 2rem;
+    border: none;
+    border-radius: 0;
+    background-color: var(--color-text-primary);
+    color: white;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+        background-color: var(--color-primary);
+        transform: translateY(-1px);
+    }
+
+    &:active {
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .bioContainer {
+        padding: 1.5rem;
+    }
+
+    .bioTextarea {
+        min-height: 160px;
+    }
+
+    .navigation {
+        flex-direction: column;
+        gap: 1rem;
+
+        .backButton,
+        .nextButton {
+            width: 100%;
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .bioContainer {
+        padding: 1rem;
+    }
+
+    .bioTextarea {
+        min-height: 140px;
+        padding: 0.75rem;
+    }
+}

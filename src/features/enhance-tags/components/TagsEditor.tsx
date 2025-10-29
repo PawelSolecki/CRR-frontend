@@ -1,8 +1,10 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { FormNavigation } from "../../navigation";
+import type { AnalyzedCvData } from "../types";
 import ExperienceEditor from "./ExperienceEditor";
 import ProjectEditor from "./ProjectEditor";
 import styles from "./TagsEditor.module.scss";
-import type { AnalyzedCvData } from "../types";
 
 interface TagsEditorProps {
   cvData: AnalyzedCvData;
@@ -18,12 +20,13 @@ export default function TagsEditor({
   const [editedData, setEditedData] = useState<AnalyzedCvData>(cvData);
   const [isExperienceExpanded, setIsExperienceExpanded] = useState(true);
   const [isProjectsExpanded, setIsProjectsExpanded] = useState(true);
+  const navigate = useNavigate();
 
   const handleExperienceTechnologyChange = (
     experienceIndex: number,
     bulletIndex: number,
     technology: string,
-    action: "add" | "remove"
+    action: "add" | "remove",
   ) => {
     setEditedData((current) => {
       if (!current.experience) {
@@ -92,7 +95,7 @@ export default function TagsEditor({
     projectIndex: number,
     bulletIndex: number,
     technology: string,
-    action: "add" | "remove"
+    action: "add" | "remove",
   ) => {
     setEditedData((current) => {
       if (!current.projects) {
@@ -201,7 +204,7 @@ export default function TagsEditor({
                       entryIndex,
                       bulletIndex,
                       technology,
-                      "add"
+                      "add",
                     )
                   }
                   onTechnologyRemove={(entryIndex, bulletIndex, technology) =>
@@ -209,7 +212,7 @@ export default function TagsEditor({
                       entryIndex,
                       bulletIndex,
                       technology,
-                      "remove"
+                      "remove",
                     )
                   }
                 />
@@ -249,7 +252,7 @@ export default function TagsEditor({
                       entryIndex,
                       bulletIndex,
                       technology,
-                      "add"
+                      "add",
                     )
                   }
                   onTechnologyRemove={(entryIndex, bulletIndex, technology) =>
@@ -257,7 +260,7 @@ export default function TagsEditor({
                       entryIndex,
                       bulletIndex,
                       technology,
-                      "remove"
+                      "remove",
                     )
                   }
                 />
@@ -273,25 +276,13 @@ export default function TagsEditor({
             No work experience or projects to edit
           </div>
         )}
-
-      <div className={styles.actions}>
-        {onCancel && (
-          <button
-            type="button"
-            className={`${styles.button} ${styles.backButton}`}
-            onClick={onCancel}
-          >
-            Back
-          </button>
-        )}
-        <button
-          type="button"
-          className={`${styles.button} ${styles.nextButton}`}
-          onClick={handleSave}
-        >
-          Continue
-        </button>
-      </div>
+      <FormNavigation
+        onNext={() => {
+          handleSave();
+          navigate("/job-offer");
+        }}
+        onBack={onCancel}
+      />
     </div>
   );
 }

@@ -1,29 +1,62 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap");
 
 :root {
-  --color-white: #ffffff;
-  --color-black: #000000;
-  --color-secondary-text: rgba(0, 0, 0, 0.5);
+    --color-primary: #2ec4b6;
+    --color-secondary: #fdfffc;
+    --color-text-primary: #011627;
+    --color-text-secondary: #6b7280;
+    --color-background: #ffffff;
+    --color-border: #d1d5db;
+    --color-error: #dc2626;
+    --color-logout-button-darker: #dc2626;
 }
 
 * {
-  box-sizing: border-box;
-}
-
-html,
-body,
-#root {
-  height: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-  margin: 0;
-  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial;
-  background: var(--color-white);
-  color: var(--color-black);
+    font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+        "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+        sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: var(--color-background);
+    color: var(--color-text-primary);
+    line-height: 1.5;
+}
+
+code {
+    font-family:
+        source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+button {
+    cursor: pointer;
+    font-family: inherit;
+}
+
+input,
+textarea {
+    font-family: inherit;
 }
 
 a {
-  color: inherit;
+    color: inherit;
+    text-decoration: none;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 0 1rem;
+    }
 }

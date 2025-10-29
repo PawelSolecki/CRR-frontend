@@ -1,11 +1,11 @@
 import { useLoaderData, useNavigate } from "react-router-dom";
-import styles from "./PageTwo.module.scss";
-import { postApiV1CvAnalyzeCv } from "../../api/career-ai-service";
-import { CV_STORAGE_KEY } from "../../shared/hooks/useCvData";
 import type { PostApiV1CvAnalyzeCvResponse } from "../../api/career-ai-service";
+import { postApiV1CvAnalyzeCv } from "../../api/career-ai-service";
+import type { AnalyzedCvData } from "../../features/enhance-tags";
 import { TagsEditor } from "../../features/enhance-tags";
 import { convertAnalyzedCvToUserCv } from "../../features/enhance-tags/utils";
-import type { AnalyzedCvData } from "../../features/enhance-tags";
+import { CV_STORAGE_KEY } from "../../shared/hooks/useCvData";
+import styles from "./PageTwo.module.scss";
 
 export default function PageTwo() {
   const navigate = useNavigate();
