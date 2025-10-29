@@ -1,17 +1,15 @@
 import { useState } from "react";
-import { Form, useLoaderData, useNavigation } from "react-router-dom";
+import { Form, useNavigation } from "react-router-dom";
 import { FormNavigation } from "../navigation";
 import classes from "./ReviewBioForm.module.scss";
 
-interface LoaderData {
+interface ReviewBioFormProps {
   generatedBio: string;
 }
 
-export default function ReviewBioForm() {
+export default function ReviewBioForm({ generatedBio }: ReviewBioFormProps) {
   const navigation = useNavigation();
   const isLoading = navigation.state === "submitting";
-
-  const { generatedBio } = useLoaderData() as LoaderData;
 
   const [bio, setBio] = useState(generatedBio || "");
   const [charCount, setCharCount] = useState(generatedBio?.length || 0);

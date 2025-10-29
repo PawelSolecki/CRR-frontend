@@ -1,5 +1,10 @@
-import { redirect, useActionData, useLoaderData } from "react-router-dom";
-import { postApiV1CvGenerateBio } from "../../api/career-ai-service";
+import { useEffect, useState } from "react";
+import { redirect, useActionData } from "react-router-dom";
+import {
+  postApiV1CvGenerateBio,
+  type JobOffer,
+  type SkillResult,
+} from "../../api/career-ai-service";
 import type { UserCv } from "../../api/career-service";
 import Error from "../../components/ui/Error/Error";
 import ReviewBioForm from "../../features/ReviewBio/ReviewBioForm";
@@ -12,13 +17,75 @@ interface ActionData {
   error?: string;
 }
 
-interface LoaderData {
-  error?: string;
-}
-
 export default function ReviewBio() {
-  const loaderData = useLoaderData() as LoaderData;
   const actionData = useActionData() as ActionData;
+  const { jobOffer, skillResult } = useJobOfferStore();
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [generatedBio, setGeneratedBio] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const generateBio = async () => {
+      if (!jobOffer || !skillResult) {
+        const checkInterval = setInterval(() => {
+          const { jobOffer: currentJobOffer, skillResult: currentSkillResult } =
+            useJobOfferStore.getState();
+          if (currentJobOffer && currentSkillResult) {
+            clearInterval(checkInterval);
+            generateBioData(currentJobOffer, currentSkillResult);
+          }
+        }, 100);
+
+        // Timeout after 30 seconds
+        setTimeout(() => {
+          clearInterval(checkInterval);
+          setError("Job offer data is missing. Please add a job offer first.");
+          setIsLoading(false);
+        }, 30000);
+
+        return;
+      }
+
+      generateBioData(jobOffer, skillResult);
+    };
+
+    const generateBioData = async (
+      jobOfferData: JobOffer,
+      skillResultData: SkillResult,
+    ) => {
+      try {
+        const data = window.localStorage.getItem(CV_STORAGE_KEY);
+        if (!data) {
+          setError("CV data is missing. Please complete your CV first.");
+          setIsLoading(false);
+          return;
+        }
+
+        const response = await postApiV1CvGenerateBio({
+          body: {
+            userCV: JSON.parse(data),
+            jobOffer: jobOfferData,
+            skillResult: skillResultData,
+          },
+        });
+
+        if (response.response.status !== 200 || !response.data) {
+          setError("Failed to generate bio. Please try again later.");
+          setIsLoading(false);
+          return;
+        }
+
+        setGeneratedBio(response.data.bio || "");
+        setIsLoading(false);
+      } catch {
+        setError("An unexpected error occurred. Please try again later.");
+        setIsLoading(false);
+      }
+    };
+
+    generateBio();
+  }, [jobOffer, skillResult]);
 
   return (
     <div className={classes.container}>
@@ -28,39 +95,20 @@ export default function ReviewBio() {
           Review and edit your AI-generated professional summary
         </p>
         {actionData?.error && <Error message={actionData.error} />}
-        {loaderData?.error && <Error message={loaderData.error} />}
-        <ReviewBioForm />
+        {error && <Error message={error} />}
+        {isLoading ? (
+          <div className={classes.loadingContainer}>
+            <div className={classes.loadingSpinner}></div>
+            <p className={classes.loadingText}>
+              Generating your professional summary...
+            </p>
+          </div>
+        ) : (
+          <ReviewBioForm generatedBio={generatedBio} />
+        )}
       </div>
     </div>
   );
-}
-
-export async function loader() {
-  const { jobOffer, skillResult } = useJobOfferStore.getState();
-  if (!jobOffer || !skillResult) {
-    return {
-      error: "Job offer data is missing. Please add a job offer first.",
-    };
-  }
-  try {
-    const data = window.localStorage.getItem(CV_STORAGE_KEY);
-    if (!data) {
-      return { error: "CV data is missing. Please complete your CV first." };
-    }
-    const response = await postApiV1CvGenerateBio({
-      body: {
-        userCV: data ? JSON.parse(data) : {},
-        jobOffer: jobOffer || {},
-        skillResult: skillResult || {},
-      },
-    });
-    if (response.response.status !== 200 || !response.data) {
-      return { error: "Failed to generate bio. Please try again later." };
-    }
-    return response.data;
-  } catch {
-    return { error: "An unexpected error occurred. Please try again later." };
-  }
 }
 
 export async function action({ request }: { request: Request }) {
@@ -76,7 +124,7 @@ export async function action({ request }: { request: Request }) {
     cvData.personalInfo.summary = enhancedBio as string;
     window.localStorage.setItem(CV_STORAGE_KEY, JSON.stringify(cvData));
 
-    return redirect("/app/review-cv");
+    return redirect("/review-cv");
   }
 
   return { success: false, error: "No enhanced bio provided" };

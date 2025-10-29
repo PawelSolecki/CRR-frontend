@@ -8,7 +8,6 @@ import PageOne, { action as pageOneAction } from "../pages/PageOne/PageOne";
 import PageTwo, { loader as pageTwoLoader } from "../pages/PageTwo/PageTwo";
 import ReviewBio, {
   action as reviewBioAction,
-  loader as reviewBioLoader,
 } from "../pages/ReviewBio/ReviewBio";
 import ReviewCV, {
   action as reviewCvAction,
@@ -47,7 +46,6 @@ const router = createBrowserRouter([
         path: "review-bio",
         element: <ReviewBio />,
         action: reviewBioAction,
-        loader: reviewBioLoader,
       },
       {
         path: "review-cv",
