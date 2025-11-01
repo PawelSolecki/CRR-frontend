@@ -1,9 +1,9 @@
-import styles from "./PageOne.module.scss";
+import { zUserCv } from "@api/career-service/zod.gen";
+import { ContentSwitcher, CvInputSection } from "@features/cv-upload";
+import { CV_STORAGE_KEY } from "@shared/hooks/useCvData";
 import { useState } from "react";
-import { ContentSwitcher, CvInputSection } from "../../features/cv-upload";
 import { redirect } from "react-router-dom";
-import { zUserCv } from "../../api/career-service/zod.gen";
-import { CV_STORAGE_KEY } from "../../shared/hooks/useCvData";
+import styles from "./PageOne.module.scss";
 
 export default function PageOne() {
   const [activeTab, setActiveTab] = useState<any>("upload");
@@ -35,7 +35,7 @@ export async function action({ request }: { request: Request }) {
     if (validation.success) {
       window.localStorage.setItem(
         CV_STORAGE_KEY,
-        JSON.stringify(validation.data)
+        JSON.stringify(validation.data),
       );
       return redirect("/enhance-tags");
     } else {

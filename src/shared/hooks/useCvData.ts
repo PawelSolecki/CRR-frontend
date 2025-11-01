@@ -1,6 +1,6 @@
-import { useState, useEffect, useCallback } from "react";
+import { zUserCv } from "@api/career-service/zod.gen";
+import { useCallback, useEffect, useState } from "react";
 import { z } from "zod";
-import { zUserCv } from "../../api/career-service/zod.gen";
 
 type UserCv = z.infer<typeof zUserCv>;
 

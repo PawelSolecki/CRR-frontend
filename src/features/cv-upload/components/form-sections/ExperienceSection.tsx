@@ -1,10 +1,10 @@
+import { zUserCv } from "@api/career-service/zod.gen";
 import type {
-  UseFormRegister,
-  UseFieldArrayReturn,
   Control,
+  UseFieldArrayReturn,
+  UseFormRegister,
 } from "react-hook-form";
 import { z } from "zod";
-import { zUserCv } from "../../../../api/career-service/zod.gen";
 import ExperienceItem from "./ExperienceItem";
 import styles from "./FormSections.module.scss";
 

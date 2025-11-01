@@ -1,5 +1,5 @@
+import type { UserCv } from "@api/career-service";
 import type { AnalyzedCvData } from "../types";
-import type { UserCv } from "../../../api/career-service";
 
 /**
  * Konwertuje dane z formatu API (już w camelCase) na format UserCv

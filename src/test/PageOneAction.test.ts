@@ -1,6 +1,6 @@
-import { describe, it, expect, beforeEach, afterAll, vi } from "vitest";
-import { action as pageOneAction } from "../pages/PageOne/PageOne";
-import { CV_STORAGE_KEY } from "../shared/hooks/useCvData";
+import { action as pageOneAction } from "@pages/PageOne/PageOne";
+import { CV_STORAGE_KEY } from "@shared/hooks/useCvData";
+import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 const buildRequest = (formData: FormData): Request => {
   return {

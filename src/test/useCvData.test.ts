@@ -1,15 +1,15 @@
-import { renderHook, act, waitFor } from "@testing-library/react";
+import { CV_STORAGE_KEY, useCvData } from "@shared/hooks/useCvData";
+import { act, renderHook, waitFor } from "@testing-library/react";
 import {
-  describe,
-  expect,
-  beforeEach,
+  afterAll,
   afterEach,
   beforeAll,
-  afterAll,
+  beforeEach,
+  describe,
+  expect,
   it,
   vi,
 } from "vitest";
-import { useCvData, CV_STORAGE_KEY } from "../shared/hooks/useCvData";
 
 const sampleCv: any = {
   personalInfo: {
@@ -58,7 +58,7 @@ describe("useCvData", () => {
 
     await waitFor(() => {
       expect(localStorage.getItem(CV_STORAGE_KEY)).toBe(
-        JSON.stringify(sampleCv)
+        JSON.stringify(sampleCv),
       );
     });
   });

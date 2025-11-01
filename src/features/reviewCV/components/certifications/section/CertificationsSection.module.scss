@@ -1,0 +1,17 @@
+@import "@features/reviewCV/ReviewCVForm.module.scss";
+
+.certificationItem {
+    @include item-card;
+
+    .certificationTitle {
+        @include title-style;
+    }
+
+    .certificationIssuer {
+        @include secondary-text;
+    }
+
+    .certificationDate {
+        @include date-style;
+    }
+}
