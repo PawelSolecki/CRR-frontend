@@ -27,6 +27,15 @@ export default function ReviewBio() {
 
   useEffect(() => {
     const generateBio = async () => {
+      const data = window.localStorage.getItem(CV_STORAGE_KEY);
+      if (data) {
+        const cvData = JSON.parse(data) as UserCv;
+        if (cvData.personalInfo.summary) {
+          setGeneratedBio(cvData.personalInfo.summary);
+          setIsLoading(false);
+          return;
+        }
+      }
       if (!jobOffer) {
         setError("Job offer data is missing. Please add a job offer first.");
         setIsLoading(false);
