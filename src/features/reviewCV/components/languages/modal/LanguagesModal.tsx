@@ -3,6 +3,7 @@ import Button from "@shared/components/Button/Button";
 import Icon from "@shared/components/Icon/Icon";
 import Input from "@shared/components/Input/Input";
 import Modal from "@shared/components/Modal/Modal";
+import { useCallback, useEffect, useState } from "react";
 import classes from "./LanguagesModal.module.scss";
 
 interface LanguagesModalProps {
@@ -20,33 +21,52 @@ export default function LanguagesModal({
   onUpdate,
   isLoading = false,
 }: LanguagesModalProps) {
-  const updateLanguage = (
-    index: number,
-    field: keyof Language,
-    value: string,
-  ) => {
-    const updated = languages.map((lang, i) =>
-      i === index ? { ...lang, [field]: value } : lang,
-    );
-    onUpdate(updated);
-  };
+  const [localLanguages, setLocalLanguages] = useState<Language[]>([]);
 
-  const addLanguage = () => {
+  // Initialize local state when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      setLocalLanguages([...languages]);
+    }
+  }, [isOpen, languages]);
+
+  const updateLanguage = useCallback(
+    (index: number, field: keyof Language, value: string) => {
+      setLocalLanguages((prev) =>
+        prev.map((lang, i) =>
+          i === index ? { ...lang, [field]: value } : lang,
+        ),
+      );
+    },
+    [],
+  );
+
+  const addLanguage = useCallback(() => {
     const newLanguage: Language = {
       language: "",
       level: "A1",
     };
-    onUpdate([...languages, newLanguage]);
-  };
+    setLocalLanguages((prev) => [...prev, newLanguage]);
+  }, []);
 
-  const removeLanguage = (index: number) => {
-    onUpdate(languages.filter((_, i) => i !== index));
-  };
+  const removeLanguage = useCallback((index: number) => {
+    setLocalLanguages((prev) => prev.filter((_, i) => i !== index));
+  }, []);
+
+  const handleSave = useCallback(() => {
+    onUpdate(localLanguages);
+    onClose();
+  }, [localLanguages, onUpdate, onClose]);
+
+  const handleCancel = useCallback(() => {
+    setLocalLanguages([...languages]); // Reset to original
+    onClose();
+  }, [languages, onClose]);
 
   return (
     <Modal
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={handleCancel}
       title="Edit Languages"
       size="medium"
     >
@@ -59,7 +79,7 @@ export default function LanguagesModal({
           </Button>
         </div>
 
-        {languages.map((lang, index) => (
+        {localLanguages.map((lang, index) => (
           <div key={index} className={classes.languageItem}>
             <div className={classes.itemHeader}>
               <h4>Language {index + 1}</h4>
@@ -76,9 +96,9 @@ export default function LanguagesModal({
                 id={`language-name-${index}`}
                 type="text"
                 label="Language"
-                value={lang.language}
-                onChange={(value) =>
-                  updateLanguage(index, "language", value as string)
+                value={lang.language || ""}
+                onChange={(e) =>
+                  updateLanguage(index, "language", e.target.value)
                 }
                 style={{ width: "100%" }}
                 disabled={isLoading}
@@ -92,7 +112,7 @@ export default function LanguagesModal({
                 </label>
                 <select
                   id={`language-level-${index}`}
-                  value={lang.level}
+                  value={lang.level || "A1"}
                   onChange={(e) =>
                     updateLanguage(index, "level", e.target.value)
                   }
@@ -112,10 +132,10 @@ export default function LanguagesModal({
         ))}
 
         <div className={classes.modalActions}>
-          <Button type="secondary" onClick={onClose}>
+          <Button type="secondary" onClick={handleCancel} disabled={isLoading}>
             Cancel
           </Button>
-          <Button type="primary" onClick={onClose}>
+          <Button type="primary" onClick={handleSave} disabled={isLoading}>
             Save Changes
           </Button>
         </div>

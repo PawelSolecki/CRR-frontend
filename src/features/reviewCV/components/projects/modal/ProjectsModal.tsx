@@ -3,7 +3,7 @@ import Button from "@shared/components/Button/Button";
 import Icon from "@shared/components/Icon/Icon";
 import Input from "@shared/components/Input/Input";
 import Modal from "@shared/components/Modal/Modal";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import classes from "./ProjectsModal.module.scss";
 
 interface ProjectsModalProps {
@@ -21,111 +21,156 @@ export default function ProjectsModal({
   onUpdate,
   isLoading = false,
 }: ProjectsModalProps) {
+  const [localProjects, setLocalProjects] = useState<Project[]>([]);
   const [newTechnology, setNewTechnology] = useState<{ [key: string]: string }>(
     {},
   );
 
-  const updateProject = (
-    index: number,
-    field: keyof Project,
-    value: string,
-  ) => {
-    const updated = projects.map((project, i) =>
-      i === index ? { ...project, [field]: value } : project,
-    );
-    onUpdate(updated);
-  };
+  // Initialize local state when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      setLocalProjects([...projects]);
+      setNewTechnology({});
+    }
+  }, [isOpen, projects]);
 
-  const updateSummary = (
-    projectIndex: number,
-    summaryIndex: number,
-    field: keyof Summary,
-    value: string | string[],
-  ) => {
-    const updated = projects.map((project, i) =>
-      i === projectIndex
-        ? {
-            ...project,
-            summaries: project.summaries.map((summary, j) =>
-              j === summaryIndex ? { ...summary, [field]: value } : summary,
-            ),
-          }
-        : project,
-    );
-    onUpdate(updated);
-  };
+  const updateProject = useCallback(
+    (index: number, field: keyof Project, value: string) => {
+      setLocalProjects((prev) =>
+        prev.map((project, i) =>
+          i === index ? { ...project, [field]: value } : project,
+        ),
+      );
+    },
+    [],
+  );
 
-  const addProject = () => {
+  const updateSummary = useCallback(
+    (
+      projectIndex: number,
+      summaryIndex: number,
+      field: keyof Summary,
+      value: string | string[],
+    ) => {
+      setLocalProjects((prev) =>
+        prev.map((project, i) =>
+          i === projectIndex
+            ? {
+                ...project,
+                summaries:
+                  project.summaries?.map((summary, j) =>
+                    j === summaryIndex
+                      ? { ...summary, [field]: value }
+                      : summary,
+                  ) || [],
+              }
+            : project,
+        ),
+      );
+    },
+    [],
+  );
+
+  const addProject = useCallback(() => {
     const newProject: Project = {
       name: "",
       url: "",
       summaries: [{ text: "", technologies: [] }],
     };
-    onUpdate([...projects, newProject]);
-  };
+    setLocalProjects((prev) => [...prev, newProject]);
+  }, []);
 
-  const removeProject = (index: number) => {
-    onUpdate(projects.filter((_, i) => i !== index));
-  };
+  const removeProject = useCallback((index: number) => {
+    setLocalProjects((prev) => prev.filter((_, i) => i !== index));
+  }, []);
 
-  const addSummary = (projectIndex: number) => {
-    const updated = projects.map((project, i) =>
-      i === projectIndex
-        ? {
-            ...project,
-            summaries: [...project.summaries, { text: "", technologies: [] }],
-          }
-        : project,
+  const addSummary = useCallback((projectIndex: number) => {
+    setLocalProjects((prev) =>
+      prev.map((project, i) =>
+        i === projectIndex
+          ? {
+              ...project,
+              summaries: [
+                ...(project.summaries || []),
+                { text: "", technologies: [] },
+              ],
+            }
+          : project,
+      ),
     );
-    onUpdate(updated);
-  };
+  }, []);
 
-  const removeSummary = (projectIndex: number, summaryIndex: number) => {
-    const updated = projects.map((project, i) =>
-      i === projectIndex
-        ? {
-            ...project,
-            summaries: project.summaries.filter((_, j) => j !== summaryIndex),
-          }
-        : project,
-    );
-    onUpdate(updated);
-  };
+  const removeSummary = useCallback(
+    (projectIndex: number, summaryIndex: number) => {
+      setLocalProjects((prev) =>
+        prev.map((project, i) =>
+          i === projectIndex
+            ? {
+                ...project,
+                summaries:
+                  project.summaries?.filter((_, j) => j !== summaryIndex) || [],
+              }
+            : project,
+        ),
+      );
+    },
+    [],
+  );
 
-  const addTechnology = (projectIndex: number, summaryIndex: number) => {
-    const key = `${projectIndex}-${summaryIndex}`;
-    const techValue = newTechnology[key]?.trim();
+  const addTechnology = useCallback(
+    (projectIndex: number, summaryIndex: number) => {
+      const key = `${projectIndex}-${summaryIndex}`;
+      const techValue = newTechnology[key]?.trim();
 
-    if (techValue) {
-      const currentTechnologies =
-        projects[projectIndex].summaries[summaryIndex].technologies;
-      if (!currentTechnologies.includes(techValue)) {
-        updateSummary(projectIndex, summaryIndex, "technologies", [
-          ...currentTechnologies,
-          techValue,
-        ]);
-        setNewTechnology({ ...newTechnology, [key]: "" });
+      if (techValue) {
+        const currentTechnologies =
+          localProjects[projectIndex].summaries?.[summaryIndex].technologies ||
+          [];
+        if (!currentTechnologies.includes(techValue)) {
+          updateSummary(projectIndex, summaryIndex, "technologies", [
+            ...currentTechnologies,
+            techValue,
+          ]);
+          setNewTechnology((prev) => ({ ...prev, [key]: "" }));
+        }
       }
-    }
-  };
+    },
+    [localProjects, newTechnology, updateSummary],
+  );
 
-  const removeTechnology = (
-    projectIndex: number,
-    summaryIndex: number,
-    techIndex: number,
-  ) => {
-    const currentTechnologies =
-      projects[projectIndex].summaries[summaryIndex].technologies;
-    updateSummary(
-      projectIndex,
-      summaryIndex,
-      "technologies",
-      currentTechnologies.filter((_, i) => i !== techIndex),
-    );
-  };
+  const removeTechnology = useCallback(
+    (projectIndex: number, summaryIndex: number, techIndex: number) => {
+      const currentTechnologies =
+        localProjects[projectIndex].summaries?.[summaryIndex].technologies ||
+        [];
+      updateSummary(
+        projectIndex,
+        summaryIndex,
+        "technologies",
+        currentTechnologies.filter((_, i) => i !== techIndex),
+      );
+    },
+    [localProjects, updateSummary],
+  );
+
+  const handleSave = useCallback(() => {
+    onUpdate(localProjects);
+    onClose();
+  }, [localProjects, onUpdate, onClose]);
+
+  const handleCancel = useCallback(() => {
+    setLocalProjects([...projects]); // Reset to original
+    setNewTechnology({});
+    onClose();
+  }, [projects, onClose]);
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Edit Projects" size="large">
+    <Modal
+      isOpen={isOpen}
+      onClose={handleCancel}
+      title="Edit Projects"
+      size="large"
+    >
       <div className={classes.modalContent}>
         <div className={classes.sectionHeader}>
           <h3>Personal & Professional Projects</h3>
@@ -135,7 +180,7 @@ export default function ProjectsModal({
           </Button>
         </div>
 
-        {projects.map((project, projectIndex) => (
+        {localProjects.map((project, projectIndex) => (
           <div key={projectIndex} className={classes.projectModalItem}>
             <div className={classes.itemHeader}>
               <h4>Project {projectIndex + 1}</h4>
@@ -153,9 +198,9 @@ export default function ProjectsModal({
                 id={`project-name-${projectIndex}`}
                 type="text"
                 label="Project Name"
-                value={project.name}
-                onChange={(value) =>
-                  updateProject(projectIndex, "name", value as string)
+                value={project.name || ""}
+                onChange={(e) =>
+                  updateProject(projectIndex, "name", e.target.value)
                 }
                 disabled={isLoading}
                 style={{ gridColumn: "1 / -1" }}
@@ -165,8 +210,8 @@ export default function ProjectsModal({
                 type="text"
                 label="Project URL"
                 value={project.url || ""}
-                onChange={(value) =>
-                  updateProject(projectIndex, "url", value as string)
+                onChange={(e) =>
+                  updateProject(projectIndex, "url", e.target.value)
                 }
                 disabled={isLoading}
                 style={{ gridColumn: "1 / -1" }}
@@ -186,7 +231,7 @@ export default function ProjectsModal({
                 </Button>
               </div>
 
-              {project.summaries.map((summary, summaryIndex) => (
+              {project.summaries?.map((summary, summaryIndex) => (
                 <div key={summaryIndex} className={classes.summaryItem}>
                   <div className={classes.summaryHeader}>
                     <span>Detail {summaryIndex + 1}</span>
@@ -203,13 +248,13 @@ export default function ProjectsModal({
                     id={`project-summary-text-${projectIndex}-${summaryIndex}`}
                     type="textarea"
                     label="Description"
-                    value={summary.text}
-                    onChange={(value) =>
+                    value={summary.text || ""}
+                    onChange={(e) =>
                       updateSummary(
                         projectIndex,
                         summaryIndex,
                         "text",
-                        value as string,
+                        e.target.value,
                       )
                     }
                     disabled={isLoading}
@@ -221,7 +266,7 @@ export default function ProjectsModal({
                       Technologies Used
                     </label>
                     <div className={classes.technologiesList}>
-                      {summary.technologies.map((tech, techIndex) => (
+                      {summary.technologies?.map((tech, techIndex) => (
                         <div key={techIndex} className={classes.techTag}>
                           <span>{tech}</span>
                           <button
@@ -251,12 +296,11 @@ export default function ProjectsModal({
                         value={
                           newTechnology[`${projectIndex}-${summaryIndex}`] || ""
                         }
-                        onChange={(value) =>
-                          setNewTechnology({
-                            ...newTechnology,
-                            [`${projectIndex}-${summaryIndex}`]:
-                              value as string,
-                          })
+                        onChange={(e) =>
+                          setNewTechnology((prev) => ({
+                            ...prev,
+                            [`${projectIndex}-${summaryIndex}`]: e.target.value,
+                          }))
                         }
                         disabled={isLoading}
                         onKeyDown={(e) => {
@@ -288,10 +332,10 @@ export default function ProjectsModal({
         ))}
 
         <div className={classes.modalActions}>
-          <Button type="secondary" onClick={onClose}>
+          <Button type="secondary" onClick={handleCancel} disabled={isLoading}>
             Cancel
           </Button>
-          <Button type="primary" onClick={onClose}>
+          <Button type="primary" onClick={handleSave} disabled={isLoading}>
             Save Changes
           </Button>
         </div>

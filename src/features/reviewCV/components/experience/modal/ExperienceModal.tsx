@@ -3,7 +3,7 @@ import Button from "@shared/components/Button/Button";
 import Icon from "@shared/components/Icon/Icon";
 import Input from "@shared/components/Input/Input";
 import Modal from "@shared/components/Modal/Modal";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import classes from "./ExperienceModal.module.scss";
 
 interface ExperienceModalProps {
@@ -21,41 +21,55 @@ export default function ExperienceModal({
   onUpdate,
   isLoading = false,
 }: ExperienceModalProps) {
+  const [localExperience, setLocalExperience] = useState<Experience[]>([]);
   const [newTechnology, setNewTechnology] = useState<{ [key: string]: string }>(
     {},
   );
 
-  const updateExperience = (
-    index: number,
-    field: keyof Experience,
-    value: string,
-  ) => {
-    const updated = experience.map((exp, i) =>
-      i === index ? { ...exp, [field]: value } : exp,
-    );
-    onUpdate(updated);
-  };
+  // Initialize local state when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      setLocalExperience([...experience]);
+      setNewTechnology({});
+    }
+  }, [isOpen, experience]);
 
-  const updateSummary = (
-    expIndex: number,
-    summaryIndex: number,
-    field: keyof Summary,
-    value: string | string[],
-  ) => {
-    const updated = experience.map((exp, i) =>
-      i === expIndex
-        ? {
-            ...exp,
-            summaries: exp.summaries.map((summary, j) =>
-              j === summaryIndex ? { ...summary, [field]: value } : summary,
-            ),
-          }
-        : exp,
-    );
-    onUpdate(updated);
-  };
+  const updateExperience = useCallback(
+    (index: number, field: keyof Experience, value: string) => {
+      setLocalExperience((prev) =>
+        prev.map((exp, i) => (i === index ? { ...exp, [field]: value } : exp)),
+      );
+    },
+    [],
+  );
 
-  const addExperience = () => {
+  const updateSummary = useCallback(
+    (
+      expIndex: number,
+      summaryIndex: number,
+      field: keyof Summary,
+      value: string | string[],
+    ) => {
+      setLocalExperience((prev) =>
+        prev.map((exp, i) =>
+          i === expIndex
+            ? {
+                ...exp,
+                summaries:
+                  exp.summaries?.map((summary, j) =>
+                    j === summaryIndex
+                      ? { ...summary, [field]: value }
+                      : summary,
+                  ) || [],
+              }
+            : exp,
+        ),
+      );
+    },
+    [],
+  );
+
+  const addExperience = useCallback(() => {
     const newExp: Experience = {
       position: "",
       company: "",
@@ -65,73 +79,96 @@ export default function ExperienceModal({
       endDate: "",
       summaries: [{ text: "", technologies: [] }],
     };
-    onUpdate([...experience, newExp]);
-  };
+    setLocalExperience((prev) => [...prev, newExp]);
+  }, []);
 
-  const removeExperience = (index: number) => {
-    onUpdate(experience.filter((_, i) => i !== index));
-  };
+  const removeExperience = useCallback((index: number) => {
+    setLocalExperience((prev) => prev.filter((_, i) => i !== index));
+  }, []);
 
-  const addSummary = (expIndex: number) => {
-    const updated = experience.map((exp, i) =>
-      i === expIndex
-        ? {
-            ...exp,
-            summaries: [...exp.summaries, { text: "", technologies: [] }],
-          }
-        : exp,
+  const addSummary = useCallback((expIndex: number) => {
+    setLocalExperience((prev) =>
+      prev.map((exp, i) =>
+        i === expIndex
+          ? {
+              ...exp,
+              summaries: [
+                ...(exp.summaries || []),
+                { text: "", technologies: [] },
+              ],
+            }
+          : exp,
+      ),
     );
-    onUpdate(updated);
-  };
+  }, []);
 
-  const removeSummary = (expIndex: number, summaryIndex: number) => {
-    const updated = experience.map((exp, i) =>
-      i === expIndex
-        ? {
-            ...exp,
-            summaries: exp.summaries.filter((_, j) => j !== summaryIndex),
-          }
-        : exp,
-    );
-    onUpdate(updated);
-  };
+  const removeSummary = useCallback(
+    (expIndex: number, summaryIndex: number) => {
+      setLocalExperience((prev) =>
+        prev.map((exp, i) =>
+          i === expIndex
+            ? {
+                ...exp,
+                summaries:
+                  exp.summaries?.filter((_, j) => j !== summaryIndex) || [],
+              }
+            : exp,
+        ),
+      );
+    },
+    [],
+  );
 
-  const addTechnology = (expIndex: number, summaryIndex: number) => {
-    const key = `${expIndex}-${summaryIndex}`;
-    const techValue = newTechnology[key]?.trim();
+  const addTechnology = useCallback(
+    (expIndex: number, summaryIndex: number) => {
+      const key = `${expIndex}-${summaryIndex}`;
+      const techValue = newTechnology[key]?.trim();
 
-    if (techValue) {
-      const currentTechnologies =
-        experience[expIndex].summaries[summaryIndex].technologies;
-      if (!currentTechnologies.includes(techValue)) {
-        updateSummary(expIndex, summaryIndex, "technologies", [
-          ...currentTechnologies,
-          techValue,
-        ]);
-        setNewTechnology({ ...newTechnology, [key]: "" });
+      if (techValue) {
+        const currentTechnologies =
+          localExperience[expIndex].summaries?.[summaryIndex].technologies ||
+          [];
+        if (!currentTechnologies.includes(techValue)) {
+          updateSummary(expIndex, summaryIndex, "technologies", [
+            ...currentTechnologies,
+            techValue,
+          ]);
+          setNewTechnology((prev) => ({ ...prev, [key]: "" }));
+        }
       }
-    }
-  };
+    },
+    [localExperience, newTechnology, updateSummary],
+  );
 
-  const removeTechnology = (
-    expIndex: number,
-    summaryIndex: number,
-    techIndex: number,
-  ) => {
-    const currentTechnologies =
-      experience[expIndex].summaries[summaryIndex].technologies;
-    updateSummary(
-      expIndex,
-      summaryIndex,
-      "technologies",
-      currentTechnologies.filter((_, i) => i !== techIndex),
-    );
-  };
+  const removeTechnology = useCallback(
+    (expIndex: number, summaryIndex: number, techIndex: number) => {
+      const currentTechnologies =
+        localExperience[expIndex].summaries?.[summaryIndex].technologies || [];
+      updateSummary(
+        expIndex,
+        summaryIndex,
+        "technologies",
+        currentTechnologies.filter((_, i) => i !== techIndex),
+      );
+    },
+    [localExperience, updateSummary],
+  );
+
+  const handleSave = useCallback(() => {
+    onUpdate(localExperience);
+    onClose();
+  }, [localExperience, onUpdate, onClose]);
+
+  const handleCancel = useCallback(() => {
+    setLocalExperience([...experience]); // Reset to original
+    setNewTechnology({});
+    onClose();
+  }, [experience, onClose]);
 
   return (
     <Modal
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={handleCancel}
       title="Edit Work Experience"
       size="large"
     >
@@ -144,7 +181,7 @@ export default function ExperienceModal({
           </Button>
         </div>
 
-        {experience.map((exp, expIndex) => (
+        {localExperience.map((exp, expIndex) => (
           <div key={expIndex} className={classes.experienceModalItem}>
             <div className={classes.itemHeader}>
               <h4>Experience {expIndex + 1}</h4>
@@ -162,9 +199,9 @@ export default function ExperienceModal({
                 id={`exp-position-${expIndex}`}
                 type="text"
                 label="Position"
-                value={exp.position}
-                onChange={(value) =>
-                  updateExperience(expIndex, "position", value as string)
+                value={exp.position || ""}
+                onChange={(e) =>
+                  updateExperience(expIndex, "position", e.target.value)
                 }
                 disabled={isLoading}
               />
@@ -172,9 +209,9 @@ export default function ExperienceModal({
                 id={`exp-company-${expIndex}`}
                 type="text"
                 label="Company"
-                value={exp.company}
-                onChange={(value) =>
-                  updateExperience(expIndex, "company", value as string)
+                value={exp.company || ""}
+                onChange={(e) =>
+                  updateExperience(expIndex, "company", e.target.value)
                 }
                 disabled={isLoading}
               />
@@ -182,9 +219,9 @@ export default function ExperienceModal({
                 id={`exp-location-${expIndex}`}
                 type="text"
                 label="Location"
-                value={exp.location}
-                onChange={(value) =>
-                  updateExperience(expIndex, "location", value as string)
+                value={exp.location || ""}
+                onChange={(e) =>
+                  updateExperience(expIndex, "location", e.target.value)
                 }
                 disabled={isLoading}
               />
@@ -193,8 +230,8 @@ export default function ExperienceModal({
                 type="text"
                 label="Company URL"
                 value={exp.url || ""}
-                onChange={(value) =>
-                  updateExperience(expIndex, "url", value as string)
+                onChange={(e) =>
+                  updateExperience(expIndex, "url", e.target.value)
                 }
                 disabled={isLoading}
               />
@@ -202,9 +239,9 @@ export default function ExperienceModal({
                 id={`exp-start-${expIndex}`}
                 type="date"
                 label="Start Date"
-                value={exp.startDate}
-                onChange={(value) =>
-                  updateExperience(expIndex, "startDate", value as string)
+                value={exp.startDate || ""}
+                onChange={(e) =>
+                  updateExperience(expIndex, "startDate", e.target.value)
                 }
                 disabled={isLoading}
               />
@@ -213,8 +250,8 @@ export default function ExperienceModal({
                 type="date"
                 label="End Date"
                 value={exp.endDate || ""}
-                onChange={(value) =>
-                  updateExperience(expIndex, "endDate", value as string)
+                onChange={(e) =>
+                  updateExperience(expIndex, "endDate", e.target.value)
                 }
                 disabled={isLoading}
               />
@@ -233,7 +270,7 @@ export default function ExperienceModal({
                 </Button>
               </div>
 
-              {exp.summaries.map((summary, summaryIndex) => (
+              {exp.summaries?.map((summary, summaryIndex) => (
                 <div key={summaryIndex} className={classes.summaryItem}>
                   <div className={classes.summaryHeader}>
                     <span>Summary {summaryIndex + 1}</span>
@@ -250,13 +287,13 @@ export default function ExperienceModal({
                     id={`summary-text-${expIndex}-${summaryIndex}`}
                     type="textarea"
                     label="Description"
-                    value={summary.text}
-                    onChange={(value) =>
+                    value={summary.text || ""}
+                    onChange={(e) =>
                       updateSummary(
                         expIndex,
                         summaryIndex,
                         "text",
-                        value as string,
+                        e.target.value,
                       )
                     }
                     disabled={isLoading}
@@ -268,7 +305,7 @@ export default function ExperienceModal({
                       Technologies Used
                     </label>
                     <div className={classes.technologiesList}>
-                      {summary.technologies.map((tech, techIndex) => (
+                      {summary.technologies?.map((tech, techIndex) => (
                         <div key={techIndex} className={classes.techTag}>
                           <span>{tech}</span>
                           <button
@@ -298,11 +335,11 @@ export default function ExperienceModal({
                         value={
                           newTechnology[`${expIndex}-${summaryIndex}`] || ""
                         }
-                        onChange={(value) =>
-                          setNewTechnology({
-                            ...newTechnology,
-                            [`${expIndex}-${summaryIndex}`]: value as string,
-                          })
+                        onChange={(e) =>
+                          setNewTechnology((prev) => ({
+                            ...prev,
+                            [`${expIndex}-${summaryIndex}`]: e.target.value,
+                          }))
                         }
                         disabled={isLoading}
                         onKeyDown={(e) => {
@@ -332,10 +369,10 @@ export default function ExperienceModal({
         ))}
 
         <div className={classes.modalActions}>
-          <Button type="secondary" onClick={onClose}>
+          <Button type="secondary" onClick={handleCancel} disabled={isLoading}>
             Cancel
           </Button>
-          <Button type="primary" onClick={onClose}>
+          <Button type="primary" onClick={handleSave} disabled={isLoading}>
             Save Changes
           </Button>
         </div>

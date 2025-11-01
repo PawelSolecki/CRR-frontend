@@ -2,7 +2,7 @@ import Button from "@shared/components/Button/Button";
 import Icon from "@shared/components/Icon/Icon";
 import Input from "@shared/components/Input/Input";
 import Modal from "@shared/components/Modal/Modal";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import classes from "./SkillsModal.module.scss";
 
 interface SkillsModalProps {
@@ -20,39 +20,71 @@ export default function SkillsModal({
   onUpdate,
   isLoading = false,
 }: SkillsModalProps) {
+  const [localSkills, setLocalSkills] = useState<string[]>([]);
   const [newSkill, setNewSkill] = useState("");
 
-  const handleAddSkill = () => {
-    if (
-      newSkill.trim() &&
-      !skills.some((skill) => skill.toLowerCase() === newSkill.toLowerCase())
-    ) {
-      onUpdate([...skills, newSkill.trim()]);
+  // Initialize local state when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      setLocalSkills([...skills]);
       setNewSkill("");
     }
-  };
+  }, [isOpen, skills]);
 
-  const handleRemoveSkill = (index: number) => {
-    onUpdate(skills.filter((_, i) => i !== index));
-  };
-
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      handleAddSkill();
+  const handleAddSkill = useCallback(() => {
+    if (
+      newSkill.trim() &&
+      !localSkills.some(
+        (skill) => skill.toLowerCase() === newSkill.toLowerCase(),
+      )
+    ) {
+      setLocalSkills((prev) => [...prev, newSkill.trim()]);
+      setNewSkill("");
     }
-  };
+  }, [newSkill, localSkills]);
+
+  const handleRemoveSkill = useCallback((index: number) => {
+    setLocalSkills((prev) => prev.filter((_, i) => i !== index));
+  }, []);
+
+  const handleKeyPress = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        handleAddSkill();
+      }
+    },
+    [handleAddSkill],
+  );
+
+  const handleSave = useCallback(() => {
+    onUpdate(localSkills);
+    onClose();
+  }, [localSkills, onUpdate, onClose]);
+
+  const handleCancel = useCallback(() => {
+    setLocalSkills([...skills]); // Reset to original
+    setNewSkill("");
+    onClose();
+  }, [skills, onClose]);
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Edit Skills" size="large">
+    <Modal
+      isOpen={isOpen}
+      onClose={handleCancel}
+      title="Edit Skills"
+      size="large"
+    >
       <div className={classes.modalContent}>
         <div className={classes.sectionHeader}>
           <h3>Professional Skills</h3>
-          <span className={classes.skillCount}>{skills.length} skills</span>
+          <span className={classes.skillCount}>
+            {localSkills.length} skills
+          </span>
         </div>
 
         <div className={classes.skillsGrid}>
-          {skills.map((skill, index) => (
+          {localSkills.map((skill, index) => (
             <div key={index} className={classes.techTag}>
               <span>{skill}</span>
               <button
@@ -75,7 +107,7 @@ export default function SkillsModal({
               label="Add New Skill"
               placeholder="e.g., React, JavaScript, Project Management"
               value={newSkill}
-              onChange={(value) => setNewSkill(value as string)}
+              onChange={(e) => setNewSkill(e.target.value)}
               onKeyDown={handleKeyPress}
               disabled={isLoading}
               style={{ width: "100%" }}
@@ -92,10 +124,10 @@ export default function SkillsModal({
         </div>
 
         <div className={classes.modalActions}>
-          <Button type="secondary" onClick={onClose}>
+          <Button type="secondary" onClick={handleCancel} disabled={isLoading}>
             Cancel
           </Button>
-          <Button type="primary" onClick={onClose}>
+          <Button type="primary" onClick={handleSave} disabled={isLoading}>
             Save Changes
           </Button>
         </div>

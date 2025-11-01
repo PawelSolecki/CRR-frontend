@@ -1,0 +1,17 @@
+@import "@features/reviewCV/ReviewCVForm.module.scss";
+
+.educationItem {
+    @include item-card;
+
+    .educationTitle {
+        @include title-style;
+    }
+
+    .educationSchool {
+        @include secondary-text;
+    }
+
+    .educationDate {
+        @include date-style;
+    }
+}

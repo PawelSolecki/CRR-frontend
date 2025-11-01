@@ -3,6 +3,7 @@ import Button from "@shared/components/Button/Button";
 import Icon from "@shared/components/Icon/Icon";
 import Input from "@shared/components/Input/Input";
 import Modal from "@shared/components/Modal/Modal";
+import { useCallback, useEffect, useState } from "react";
 import classes from "./EducationModal.module.scss";
 
 interface EducationModalProps {
@@ -20,18 +21,25 @@ export default function EducationModal({
   onUpdate,
   isLoading = false,
 }: EducationModalProps) {
-  const updateEducation = (
-    index: number,
-    field: keyof Education,
-    value: string,
-  ) => {
-    const updated = education.map((edu, i) =>
-      i === index ? { ...edu, [field]: value } : edu,
-    );
-    onUpdate(updated);
-  };
+  const [localEducation, setLocalEducation] = useState<Education[]>([]);
 
-  const addEducation = () => {
+  // Initialize local state when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      setLocalEducation([...education]);
+    }
+  }, [isOpen, education]);
+
+  const updateEducation = useCallback(
+    (index: number, field: keyof Education, value: string) => {
+      setLocalEducation((prev) =>
+        prev.map((edu, i) => (i === index ? { ...edu, [field]: value } : edu)),
+      );
+    },
+    [],
+  );
+
+  const addEducation = useCallback(() => {
     const newEducation: Education = {
       school: "",
       degree: "",
@@ -39,17 +47,27 @@ export default function EducationModal({
       startDate: "",
       endDate: "",
     };
-    onUpdate([...education, newEducation]);
-  };
+    setLocalEducation((prev) => [...prev, newEducation]);
+  }, []);
 
-  const removeEducation = (index: number) => {
-    onUpdate(education.filter((_, i) => i !== index));
-  };
+  const removeEducation = useCallback((index: number) => {
+    setLocalEducation((prev) => prev.filter((_, i) => i !== index));
+  }, []);
+
+  const handleSave = useCallback(() => {
+    onUpdate(localEducation);
+    onClose();
+  }, [localEducation, onUpdate, onClose]);
+
+  const handleCancel = useCallback(() => {
+    setLocalEducation([...education]); // Reset to original
+    onClose();
+  }, [education, onClose]);
 
   return (
     <Modal
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={handleCancel}
       title="Edit Education"
       size="large"
     >
@@ -62,7 +80,7 @@ export default function EducationModal({
           </Button>
         </div>
 
-        {education.map((edu, index) => (
+        {localEducation.map((edu, index) => (
           <div key={index} className={classes.educationItem}>
             <div className={classes.itemHeader}>
               <h4>Education {index + 1}</h4>
@@ -79,9 +97,9 @@ export default function EducationModal({
                 id={`education-school-${index}`}
                 type="text"
                 label="School/University"
-                value={edu.school}
-                onChange={(value) =>
-                  updateEducation(index, "school", value as string)
+                value={edu.school || ""}
+                onChange={(e) =>
+                  updateEducation(index, "school", e.target.value)
                 }
                 disabled={isLoading}
                 style={{ gridColumn: "1 / -1" }}
@@ -90,9 +108,9 @@ export default function EducationModal({
                 id={`education-degree-${index}`}
                 type="text"
                 label="Degree"
-                value={edu.degree}
-                onChange={(value) =>
-                  updateEducation(index, "degree", value as string)
+                value={edu.degree || ""}
+                onChange={(e) =>
+                  updateEducation(index, "degree", e.target.value)
                 }
                 disabled={isLoading}
               />
@@ -100,9 +118,9 @@ export default function EducationModal({
                 id={`education-field-${index}`}
                 type="text"
                 label="Field of Study"
-                value={edu.fieldOfStudy}
-                onChange={(value) =>
-                  updateEducation(index, "fieldOfStudy", value as string)
+                value={edu.fieldOfStudy || ""}
+                onChange={(e) =>
+                  updateEducation(index, "fieldOfStudy", e.target.value)
                 }
                 disabled={isLoading}
               />
@@ -110,9 +128,9 @@ export default function EducationModal({
                 id={`education-start-${index}`}
                 type="date"
                 label="Start Date"
-                value={edu.startDate}
-                onChange={(value) =>
-                  updateEducation(index, "startDate", value as string)
+                value={edu.startDate || ""}
+                onChange={(e) =>
+                  updateEducation(index, "startDate", e.target.value)
                 }
                 disabled={isLoading}
               />
@@ -121,8 +139,8 @@ export default function EducationModal({
                 type="date"
                 label="End Date"
                 value={edu.endDate || ""}
-                onChange={(value) =>
-                  updateEducation(index, "endDate", value as string)
+                onChange={(e) =>
+                  updateEducation(index, "endDate", e.target.value)
                 }
                 disabled={isLoading}
               />
@@ -131,10 +149,10 @@ export default function EducationModal({
         ))}
 
         <div className={classes.modalActions}>
-          <Button type="secondary" onClick={onClose}>
+          <Button type="secondary" onClick={handleCancel} disabled={isLoading}>
             Cancel
           </Button>
-          <Button type="primary" onClick={onClose}>
+          <Button type="primary" onClick={handleSave} disabled={isLoading}>
             Save Changes
           </Button>
         </div>

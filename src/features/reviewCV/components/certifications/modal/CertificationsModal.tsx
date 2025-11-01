@@ -3,6 +3,7 @@ import Button from "@shared/components/Button/Button";
 import Icon from "@shared/components/Icon/Icon";
 import Input from "@shared/components/Input/Input";
 import Modal from "@shared/components/Modal/Modal";
+import { useEffect, useState } from "react";
 import classes from "./CertificationsModal.module.scss";
 
 interface CertificationsModalProps {
@@ -20,34 +21,51 @@ export default function CertificationsModal({
   onUpdate,
   isLoading = false,
 }: CertificationsModalProps) {
+  const [localCertifications, setLocalCertifications] = useState<
+    Certification[]
+  >([]);
+
+  // Initialize when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      setLocalCertifications([...certifications]);
+    }
+  }, [isOpen, certifications]);
+
   const updateCertification = (
     index: number,
     field: keyof Certification,
     value: string,
   ) => {
-    const updated = certifications.map((cert, i) =>
-      i === index ? { ...cert, [field]: value } : cert,
+    setLocalCertifications((prev) =>
+      prev.map((cert, i) => (i === index ? { ...cert, [field]: value } : cert)),
     );
-    onUpdate(updated);
   };
 
   const addCertification = () => {
-    const newCertification: Certification = {
-      name: "",
-      issuer: "",
-      date: "",
-    };
-    onUpdate([...certifications, newCertification]);
+    setLocalCertifications((prev) => [
+      ...prev,
+      { name: "", issuer: "", date: "" },
+    ]);
   };
 
   const removeCertification = (index: number) => {
-    onUpdate(certifications.filter((_, i) => i !== index));
+    setLocalCertifications((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const handleSave = () => {
+    onUpdate(localCertifications);
+    onClose();
+  };
+
+  const handleCancel = () => {
+    onClose();
   };
 
   return (
     <Modal
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={handleCancel}
       title="Edit Certifications"
       size="large"
     >
@@ -64,7 +82,7 @@ export default function CertificationsModal({
           </Button>
         </div>
 
-        {certifications.map((cert, index) => (
+        {localCertifications.map((cert, index) => (
           <div key={index} className={classes.certificationItem}>
             <div className={classes.itemHeader}>
               <h4>Certification {index + 1}</h4>
@@ -81,9 +99,9 @@ export default function CertificationsModal({
                 id={`cert-name-${index}`}
                 type="text"
                 label="Certification Name"
-                value={cert.name}
-                onChange={(value) =>
-                  updateCertification(index, "name", value as string)
+                value={cert.name || ""}
+                onChange={(e) =>
+                  updateCertification(index, "name", e.target.value)
                 }
                 disabled={isLoading}
                 style={{ gridColumn: "1 / -1" }}
@@ -92,9 +110,9 @@ export default function CertificationsModal({
                 id={`cert-issuer-${index}`}
                 type="text"
                 label="Issuing Organization"
-                value={cert.issuer}
-                onChange={(value) =>
-                  updateCertification(index, "issuer", value as string)
+                value={cert.issuer || ""}
+                onChange={(e) =>
+                  updateCertification(index, "issuer", e.target.value)
                 }
                 disabled={isLoading}
               />
@@ -102,9 +120,9 @@ export default function CertificationsModal({
                 id={`cert-date-${index}`}
                 type="date"
                 label="Issue Date"
-                value={cert.date}
-                onChange={(value) =>
-                  updateCertification(index, "date", value as string)
+                value={cert.date || ""}
+                onChange={(e) =>
+                  updateCertification(index, "date", e.target.value)
                 }
                 disabled={isLoading}
               />
@@ -113,10 +131,10 @@ export default function CertificationsModal({
         ))}
 
         <div className={classes.modalActions}>
-          <Button type="secondary" onClick={onClose}>
+          <Button type="secondary" onClick={handleCancel} disabled={isLoading}>
             Cancel
           </Button>
-          <Button type="primary" onClick={onClose}>
+          <Button type="primary" onClick={handleSave} disabled={isLoading}>
             Save Changes
           </Button>
         </div>
