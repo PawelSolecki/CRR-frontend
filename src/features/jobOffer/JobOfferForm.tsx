@@ -1,27 +1,35 @@
-import { FormNavigation } from "@features/navigation";
+import { FormNavigation } from "@/features/navigation";
+import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "@shared/components/Input/Input";
-import { useInput } from "@shared/hooks/useInput";
+import { useJobOfferStore } from "@shared/hooks/useJobOfferStore";
+import { useForm } from "react-hook-form";
 import { Form, useNavigation } from "react-router-dom";
+import { z } from "zod";
 import classes from "./JobOfferForm.module.scss";
+
+const jobOfferSchema = z.object({
+  jobUrl: z.url("Please enter a valid URL"),
+});
+
+type JobOfferFormData = z.infer<typeof jobOfferSchema>;
 
 export default function JobOfferForm() {
   const navigation = useNavigation();
   const isLoading = navigation.state === "submitting";
+  const { jobOffer } = useJobOfferStore();
 
-  const jobUrlInput = useInput("", (value) => {
-    if (!value.trim()) return false;
-    try {
-      new URL(value);
-      return true;
-    } catch {
-      return false;
-    }
+  const {
+    register,
+    formState: { errors },
+  } = useForm<JobOfferFormData>({
+    resolver: zodResolver(jobOfferSchema),
+    mode: "onBlur",
+    defaultValues: {
+      jobUrl: jobOffer ? jobOffer.url : "",
+    },
   });
-
   return (
-    <Form method="post" noValidate className={classes.form}>
-      <input type="hidden" name="jobUrl" value={jobUrlInput.value} />
-
+    <Form method="post" className={classes.form}>
       <div className={classes.formSection}>
         <div className={classes.formContainer}>
           <div className={classes.inputSection}>
@@ -30,12 +38,10 @@ export default function JobOfferForm() {
               type="text"
               label="Job Offer URL"
               placeholder="https://example.com/job-posting"
-              value={jobUrlInput.value}
-              onChange={jobUrlInput.handleInputChange}
-              onBlur={jobUrlInput.handleInputBlur}
-              error={jobUrlInput.hasError ? "Please enter a valid URL" : false}
+              error={errors.jobUrl?.message}
               disabled={isLoading}
               style={{ width: "100%" }}
+              {...register("jobUrl")}
             />
           </div>
         </div>
@@ -44,7 +50,7 @@ export default function JobOfferForm() {
       <FormNavigation
         nextButtonType="submit"
         nextText={isLoading ? "Scraping job offer..." : "Next"}
-        nextDisabled={jobUrlInput.hasError || !jobUrlInput.value.trim()}
+        nextDisabled={isLoading || !!errors.jobUrl}
         isLoading={isLoading}
       />
     </Form>
