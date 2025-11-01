@@ -1,9 +1,9 @@
+import { postApiV1OfferAnalyzeOffer } from "@api/career-ai-service";
+import { scrape } from "@api/career-service";
+import JobOfferForm from "@features/jobOffer/JobOfferForm";
+import Error from "@shared/components/Error/Error";
+import { useJobOfferStore } from "@shared/hooks/useJobOfferStore";
 import { redirect, useActionData } from "react-router-dom";
-import { postApiV1OfferAnalyzeOffer } from "../../api/career-ai-service";
-import { scrape } from "../../api/career-service";
-import Error from "../../components/ui/Error/Error";
-import JobOfferForm from "../../features/JobOffer/JobOfferForm";
-import { useJobOfferStore } from "../../shared/hooks/useJobOfferStore";
 import classes from "./JobOffer.module.scss";
 
 export default function JobOffer() {

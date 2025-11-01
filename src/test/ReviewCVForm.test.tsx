@@ -1,11 +1,11 @@
+import type { UserCv } from "@api/career-service/types.gen";
+import ReviewCVForm from "@features/reviewCV/ReviewCVForm";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { beforeEach, describe, expect, test, vi } from "vitest";
-import type { UserCv } from "../api/career-service/types.gen";
-import ReviewCVForm from "../features/ReviewCV/ReviewCVForm";
 
 // Mock CVSection component
-vi.mock("../features/ReviewCV/components/CVSection", () => ({
+vi.mock("@features/reviewCV/components/CVSection", () => ({
   default: ({
     title,
     children,
@@ -34,7 +34,7 @@ vi.mock("../features/ReviewCV/components/CVSection", () => ({
 }));
 
 // Mock FormNavigation component
-vi.mock("../features/navigation", () => ({
+vi.mock("@features/navigation", () => ({
   FormNavigation: ({
     nextText,
     isLoading,
@@ -57,21 +57,18 @@ vi.mock("../features/navigation", () => ({
 }));
 
 // Mock modal components individually
-vi.mock(
-  "../features/ReviewCV/components/personalInfo/PersonalInfoModal",
-  () => ({
-    default: ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) =>
-      isOpen ? (
-        <div data-testid="personalinfomodal">
-          <button onClick={onClose} data-testid="close-personalinfomodal">
-            Close
-          </button>
-        </div>
-      ) : null,
-  }),
-);
+vi.mock("@features/reviewCV/components/personalInfo/PersonalInfoModal", () => ({
+  default: ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) =>
+    isOpen ? (
+      <div data-testid="personalinfomodal">
+        <button onClick={onClose} data-testid="close-personalinfomodal">
+          Close
+        </button>
+      </div>
+    ) : null,
+}));
 
-vi.mock("../features/ReviewCV/components/skills/SkillsModal", () => ({
+vi.mock("@features/reviewCV/components/skills/SkillsModal", () => ({
   default: ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) =>
     isOpen ? (
       <div data-testid="skillsmodal">
@@ -82,7 +79,7 @@ vi.mock("../features/ReviewCV/components/skills/SkillsModal", () => ({
     ) : null,
 }));
 
-vi.mock("../features/ReviewCV/components/experience/ExperienceModal", () => ({
+vi.mock("@features/reviewCV/components/experience/ExperienceModal", () => ({
   default: ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) =>
     isOpen ? (
       <div data-testid="experiencemodal">
@@ -93,7 +90,7 @@ vi.mock("../features/ReviewCV/components/experience/ExperienceModal", () => ({
     ) : null,
 }));
 
-vi.mock("../features/ReviewCV/components/projects/ProjectsModal", () => ({
+vi.mock("@features/reviewCV/components/projects/ProjectsModal", () => ({
   default: ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) =>
     isOpen ? (
       <div data-testid="projectsmodal">
@@ -104,7 +101,7 @@ vi.mock("../features/ReviewCV/components/projects/ProjectsModal", () => ({
     ) : null,
 }));
 
-vi.mock("../features/ReviewCV/components/education/EducationModal", () => ({
+vi.mock("features/reviewCV/components/education/EducationModal", () => ({
   default: ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) =>
     isOpen ? (
       <div data-testid="educationmodal">
@@ -115,7 +112,7 @@ vi.mock("../features/ReviewCV/components/education/EducationModal", () => ({
     ) : null,
 }));
 
-vi.mock("../features/ReviewCV/components/languages/LanguagesModal", () => ({
+vi.mock("@features/reviewCV/components/languages/LanguagesModal", () => ({
   default: ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) =>
     isOpen ? (
       <div data-testid="languagesmodal">
@@ -127,7 +124,7 @@ vi.mock("../features/ReviewCV/components/languages/LanguagesModal", () => ({
 }));
 
 vi.mock(
-  "../features/ReviewCV/components/certifications/CertificationsModal",
+  "@features/reviewCV/components/certifications/CertificationsModal",
   () => ({
     default: ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) =>
       isOpen ? (

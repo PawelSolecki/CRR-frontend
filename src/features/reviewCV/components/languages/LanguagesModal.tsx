@@ -1,8 +1,8 @@
-import type { Language } from "../../../../api/career-service/types.gen";
-import Button from "../../../../components/ui/Button/Button";
-import Icon from "../../../../components/ui/Icon/Icon";
-import Input from "../../../../components/ui/Input/Input";
-import Modal from "../../../../components/ui/Modal/Modal";
+import type { Language } from "@api/career-service/types.gen";
+import Button from "@shared/components/Button/Button";
+import Icon from "@shared/components/Icon/Icon";
+import Input from "@shared/components/Input/Input";
+import Modal from "@shared/components/Modal/Modal";
 import classes from "./LanguagesModal.module.scss";
 
 interface LanguagesModalProps {

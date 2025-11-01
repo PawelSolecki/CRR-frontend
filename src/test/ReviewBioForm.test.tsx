@@ -1,10 +1,10 @@
+import ReviewBioForm from "@features/reviewBio/ReviewBioForm";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { beforeEach, describe, expect, test, vi } from "vitest";
-import ReviewBioForm from "../features/ReviewBio/ReviewBioForm";
 
 // Mock FormNavigation component
-vi.mock("../features/navigation", () => ({
+vi.mock("@features/navigation", () => ({
   FormNavigation: ({
     nextText,
     nextDisabled,

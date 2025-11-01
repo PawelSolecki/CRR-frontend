@@ -1,5 +1,3 @@
-import { useState } from "react";
-import { Form, useNavigation } from "react-router-dom";
 import type {
   Certification,
   Education,
@@ -8,16 +6,18 @@ import type {
   PersonalInfo,
   Project,
   UserCv,
-} from "../../api/career-service/types.gen";
-import { FormNavigation } from "../navigation";
-import CertificationsModal from "./components/certifications/CertificationsModal";
-import CVSection from "./components/CVSection";
-import EducationModal from "./components/education/EducationModal";
-import ExperienceModal from "./components/experience/ExperienceModal";
-import LanguagesModal from "./components/languages/LanguagesModal";
-import PersonalInfoModal from "./components/personalInfo/PersonalInfoModal";
-import ProjectsModal from "./components/projects/ProjectsModal";
-import SkillsModal from "./components/skills/SkillsModal";
+} from "@api/career-service/types.gen";
+import { FormNavigation } from "@features/navigation";
+import CertificationsModal from "@features/reviewCV/components/certifications/CertificationsModal";
+import CVSection from "@features/reviewCV/components/CVSection";
+import EducationModal from "@features/reviewCV/components/education/EducationModal";
+import ExperienceModal from "@features/reviewCV/components/experience/ExperienceModal";
+import LanguagesModal from "@features/reviewCV/components/languages/LanguagesModal";
+import PersonalInfoModal from "@features/reviewCV/components/personalInfo/PersonalInfoModal";
+import ProjectsModal from "@features/reviewCV/components/projects/ProjectsModal";
+import SkillsModal from "@features/reviewCV/components/skills/SkillsModal";
+import { useState } from "react";
+import { Form, useNavigation } from "react-router-dom";
 import classes from "./ReviewCVForm.module.scss";
 
 type EditingSection =

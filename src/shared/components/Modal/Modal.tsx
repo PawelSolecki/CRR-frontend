@@ -1,6 +1,6 @@
+import Icon from "@shared/components/Icon/Icon";
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
-import Icon from "../Icon/Icon";
 import classes from "./Modal.module.scss";
 
 interface ModalProps {

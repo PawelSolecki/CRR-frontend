@@ -1,45 +1,35 @@
+import { postApiV1OfferAnalyzeOffer } from "@api/career-ai-service";
+import { scrape } from "@api/career-service";
+import JobOffer, { action } from "@pages/jobOffer/JobOffer";
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { beforeEach, describe, expect, test, vi } from "vitest";
-import { postApiV1OfferAnalyzeOffer } from "../api/career-ai-service";
-import { scrape } from "../api/career-service";
-import JobOffer, { action } from "../pages/JobOffer/JobOffer";
-
-// Mock CSS modules
-vi.mock("../pages/JobOffer/JobOffer.module.scss", () => ({
-  default: {
-    container: "container",
-    content: "content",
-    title: "title",
-    subtitle: "subtitle",
-  },
-}));
 
 // Mock the API calls
-vi.mock("../api/career-service", () => ({
+vi.mock("@api/career-service", () => ({
   scrape: vi.fn(),
 }));
 
-vi.mock("../api/career-ai-service", () => ({
+vi.mock("@api/career-ai-service", () => ({
   postApiV1OfferAnalyzeOffer: vi.fn(),
 }));
 
 // Mock the store
-vi.mock("../shared/hooks/useJobOfferStore", () => ({
+vi.mock("@shared/hooks/useJobOfferStore", () => ({
   useJobOfferStore: {
     getState: vi.fn(),
   },
 }));
 
 // Mock Error component
-vi.mock("../components/ui/Error/Error", () => ({
+vi.mock("@shared/components/Error/Error", () => ({
   default: ({ message }: { message: string }) => (
     <div data-testid="error">{message}</div>
   ),
 }));
 
 // Mock JobOfferForm component
-vi.mock("../features/JobOffer/JobOfferForm", () => ({
+vi.mock("@features/jobOffer/JobOfferForm", () => ({
   default: () => <div data-testid="job-offer-form">Job Offer Form</div>,
 }));
 
@@ -57,8 +47,8 @@ vi.mock("react-router-dom", async () => {
 });
 
 // Import mocked modules after mocking
+import { useJobOfferStore } from "@shared/hooks/useJobOfferStore";
 import { redirect, useActionData } from "react-router-dom";
-import { useJobOfferStore } from "../shared/hooks/useJobOfferStore";
 
 const renderJobOffer = () => {
   return render(

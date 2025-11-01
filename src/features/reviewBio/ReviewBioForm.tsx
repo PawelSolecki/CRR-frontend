@@ -1,6 +1,6 @@
+import { FormNavigation } from "@features/navigation";
 import { useState } from "react";
 import { Form, useNavigation } from "react-router-dom";
-import { FormNavigation } from "../navigation";
 import classes from "./ReviewBioForm.module.scss";
 
 interface ReviewBioFormProps {

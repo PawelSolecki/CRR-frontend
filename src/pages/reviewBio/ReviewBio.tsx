@@ -1,15 +1,15 @@
-import { useEffect, useState } from "react";
-import { redirect, useActionData } from "react-router-dom";
 import {
   postApiV1CvGenerateBio,
   type JobOffer,
   type SkillResult,
-} from "../../api/career-ai-service";
-import type { UserCv } from "../../api/career-service";
-import Error from "../../components/ui/Error/Error";
-import ReviewBioForm from "../../features/ReviewBio/ReviewBioForm";
-import { CV_STORAGE_KEY } from "../../shared/hooks/useCvData";
-import { useJobOfferStore } from "../../shared/hooks/useJobOfferStore";
+} from "@api/career-ai-service";
+import type { UserCv } from "@api/career-service";
+import ReviewBioForm from "@features/reviewBio/ReviewBioForm";
+import Error from "@shared/components/Error/Error";
+import { CV_STORAGE_KEY } from "@shared/hooks/useCvData";
+import { useJobOfferStore } from "@shared/hooks/useJobOfferStore";
+import { useEffect, useState } from "react";
+import { redirect, useActionData } from "react-router-dom";
 import classes from "./ReviewBio.module.scss";
 
 interface ActionData {

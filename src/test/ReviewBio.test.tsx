@@ -1,24 +1,24 @@
+import { postApiV1CvGenerateBio } from "@api/career-ai-service";
+import ReviewBio, { action } from "@pages/reviewBio/ReviewBio";
+import { CV_STORAGE_KEY } from "@shared/hooks/useCvData";
 import { render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { beforeEach, describe, expect, test, vi } from "vitest";
-import { postApiV1CvGenerateBio } from "../api/career-ai-service";
-import ReviewBio, { action } from "../pages/ReviewBio/ReviewBio";
-import { CV_STORAGE_KEY } from "../shared/hooks/useCvData";
 
 // Mock API
-vi.mock("../api/career-ai-service", () => ({
+vi.mock("@api/career-ai-service", () => ({
   postApiV1CvGenerateBio: vi.fn(),
 }));
 
 // Mock Error component
-vi.mock("../components/ui/Error/Error", () => ({
+vi.mock("@shared/components/Error/Error", () => ({
   default: ({ message }: { message: string }) => (
     <div data-testid="error">{message}</div>
   ),
 }));
 
 // Mock ReviewBioForm component
-vi.mock("../features/ReviewBio/ReviewBioForm", () => ({
+vi.mock("@features/reviewBio/ReviewBioForm", () => ({
   default: ({ generatedBio }: { generatedBio: string }) => (
     <div data-testid="review-bio-form">
       <span data-testid="generated-bio">{generatedBio}</span>
@@ -27,7 +27,7 @@ vi.mock("../features/ReviewBio/ReviewBioForm", () => ({
 }));
 
 // Mock store
-vi.mock("../shared/hooks/useJobOfferStore", () => ({
+vi.mock("@shared/hooks/useJobOfferStore", () => ({
   useJobOfferStore: vi.fn(),
 }));
 
@@ -44,8 +44,8 @@ vi.mock("react-router-dom", async () => {
   };
 });
 
+import { useJobOfferStore } from "@shared/hooks/useJobOfferStore";
 import { redirect, useActionData } from "react-router-dom";
-import { useJobOfferStore } from "../shared/hooks/useJobOfferStore";
 
 const mockJobOffer = {
   description: "Test job description",

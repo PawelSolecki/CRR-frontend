@@ -1,6 +1,6 @@
+import type { SkillResult } from "@api/career-ai-service";
+import type { JobOffer } from "@api/career-service";
 import { create } from "zustand";
-import type { SkillResult } from "../../api/career-ai-service";
-import type { JobOffer } from "../../api/career-service";
 
 interface JobOfferState {
   jobOffer: JobOffer | null;

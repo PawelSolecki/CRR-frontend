@@ -1,109 +1,110 @@
+import type { Experience, Summary } from "@api/career-service/types.gen";
+import Button from "@shared/components/Button/Button";
+import Icon from "@shared/components/Icon/Icon";
+import Input from "@shared/components/Input/Input";
+import Modal from "@shared/components/Modal/Modal";
 import { useState } from "react";
-import type {
-  Project,
-  Summary,
-} from "../../../../api/career-service/types.gen";
-import Button from "../../../../components/ui/Button/Button";
-import Icon from "../../../../components/ui/Icon/Icon";
-import Input from "../../../../components/ui/Input/Input";
-import Modal from "../../../../components/ui/Modal/Modal";
-import classes from "./ProjectsModal.module.scss";
+import classes from "./ExperienceModal.module.scss";
 
-interface ProjectsModalProps {
+interface ExperienceModalProps {
   isOpen: boolean;
   onClose: () => void;
-  projects: Project[];
-  onUpdate: (projects: Project[]) => void;
+  experience: Experience[];
+  onUpdate: (experience: Experience[]) => void;
   isLoading?: boolean;
 }
 
-export default function ProjectsModal({
+export default function ExperienceModal({
   isOpen,
   onClose,
-  projects,
+  experience,
   onUpdate,
   isLoading = false,
-}: ProjectsModalProps) {
+}: ExperienceModalProps) {
   const [newTechnology, setNewTechnology] = useState<{ [key: string]: string }>(
     {},
   );
 
-  const updateProject = (
+  const updateExperience = (
     index: number,
-    field: keyof Project,
+    field: keyof Experience,
     value: string,
   ) => {
-    const updated = projects.map((project, i) =>
-      i === index ? { ...project, [field]: value } : project,
+    const updated = experience.map((exp, i) =>
+      i === index ? { ...exp, [field]: value } : exp,
     );
     onUpdate(updated);
   };
 
   const updateSummary = (
-    projectIndex: number,
+    expIndex: number,
     summaryIndex: number,
     field: keyof Summary,
     value: string | string[],
   ) => {
-    const updated = projects.map((project, i) =>
-      i === projectIndex
+    const updated = experience.map((exp, i) =>
+      i === expIndex
         ? {
-            ...project,
-            summaries: project.summaries.map((summary, j) =>
+            ...exp,
+            summaries: exp.summaries.map((summary, j) =>
               j === summaryIndex ? { ...summary, [field]: value } : summary,
             ),
           }
-        : project,
+        : exp,
     );
     onUpdate(updated);
   };
 
-  const addProject = () => {
-    const newProject: Project = {
-      name: "",
+  const addExperience = () => {
+    const newExp: Experience = {
+      position: "",
+      company: "",
       url: "",
+      location: "",
+      startDate: "",
+      endDate: "",
       summaries: [{ text: "", technologies: [] }],
     };
-    onUpdate([...projects, newProject]);
+    onUpdate([...experience, newExp]);
   };
 
-  const removeProject = (index: number) => {
-    onUpdate(projects.filter((_, i) => i !== index));
+  const removeExperience = (index: number) => {
+    onUpdate(experience.filter((_, i) => i !== index));
   };
 
-  const addSummary = (projectIndex: number) => {
-    const updated = projects.map((project, i) =>
-      i === projectIndex
+  const addSummary = (expIndex: number) => {
+    const updated = experience.map((exp, i) =>
+      i === expIndex
         ? {
-            ...project,
-            summaries: [...project.summaries, { text: "", technologies: [] }],
+            ...exp,
+            summaries: [...exp.summaries, { text: "", technologies: [] }],
           }
-        : project,
+        : exp,
     );
     onUpdate(updated);
   };
 
-  const removeSummary = (projectIndex: number, summaryIndex: number) => {
-    const updated = projects.map((project, i) =>
-      i === projectIndex
+  const removeSummary = (expIndex: number, summaryIndex: number) => {
+    const updated = experience.map((exp, i) =>
+      i === expIndex
         ? {
-            ...project,
-            summaries: project.summaries.filter((_, j) => j !== summaryIndex),
+            ...exp,
+            summaries: exp.summaries.filter((_, j) => j !== summaryIndex),
           }
-        : project,
+        : exp,
     );
     onUpdate(updated);
   };
 
-  const addTechnology = (projectIndex: number, summaryIndex: number) => {
-    const key = `${projectIndex}-${summaryIndex}`;
+  const addTechnology = (expIndex: number, summaryIndex: number) => {
+    const key = `${expIndex}-${summaryIndex}`;
     const techValue = newTechnology[key]?.trim();
 
     if (techValue) {
       const currentTechnologies =
-        projects[projectIndex].summaries[summaryIndex].technologies;
+        experience[expIndex].summaries[summaryIndex].technologies;
       if (!currentTechnologies.includes(techValue)) {
-        updateSummary(projectIndex, summaryIndex, "technologies", [
+        updateSummary(expIndex, summaryIndex, "technologies", [
           ...currentTechnologies,
           techValue,
         ]);
@@ -113,14 +114,14 @@ export default function ProjectsModal({
   };
 
   const removeTechnology = (
-    projectIndex: number,
+    expIndex: number,
     summaryIndex: number,
     techIndex: number,
   ) => {
     const currentTechnologies =
-      projects[projectIndex].summaries[summaryIndex].technologies;
+      experience[expIndex].summaries[summaryIndex].technologies;
     updateSummary(
-      projectIndex,
+      expIndex,
       summaryIndex,
       "technologies",
       currentTechnologies.filter((_, i) => i !== techIndex),
@@ -128,23 +129,28 @@ export default function ProjectsModal({
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Edit Projects" size="large">
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      title="Edit Work Experience"
+      size="large"
+    >
       <div className={classes.modalContent}>
         <div className={classes.sectionHeader}>
-          <h3>Personal & Professional Projects</h3>
-          <Button type="secondary" onClick={addProject} disabled={isLoading}>
+          <h3>Work Experience</h3>
+          <Button type="secondary" onClick={addExperience} disabled={isLoading}>
             <Icon iconName="plus" />
-            Add Project
+            Add Experience
           </Button>
         </div>
 
-        {projects.map((project, projectIndex) => (
-          <div key={projectIndex} className={classes.projectModalItem}>
+        {experience.map((exp, expIndex) => (
+          <div key={expIndex} className={classes.experienceModalItem}>
             <div className={classes.itemHeader}>
-              <h4>Project {projectIndex + 1}</h4>
+              <h4>Experience {expIndex + 1}</h4>
               <Button
                 type="secondary"
-                onClick={() => removeProject(projectIndex)}
+                onClick={() => removeExperience(expIndex)}
                 disabled={isLoading}
               >
                 <Icon iconName="trash" />
@@ -153,49 +159,87 @@ export default function ProjectsModal({
 
             <div className={classes.formGrid}>
               <Input
-                id={`project-name-${projectIndex}`}
+                id={`exp-position-${expIndex}`}
                 type="text"
-                label="Project Name"
-                value={project.name}
+                label="Position"
+                value={exp.position}
                 onChange={(value) =>
-                  updateProject(projectIndex, "name", value as string)
+                  updateExperience(expIndex, "position", value as string)
                 }
                 disabled={isLoading}
-                style={{ gridColumn: "1 / -1" }}
               />
               <Input
-                id={`project-url-${projectIndex}`}
+                id={`exp-company-${expIndex}`}
                 type="text"
-                label="Project URL"
-                value={project.url || ""}
+                label="Company"
+                value={exp.company}
                 onChange={(value) =>
-                  updateProject(projectIndex, "url", value as string)
+                  updateExperience(expIndex, "company", value as string)
                 }
                 disabled={isLoading}
-                style={{ gridColumn: "1 / -1" }}
+              />
+              <Input
+                id={`exp-location-${expIndex}`}
+                type="text"
+                label="Location"
+                value={exp.location}
+                onChange={(value) =>
+                  updateExperience(expIndex, "location", value as string)
+                }
+                disabled={isLoading}
+              />
+              <Input
+                id={`exp-url-${expIndex}`}
+                type="text"
+                label="Company URL"
+                value={exp.url || ""}
+                onChange={(value) =>
+                  updateExperience(expIndex, "url", value as string)
+                }
+                disabled={isLoading}
+              />
+              <Input
+                id={`exp-start-${expIndex}`}
+                type="date"
+                label="Start Date"
+                value={exp.startDate}
+                onChange={(value) =>
+                  updateExperience(expIndex, "startDate", value as string)
+                }
+                disabled={isLoading}
+              />
+              <Input
+                id={`exp-end-${expIndex}`}
+                type="date"
+                label="End Date"
+                value={exp.endDate || ""}
+                onChange={(value) =>
+                  updateExperience(expIndex, "endDate", value as string)
+                }
+                disabled={isLoading}
               />
             </div>
 
             <div className={classes.summariesSection}>
               <div className={classes.summariesHeader}>
-                <h5>Project Details & Features</h5>
+                <h5>Job Responsibilities & Achievements</h5>
                 <Button
                   type="secondary"
-                  onClick={() => addSummary(projectIndex)}
+                  onClick={() => addSummary(expIndex)}
                   disabled={isLoading}
                 >
                   <Icon iconName="plus" />
-                  Add Detail
+                  Add Summary
                 </Button>
               </div>
 
-              {project.summaries.map((summary, summaryIndex) => (
+              {exp.summaries.map((summary, summaryIndex) => (
                 <div key={summaryIndex} className={classes.summaryItem}>
                   <div className={classes.summaryHeader}>
-                    <span>Detail {summaryIndex + 1}</span>
+                    <span>Summary {summaryIndex + 1}</span>
                     <Button
                       type="secondary"
-                      onClick={() => removeSummary(projectIndex, summaryIndex)}
+                      onClick={() => removeSummary(expIndex, summaryIndex)}
                       disabled={isLoading}
                     >
                       <Icon iconName="trash" />
@@ -203,13 +247,13 @@ export default function ProjectsModal({
                   </div>
 
                   <Input
-                    id={`project-summary-text-${projectIndex}-${summaryIndex}`}
+                    id={`summary-text-${expIndex}-${summaryIndex}`}
                     type="textarea"
                     label="Description"
                     value={summary.text}
                     onChange={(value) =>
                       updateSummary(
-                        projectIndex,
+                        expIndex,
                         summaryIndex,
                         "text",
                         value as string,
@@ -231,7 +275,7 @@ export default function ProjectsModal({
                             type="button"
                             onClick={() =>
                               removeTechnology(
-                                projectIndex,
+                                expIndex,
                                 summaryIndex,
                                 techIndex,
                               )
@@ -247,36 +291,33 @@ export default function ProjectsModal({
 
                     <div className={classes.addTechSection}>
                       <Input
-                        id={`project-new-tech-${projectIndex}-${summaryIndex}`}
+                        id={`new-tech-${expIndex}-${summaryIndex}`}
                         type="text"
                         label="Add Technology"
                         placeholder="e.g., React, Node.js"
                         value={
-                          newTechnology[`${projectIndex}-${summaryIndex}`] || ""
+                          newTechnology[`${expIndex}-${summaryIndex}`] || ""
                         }
                         onChange={(value) =>
                           setNewTechnology({
                             ...newTechnology,
-                            [`${projectIndex}-${summaryIndex}`]:
-                              value as string,
+                            [`${expIndex}-${summaryIndex}`]: value as string,
                           })
                         }
                         disabled={isLoading}
                         onKeyDown={(e) => {
                           if (e.key === "Enter") {
                             e.preventDefault();
-                            addTechnology(projectIndex, summaryIndex);
+                            addTechnology(expIndex, summaryIndex);
                           }
                         }}
                       />
                       <Button
                         type="secondary"
-                        onClick={() =>
-                          addTechnology(projectIndex, summaryIndex)
-                        }
+                        onClick={() => addTechnology(expIndex, summaryIndex)}
                         disabled={
                           !newTechnology[
-                            `${projectIndex}-${summaryIndex}`
+                            `${expIndex}-${summaryIndex}`
                           ]?.trim() || isLoading
                         }
                       >

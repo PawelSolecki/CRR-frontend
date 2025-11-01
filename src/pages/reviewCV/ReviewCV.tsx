@@ -1,8 +1,8 @@
+import type { UserCv } from "@api/career-service";
+import ReviewCVForm from "@features/reviewCV/ReviewCVForm";
+import Error from "@shared/components/Error/Error";
+import { CV_STORAGE_KEY } from "@shared/hooks/useCvData";
 import { redirect, useActionData, useLoaderData } from "react-router-dom";
-import type { UserCv } from "../../api/career-service";
-import Error from "../../components/ui/Error/Error";
-import ReviewCVForm from "../../features/ReviewCV/ReviewCVForm";
-import { CV_STORAGE_KEY } from "../../shared/hooks/useCvData";
 import classes from "./ReviewCV.module.scss";
 
 interface ActionData {

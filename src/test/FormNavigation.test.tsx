@@ -1,6 +1,6 @@
+import FormNavigation from "@features/navigation/components/FormNavigation";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, test, vi } from "vitest";
-import FormNavigation from "../features/navigation/components/FormNavigation";
 
 describe("FormNavigation Component", () => {
   test("renders with default props", () => {

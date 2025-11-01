@@ -1,18 +1,18 @@
-import { fireEvent, render, act } from "@testing-library/react";
-import { describe, beforeEach, it, expect, vi } from "vitest";
-import TagsEditor from "../features/enhance-tags/components/TagsEditor";
-import type { AnalyzedCvData } from "../features/enhance-tags/types";
+import TagsEditor from "@features/enhance-tags/components/TagsEditor";
+import type { AnalyzedCvData } from "@features/enhance-tags/types";
+import { act, fireEvent, render } from "@testing-library/react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 interface ExperienceHandler {
   onTechnologyAdd: (
     entryIndex: number,
     bulletIndex: number,
-    technology: string
+    technology: string,
   ) => void;
   onTechnologyRemove: (
     entryIndex: number,
     bulletIndex: number,
-    technology: string
+    technology: string,
   ) => void;
 }
 
@@ -20,19 +20,19 @@ interface ProjectHandler {
   onTechnologyAdd: (
     entryIndex: number,
     bulletIndex: number,
-    technology: string
+    technology: string,
   ) => void;
   onTechnologyRemove: (
     entryIndex: number,
     bulletIndex: number,
-    technology: string
+    technology: string,
   ) => void;
 }
 
 const experienceHandlers: ExperienceHandler[] = [];
 const projectHandlers: ProjectHandler[] = [];
 
-vi.mock("../features/enhance-tags/components/ExperienceEditor", () => ({
+vi.mock("@features/enhance-tags/components/ExperienceEditor", () => ({
   default: ({
     index,
     onTechnologyAdd,
@@ -43,7 +43,7 @@ vi.mock("../features/enhance-tags/components/ExperienceEditor", () => ({
   },
 }));
 
-vi.mock("../features/enhance-tags/components/ProjectEditor", () => ({
+vi.mock("@features/enhance-tags/components/ProjectEditor", () => ({
   default: ({
     index,
     onTechnologyAdd,
@@ -95,7 +95,7 @@ describe("TagsEditor", () => {
     const cvData = buildCvData();
 
     const { getByRole } = render(
-      <TagsEditor cvData={cvData} onSave={onSave} />
+      <TagsEditor cvData={cvData} onSave={onSave} />,
     );
 
     expect(experienceHandlers[0]).toBeDefined();
@@ -119,7 +119,7 @@ describe("TagsEditor", () => {
     const cvData = buildCvData();
 
     const { getByRole } = render(
-      <TagsEditor cvData={cvData} onSave={onSave} />
+      <TagsEditor cvData={cvData} onSave={onSave} />,
     );
 
     expect(projectHandlers[0]).toBeDefined();

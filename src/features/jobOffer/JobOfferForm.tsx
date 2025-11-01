@@ -1,7 +1,7 @@
+import { FormNavigation } from "@features/navigation";
+import Input from "@shared/components/Input/Input";
+import { useInput } from "@shared/hooks/useInput";
 import { Form, useNavigation } from "react-router-dom";
-import Input from "../../components/ui/Input/Input";
-import { useInput } from "../../shared/hooks/useInput";
-import { FormNavigation } from "../navigation";
 import classes from "./JobOfferForm.module.scss";
 
 export default function JobOfferForm() {

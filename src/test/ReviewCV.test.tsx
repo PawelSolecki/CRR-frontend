@@ -1,18 +1,18 @@
+import ReviewCV, { action, loader } from "@pages/reviewCV/ReviewCV";
+import { CV_STORAGE_KEY } from "@shared/hooks/useCvData";
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { beforeEach, describe, expect, test, vi } from "vitest";
-import ReviewCV, { action, loader } from "../pages/ReviewCV/ReviewCV";
-import { CV_STORAGE_KEY } from "../shared/hooks/useCvData";
 
 // Mock Error component
-vi.mock("../components/ui/Error/Error", () => ({
+vi.mock("@shared/components/Error/Error", () => ({
   default: ({ message }: { message: string }) => (
     <div data-testid="error">{message}</div>
   ),
 }));
 
 // Mock ReviewCVForm component
-vi.mock("../features/ReviewCV/ReviewCVForm", () => ({
+vi.mock("@features/reviewCV/ReviewCVForm", () => ({
   default: ({ userCv }: { userCv: UserCv }) => (
     <div data-testid="review-cv-form">
       <span data-testid="user-cv-data">{JSON.stringify(userCv)}</span>
@@ -34,8 +34,8 @@ vi.mock("react-router-dom", async () => {
   };
 });
 
+import type { UserCv } from "@api/career-service";
 import { redirect, useActionData, useLoaderData } from "react-router-dom";
-import type { UserCv } from "../api/career-service";
 
 const mockUserCv = {
   personalInfo: {

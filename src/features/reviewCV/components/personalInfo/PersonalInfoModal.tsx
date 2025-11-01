@@ -1,9 +1,8 @@
-import Button from "../../../../components/ui/Button/Button";
-import Input from "../../../../components/ui/Input/Input";
-import Modal from "../../../../components/ui/Modal/Modal";
+import type { PersonalInfo } from "@api/career-service/types.gen";
+import Button from "@shared/components/Button/Button";
+import Input from "@shared/components/Input/Input";
+import Modal from "@shared/components/Modal/Modal";
 import classes from "./PersonalInfoModal.module.scss";
-
-import type { PersonalInfo } from "../../../../api/career-service/types.gen";
 
 interface PersonalInfoModalProps {
   isOpen: boolean;

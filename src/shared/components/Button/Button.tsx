@@ -1,6 +1,6 @@
 // import { useTheme } from "@hooks/useTheme";
+import Icon from "@shared/components/Icon/Icon";
 import { Link } from "react-router-dom";
-import Icon from "../Icon/Icon";
 import classes from "./Button.module.scss";
 
 export default function Button({

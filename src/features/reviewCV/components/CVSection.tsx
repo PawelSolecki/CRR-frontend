@@ -1,5 +1,5 @@
-import Button from "../../../components/ui/Button/Button";
-import Icon from "../../../components/ui/Icon/Icon";
+import Button from "@shared/components/Button/Button";
+import Icon from "@shared/components/Icon/Icon";
 import classes from "../ReviewCVForm.module.scss";
 
 interface CVSectionProps {

@@ -1,5 +1,5 @@
+import { Header } from "@features/navigation";
 import { Outlet, useLocation } from "react-router-dom";
-import { Header } from "../../features/navigation";
 import styles from "./MainLayout.module.scss";
 
 const steps = [
