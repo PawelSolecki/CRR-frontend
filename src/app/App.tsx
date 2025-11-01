@@ -13,6 +13,9 @@ import ReviewCV, {
   action as reviewCvAction,
   loader as reviewCvLoader,
 } from "../pages/ReviewCV/ReviewCV";
+import ChooseTemplate, {
+  action as chooseTemplateAction,
+} from "../pages/chooseTemplate/ChooseTemplate";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -52,6 +55,12 @@ const router = createBrowserRouter([
         element: <ReviewCV />,
         action: reviewCvAction,
         loader: reviewCvLoader,
+      },
+      {
+        path: "choose-template",
+        element: <ChooseTemplate />,
+        action: chooseTemplateAction,
+        // loader: chooseTemplateLoader,
       },
     ],
   },
