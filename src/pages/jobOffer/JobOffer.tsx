@@ -24,8 +24,11 @@ export default function JobOffer() {
 export async function action({ request }: { request: Request }) {
   const formData = await request.formData();
   const jobUrl = formData.get("jobUrl") as string;
-  const { setJobOffer, setSkillResult } = useJobOfferStore.getState();
+  const { setJobOfferUrl, setJobOffer, setSkillResult } =
+    useJobOfferStore.getState();
   try {
+    // Before making API calls, store the job URL
+    setJobOfferUrl(jobUrl);
     // First API call: scrape job offer
     const response = await scrape({
       query: { url: jobUrl },
@@ -37,7 +40,6 @@ export async function action({ request }: { request: Request }) {
           "Failed to scrape job offer. Please check the URL and try again.",
       };
     }
-
     // Store the job offer data
     setJobOffer(response.data);
 

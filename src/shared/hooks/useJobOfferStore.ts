@@ -7,6 +7,7 @@ interface JobOfferState {
   skillResult: SkillResult | null;
   setJobOffer: (data: JobOffer) => void;
   setSkillResult: (data: SkillResult) => void;
+  setJobOfferUrl: (url: string) => void;
   clearJobOffer: () => void;
   clearSkillResult: () => void;
 }
@@ -16,6 +17,7 @@ export const useJobOfferStore = create<JobOfferState>((set) => ({
   skillResult: null,
   setJobOffer: (data: JobOffer) => set({ jobOffer: data }),
   setSkillResult: (data: SkillResult) => set({ skillResult: data }),
+  setJobOfferUrl: (url: string) => set({ jobOffer: { url } as JobOffer }),
   clearJobOffer: () => set({ jobOffer: null }),
   clearSkillResult: () => set({ skillResult: null }),
 }));
