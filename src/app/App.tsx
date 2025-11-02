@@ -16,6 +16,7 @@ import ReviewCV, {
 import ChooseTemplate, {
   action as chooseTemplateAction,
 } from "../pages/chooseTemplate/ChooseTemplate";
+import Download, { action as downloadAction } from "../pages/download/Download";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -61,6 +62,12 @@ const router = createBrowserRouter([
         element: <ChooseTemplate />,
         action: chooseTemplateAction,
         // loader: chooseTemplateLoader,
+      },
+      {
+        path: "download",
+        element: <Download />,
+        action: downloadAction,
+        // loader: downloadLoader,
       },
     ],
   },
