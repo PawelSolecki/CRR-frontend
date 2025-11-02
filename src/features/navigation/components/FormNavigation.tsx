@@ -11,6 +11,7 @@ interface FormNavigationProps {
   backDisabled?: boolean;
   nextButtonType?: "button" | "submit";
   className?: string;
+  children?: React.ReactNode;
 }
 
 export default function FormNavigation({
@@ -23,6 +24,7 @@ export default function FormNavigation({
   backDisabled = false,
   nextButtonType = "button",
   className,
+  children,
 }: FormNavigationProps) {
   const handleBack = () => {
     if (onBack) {
@@ -49,6 +51,7 @@ export default function FormNavigation({
       >
         {nextText}
       </Button>
+      {children}
     </div>
   );
 }

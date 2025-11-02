@@ -1,7 +1,7 @@
 import { create } from "zustand";
 
-type TemplateType = "simple" | "detailed";
-type LanguageType = "EN" | "PL";
+export type LanguageType = "EN" | "PL";
+export type TemplateType = "classic" | "executive" | "modern";
 
 interface TemplateState {
   selectedTemplate: TemplateType | null;

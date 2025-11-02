@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { Form, useNavigation } from "react-router-dom";
 import Button from "../../components/ui/Button/Button";
+import type {
+  LanguageType,
+  TemplateType,
+} from "../../shared/hooks/useTemplateStore";
 import { useTemplateStore } from "../../shared/hooks/useTemplateStore";
 import { FormNavigation } from "../navigation";
 import classes from "./ChooseTemplateForm.module.scss";
-
-type LanguageType = "EN" | "PL";
-type TemplateType = "simple" | "detailed";
 
 interface Language {
   id: LanguageType;
@@ -27,7 +28,7 @@ export default function ChooseTemplateForm() {
     storedLanguage || "EN",
   );
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateType>(
-    storedTemplate || "simple",
+    storedTemplate || "classic",
   );
 
   const languages: Language[] = [
@@ -36,14 +37,9 @@ export default function ChooseTemplateForm() {
   ];
 
   const templates: Template[] = [
-    {
-      id: "simple",
-      name: "Simple",
-    },
-    {
-      id: "detailed",
-      name: "Detailed",
-    },
+    { id: "classic", name: "Classic" },
+    { id: "modern", name: "Modern" },
+    { id: "executive", name: "Executive" },
   ];
 
   const handleLanguageSelect = (languageId: LanguageType) => {
