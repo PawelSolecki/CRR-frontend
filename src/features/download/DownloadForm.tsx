@@ -187,14 +187,13 @@ export default function DownloadForm() {
           your CV.
         </p>
       </div>
+      <input type="hidden" name="action" value="restart" />
       <FormNavigation
         onBack={handleBack}
         isLoading={isSubmitting}
         nextDisabled={isSubmitting || !hasGeneratedPdf}
         nextText="Finish"
-      >
-        <input type="hidden" name="action" value="restart" />
-      </FormNavigation>
+      />{" "}
     </>
   );
 }
