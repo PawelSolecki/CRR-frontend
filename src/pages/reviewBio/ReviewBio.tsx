@@ -103,6 +103,8 @@ export default function ReviewBio() {
             <div className={classes.loadingSpinner}></div>
             <p className={classes.loadingText}>
               Generating your professional summary...
+            <p className={classes.loadingText}>
+              It can take couple of minutes, please be patient.
             </p>
           </div>
         ) : (

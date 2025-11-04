@@ -13,6 +13,10 @@ import ReviewCV, {
 } from "@pages/reviewCV/ReviewCV";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import ChooseTemplate, {
+  action as chooseTemplateAction,
+} from "@pages/chooseTemplate/ChooseTemplate";
+import Download, { action as downloadAction } from "@pages/download/Download";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -52,6 +56,18 @@ const router = createBrowserRouter([
         element: <ReviewCV />,
         action: reviewCvAction,
         loader: reviewCvLoader,
+      },
+      {
+        path: "choose-template",
+        element: <ChooseTemplate />,
+        action: chooseTemplateAction,
+        // loader: chooseTemplateLoader,
+      },
+      {
+        path: "download",
+        element: <Download />,
+        action: downloadAction,
+        // loader: downloadLoader,
       },
     ],
   },
