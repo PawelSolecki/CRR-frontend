@@ -1,7 +1,7 @@
+import { zUserCv } from "@api/career-service/zod.gen";
+import Input from "@shared/components/Input/Input";
 import type { UseFormRegister } from "react-hook-form";
 import { z } from "zod";
-import { zUserCv } from "../../../../api/career-service/zod.gen";
-import Input from "../../../../shared/components/Input";
 import styles from "./FormSections.module.scss";
 
 type UserCvForm = z.infer<typeof zUserCv>;

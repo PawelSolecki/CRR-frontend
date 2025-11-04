@@ -1,0 +1,17 @@
+@import "@features/reviewCV/ReviewCVForm.module.scss";
+
+.experienceItem {
+    @include item-card;
+
+    .experienceTitle {
+        @include title-style;
+    }
+
+    .experienceCompany {
+        @include secondary-text;
+    }
+
+    .experienceDate {
+        @include date-style;
+    }
+}

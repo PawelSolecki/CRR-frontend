@@ -1,6 +1,6 @@
+import { FormNavigation } from "@features/navigation";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FormNavigation } from "../../navigation";
 import type { AnalyzedCvData } from "../types";
 import ExperienceEditor from "./ExperienceEditor";
 import ProjectEditor from "./ProjectEditor";

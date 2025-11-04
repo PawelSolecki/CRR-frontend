@@ -1,22 +1,23 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import LandingLayout from "../layouts/LandingLayout/LandingLayout";
-import MainLayout from "../layouts/MainLayout/MainLayout";
-import Home from "../pages/Home/Home";
-import JobOffer, { action as jobOfferAction } from "../pages/JobOffer/JobOffer";
-import PageOne, { action as pageOneAction } from "../pages/PageOne/PageOne";
-import PageTwo, { loader as pageTwoLoader } from "../pages/PageTwo/PageTwo";
+import LandingLayout from "@layouts/LandingLayout/LandingLayout";
+import MainLayout from "@layouts/MainLayout/MainLayout";
+import Home from "@pages/Home/Home";
+import JobOffer, { action as jobOfferAction } from "@pages/jobOffer/JobOffer";
+import PageOne, { action as pageOneAction } from "@pages/PageOne/PageOne";
+import PageTwo, { loader as pageTwoLoader } from "@pages/PageTwo/PageTwo";
 import ReviewBio, {
   action as reviewBioAction,
-} from "../pages/ReviewBio/ReviewBio";
+} from "@pages/reviewBio/ReviewBio";
 import ReviewCV, {
   action as reviewCvAction,
   loader as reviewCvLoader,
-} from "../pages/ReviewCV/ReviewCV";
+
 import ChooseTemplate, {
   action as chooseTemplateAction,
 } from "../pages/chooseTemplate/ChooseTemplate";
 import Download, { action as downloadAction } from "../pages/download/Download";
+} from "@pages/reviewCV/ReviewCV";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 const queryClient = new QueryClient({
   defaultOptions: {
