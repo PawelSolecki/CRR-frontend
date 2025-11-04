@@ -104,6 +104,9 @@ export default function ReviewBio() {
             <p className={classes.loadingText}>
               Generating your professional summary...
             </p>
+            <p className={classes.loadingText}>
+              It can take couple of minutes, please be patient.
+            </p>
           </div>
         ) : (
           <ReviewBioForm generatedBio={generatedBio} />

@@ -1,11 +1,11 @@
+import { generatePdf } from "@api/career-service/sdk.gen";
+import type { UserCv } from "@api/career-service/types.gen";
+import DownloadForm from "@features/download/DownloadForm";
+import Error from "@shared/components/Error/Error";
+import { CV_STORAGE_KEY } from "@shared/hooks/useCvData";
+import { useJobOfferStore } from "@shared/hooks/useJobOfferStore";
+import { useTemplateStore } from "@shared/hooks/useTemplateStore";
 import { redirect, useActionData } from "react-router-dom";
-import { generatePdf } from "../../api/career-service/sdk.gen";
-import type { UserCv } from "../../api/career-service/types.gen";
-import Error from "../../components/ui/Error/Error";
-import DownloadForm from "../../features/download/DownloadForm";
-import { CV_STORAGE_KEY } from "../../shared/hooks/useCvData";
-import { useJobOfferStore } from "../../shared/hooks/useJobOfferStore";
-import { useTemplateStore } from "../../shared/hooks/useTemplateStore";
 import classes from "./Download.module.scss";
 
 interface ActionData {

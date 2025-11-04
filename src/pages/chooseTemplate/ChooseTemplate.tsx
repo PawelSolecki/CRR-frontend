@@ -1,16 +1,10 @@
-// import type { UserCv,  } from "@api/career-service/types.gen";
-// import Button from "@shared/components/Button/Button";
-// import Error from "@shared/components/Error/Error";
-// import { CV_STORAGE_KEY } from "@shared/hooks/useCvData";
-// import { useJobOfferStore } from "@shared/hooks/useJobOfferStore";
-// import { useTemplateStore } from "@shared/hooks/useTemplateStore";
+import type { UserCv } from "@api/career-service/types.gen";
+import ChooseTemplateForm from "@features/chooseTemplate/ChooseTemplateForm";
+import Error from "@shared/components/Error/Error";
+import { CV_STORAGE_KEY } from "@shared/hooks/useCvData";
+import { useJobOfferStore } from "@shared/hooks/useJobOfferStore";
+import { useTemplateStore } from "@shared/hooks/useTemplateStore";
 import { redirect, useActionData } from "react-router-dom";
-import type { UserCv } from "../../api/career-service/types.gen";
-import Error from "../../components/ui/Error/Error";
-import ChooseTemplateForm from "../../features/chooseTemplate/ChooseTemplateForm";
-import { CV_STORAGE_KEY } from "../../shared/hooks/useCvData";
-import { useJobOfferStore } from "../../shared/hooks/useJobOfferStore";
-import { useTemplateStore } from "../../shared/hooks/useTemplateStore";
 import classes from "./ChooseTemplate.module.scss";
 
 interface ActionData {

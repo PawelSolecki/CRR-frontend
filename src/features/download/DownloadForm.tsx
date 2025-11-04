@@ -1,10 +1,10 @@
+import Button from "@/shared/components/Button/Button";
+import Error from "@/shared/components/Error/Error";
+import Icon from "@/shared/components/Icon/Icon";
 import { useEffect, useState } from "react";
 import { Form, useActionData, useNavigation } from "react-router-dom";
 import { prepareCv } from "../../api/career-service/sdk.gen";
 import type { SkillResult, UserCv } from "../../api/career-service/types.gen";
-import Button from "../../components/ui/Button/Button";
-import Error from "../../components/ui/Error/Error";
-import Icon from "../../components/ui/Icon/Icon";
 import { CV_STORAGE_KEY } from "../../shared/hooks/useCvData";
 import { useJobOfferStore } from "../../shared/hooks/useJobOfferStore";
 import { FormNavigation } from "../navigation";
@@ -187,13 +187,16 @@ export default function DownloadForm() {
           your CV.
         </p>
       </div>
-      <input type="hidden" name="action" value="restart" />
-      <FormNavigation
-        onBack={handleBack}
-        isLoading={isSubmitting}
-        nextDisabled={isSubmitting || !hasGeneratedPdf}
-        nextText="Finish"
-      />{" "}
+      <Form method="post">
+        <input type="hidden" name="action" value="restart" />
+        <FormNavigation
+          onBack={handleBack}
+          isLoading={isSubmitting}
+          nextDisabled={isSubmitting || !hasGeneratedPdf}
+          nextText="Finish"
+          nextButtonType="submit"
+        />
+      </Form>
     </>
   );
 }

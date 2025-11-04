@@ -1,12 +1,12 @@
-import { useState } from "react";
-import { Form, useNavigation } from "react-router-dom";
-import Button from "../../components/ui/Button/Button";
+import { FormNavigation } from "@features/navigation";
+import Button from "@shared/components/Button/Button";
 import type {
   LanguageType,
   TemplateType,
-} from "../../shared/hooks/useTemplateStore";
-import { useTemplateStore } from "../../shared/hooks/useTemplateStore";
-import { FormNavigation } from "../navigation";
+} from "@shared/hooks/useTemplateStore";
+import { useTemplateStore } from "@shared/hooks/useTemplateStore";
+import { useState } from "react";
+import { Form, useNavigation } from "react-router-dom";
 import classes from "./ChooseTemplateForm.module.scss";
 
 interface Language {
