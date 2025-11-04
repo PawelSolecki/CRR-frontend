@@ -1,9 +1,9 @@
-import type { UseFormRegister, Control } from "react-hook-form";
+import { zUserCv } from "@api/career-service/zod.gen";
+import Input from "@shared/components/Input/Input";
+import { Trash2 } from "lucide-react";
+import type { Control, UseFormRegister } from "react-hook-form";
 import { useFieldArray } from "react-hook-form";
 import { z } from "zod";
-import { zUserCv } from "../../../../api/career-service/zod.gen";
-import Input from "../../../../shared/components/Input";
-import { Trash2 } from "lucide-react";
 import styles from "./FormSections.module.scss";
 
 type UserCvForm = z.infer<typeof zUserCv>;
@@ -84,7 +84,7 @@ export default function ExperienceItem({
                   label=""
                   id={`exp-summary-text-${index}-${summaryIndex}`}
                   {...register(
-                    `experience.${index}.summaries.${summaryIndex}.text` as const
+                    `experience.${index}.summaries.${summaryIndex}.text` as const,
                   )}
                   error={
                     errors.experience?.[index]?.summaries?.[summaryIndex]?.text

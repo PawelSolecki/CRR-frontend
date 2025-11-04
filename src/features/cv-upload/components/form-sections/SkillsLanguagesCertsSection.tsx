@@ -1,8 +1,8 @@
-import type { UseFormRegister, UseFieldArrayReturn } from "react-hook-form";
-import { z } from "zod";
-import { zUserCv } from "../../../../api/career-service/zod.gen";
-import Input from "../../../../shared/components/Input";
+import { zUserCv } from "@api/career-service/zod.gen";
+import Input from "@shared/components/Input/Input";
 import { Trash2 } from "lucide-react";
+import type { UseFieldArrayReturn, UseFormRegister } from "react-hook-form";
+import { z } from "zod";
 import styles from "./FormSections.module.scss";
 
 type UserCvForm = z.infer<typeof zUserCv>;

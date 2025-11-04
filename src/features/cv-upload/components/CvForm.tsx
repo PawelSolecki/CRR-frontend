@@ -1,16 +1,16 @@
-import { useState, useEffect } from "react";
-import { useForm, useFieldArray } from "react-hook-form";
+import { zUserCv } from "@api/career-service/zod.gen";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { useCvData } from "@shared/hooks/useCvData";
+import { useEffect, useState } from "react";
+import { useFieldArray, useForm } from "react-hook-form";
 import { Form, useSubmit } from "react-router-dom";
-import { zUserCv } from "../../../api/career-service/zod.gen";
-import { useCvData } from "../../../shared/hooks/useCvData";
-import PersonalInfoSection from "./form-sections/PersonalInfoSection";
-import SkillsLanguagesCertsSection from "./form-sections/SkillsLanguagesCertsSection";
-import ExperienceSection from "./form-sections/ExperienceSection";
-import EducationSection from "./form-sections/EducationSection";
-import ProjectsSection from "./form-sections/ProjectsSection";
+import { z } from "zod";
 import styles from "./CvForm.module.scss";
+import EducationSection from "./form-sections/EducationSection";
+import ExperienceSection from "./form-sections/ExperienceSection";
+import PersonalInfoSection from "./form-sections/PersonalInfoSection";
+import ProjectsSection from "./form-sections/ProjectsSection";
+import SkillsLanguagesCertsSection from "./form-sections/SkillsLanguagesCertsSection";
 
 type UserCvForm = z.infer<typeof zUserCv>;
 
@@ -35,7 +35,7 @@ const STEP_TITLES = {
 export default function CvForm() {
   const { cvData, updateCvData } = useCvData();
   const [currentStep, setCurrentStep] = useState<FormStep>(
-    FormStep.PERSONAL_INFO
+    FormStep.PERSONAL_INFO,
   );
   const submit = useSubmit();
 

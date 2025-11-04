@@ -1,10 +1,10 @@
+import { zUserCv } from "@api/career-service/zod.gen";
+import { useCvData } from "@shared/hooks/useCvData";
 import { useCallback, useState } from "react";
+import type { FileRejection } from "react-dropzone";
 import { useDropzone } from "react-dropzone";
 import { Form } from "react-router-dom";
-import { zUserCv } from "../../../api/career-service/zod.gen";
-import { useCvData } from "../../../shared/hooks/useCvData";
 import styles from "./UploadView.module.scss";
-import type { FileRejection } from "react-dropzone";
 
 export default function UploadView() {
   const [cvDataString, setCvDataString] = useState<string | null>(null);
@@ -42,13 +42,15 @@ export default function UploadView() {
         setCvDataString(JSON.stringify(normalizedData));
         setFileName(file.name);
       } catch (error) {
-        setErrorMessage("Nie udało się odczytać pliku. Upewnij się, że to poprawny JSON.");
+        setErrorMessage(
+          "Nie udało się odczytać pliku. Upewnij się, że to poprawny JSON.",
+        );
         console.error("Error while reading CV JSON:", error);
       } finally {
         setIsParsing(false);
       }
     },
-    [updateCvData]
+    [updateCvData],
   );
 
   const handleDropRejected = useCallback((fileRejections: FileRejection[]) => {
@@ -58,10 +60,10 @@ export default function UploadView() {
 
     const rejection = fileRejections[0];
     const hasInvalidType = rejection.errors.some(
-      (error) => error.code === "file-invalid-type"
+      (error) => error.code === "file-invalid-type",
     );
     const hasTooManyFiles = rejection.errors.some(
-      (error) => error.code === "too-many-files"
+      (error) => error.code === "too-many-files",
     );
 
     if (hasInvalidType) {
