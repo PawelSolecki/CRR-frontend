@@ -35,10 +35,9 @@ vi.mock("@features/jobOffer/JobOfferForm", () => ({
 
 // Mock react-router-dom
 vi.mock("react-router-dom", async () => {
-  const actual =
-    await vi.importActual<typeof import("react-router-dom")>(
-      "react-router-dom",
-    );
+  const actual = await vi.importActual<typeof import("react-router-dom")>(
+    "react-router-dom"
+  );
   return {
     ...actual,
     useActionData: vi.fn(),
@@ -54,13 +53,14 @@ const renderJobOffer = () => {
   return render(
     <MemoryRouter>
       <JobOffer />
-    </MemoryRouter>,
+    </MemoryRouter>
   );
 };
 
 describe("JobOffer Component", () => {
   const mockSetJobOffer = vi.fn();
   const mockSetSkillResult = vi.fn();
+  const mockSetJobOfferUrl = vi.fn();
   const mockClearJobOffer = vi.fn();
   const mockClearSkillResult = vi.fn();
 
@@ -70,6 +70,7 @@ describe("JobOffer Component", () => {
     vi.mocked(useJobOfferStore.getState).mockReturnValue({
       jobOffer: null,
       skillResult: null,
+      setJobOfferUrl: mockSetJobOfferUrl,
       setJobOffer: mockSetJobOffer,
       setSkillResult: mockSetSkillResult,
       clearJobOffer: mockClearJobOffer,
@@ -81,10 +82,10 @@ describe("JobOffer Component", () => {
     renderJobOffer();
 
     expect(
-      screen.getByRole("heading", { name: /job offer url/i }),
+      screen.getByRole("heading", { name: /job offer url/i })
     ).toBeInTheDocument();
     expect(
-      screen.getByText(/paste the link to the job offer/i),
+      screen.getByText(/paste the link to the job offer/i)
     ).toBeInTheDocument();
     expect(screen.getByTestId("job-offer-form")).toBeInTheDocument();
   });
@@ -110,6 +111,7 @@ describe("JobOffer Component", () => {
 describe("JobOffer Action", () => {
   const mockSetJobOffer = vi.fn();
   const mockSetSkillResult = vi.fn();
+  const mockSetJobOfferUrl = vi.fn();
   const mockClearJobOffer = vi.fn();
   const mockClearSkillResult = vi.fn();
 
@@ -121,8 +123,12 @@ describe("JobOffer Action", () => {
   };
 
   const mockSkillAnalysisData = {
-    skills: ["React", "TypeScript"],
-    analysis: "Good match",
+    hardSkills: [
+      { name: "React", score: 0.9 },
+      { name: "TypeScript", score: 0.85 },
+    ],
+    softSkills: [{ name: "Communication", score: 0.8 }],
+    tools: [{ name: "Jest", score: 0.75 }],
   };
 
   const createMockRequest = (jobUrl: string): Request => {
@@ -138,6 +144,7 @@ describe("JobOffer Action", () => {
     vi.mocked(useJobOfferStore.getState).mockReturnValue({
       jobOffer: null,
       skillResult: null,
+      setJobOfferUrl: mockSetJobOfferUrl,
       setJobOffer: mockSetJobOffer,
       setSkillResult: mockSetSkillResult,
       clearJobOffer: mockClearJobOffer,
@@ -148,7 +155,7 @@ describe("JobOffer Action", () => {
         new Response(null, {
           status: 302,
           headers: { Location: url },
-        }),
+        })
     );
   });
 
@@ -157,14 +164,14 @@ describe("JobOffer Action", () => {
 
     // Mock successful API responses
     vi.mocked(scrape).mockResolvedValue({
-      response: { status: 200 },
+      response: new Response(null, { status: 200 }),
       data: mockJobOfferData,
-    });
+    } as Awaited<ReturnType<typeof scrape>>);
 
     vi.mocked(postApiV1OfferAnalyzeOffer).mockResolvedValue({
-      response: { status: 200 },
+      response: new Response(null, { status: 200 }),
       data: mockSkillAnalysisData,
-    });
+    } as Awaited<ReturnType<typeof postApiV1OfferAnalyzeOffer>>);
 
     await action({ request: mockRequest });
 
@@ -189,9 +196,9 @@ describe("JobOffer Action", () => {
     const mockRequest = createMockRequest("https://example.com/job");
 
     vi.mocked(scrape).mockResolvedValue({
-      response: { status: 404 },
-      data: null,
-    });
+      response: new Response(null, { status: 404 }),
+      data: undefined,
+    } as Awaited<ReturnType<typeof scrape>>);
 
     const result = await action({ request: mockRequest });
 
@@ -208,9 +215,9 @@ describe("JobOffer Action", () => {
     const mockRequest = createMockRequest("https://example.com/job");
 
     vi.mocked(scrape).mockResolvedValue({
-      response: { status: 200 },
-      data: null,
-    });
+      response: new Response(null, { status: 200 }),
+      data: undefined,
+    } as Awaited<ReturnType<typeof scrape>>);
 
     const result = await action({ request: mockRequest });
 
@@ -226,14 +233,14 @@ describe("JobOffer Action", () => {
     const mockRequest = createMockRequest("https://example.com/job");
 
     vi.mocked(scrape).mockResolvedValue({
-      response: { status: 200 },
+      response: new Response(null, { status: 200 }),
       data: mockJobOfferData,
-    });
+    } as Awaited<ReturnType<typeof scrape>>);
 
     vi.mocked(postApiV1OfferAnalyzeOffer).mockResolvedValue({
-      response: { status: 500 },
-      data: null,
-    });
+      response: new Response(null, { status: 500 }),
+      data: undefined,
+    } as Awaited<ReturnType<typeof postApiV1OfferAnalyzeOffer>>);
 
     const result = await action({ request: mockRequest });
 
@@ -250,14 +257,14 @@ describe("JobOffer Action", () => {
     const mockRequest = createMockRequest("https://example.com/job");
 
     vi.mocked(scrape).mockResolvedValue({
-      response: { status: 200 },
+      response: new Response(null, { status: 200 }),
       data: mockJobOfferData,
-    });
+    } as Awaited<ReturnType<typeof scrape>>);
 
     vi.mocked(postApiV1OfferAnalyzeOffer).mockResolvedValue({
-      response: { status: 200 },
-      data: null,
-    });
+      response: new Response(null, { status: 200 }),
+      data: undefined,
+    } as Awaited<ReturnType<typeof postApiV1OfferAnalyzeOffer>>);
 
     const result = await action({ request: mockRequest });
 
@@ -285,12 +292,12 @@ describe("JobOffer Action", () => {
     const mockRequest = createMockRequest("https://example.com/job");
 
     vi.mocked(scrape).mockResolvedValue({
-      response: { status: 200 },
+      response: new Response(null, { status: 200 }),
       data: mockJobOfferData,
-    });
+    } as Awaited<ReturnType<typeof scrape>>);
 
     vi.mocked(postApiV1OfferAnalyzeOffer).mockRejectedValue(
-      new Error("Network error"),
+      new Error("Network error")
     );
 
     const result = await action({ request: mockRequest });

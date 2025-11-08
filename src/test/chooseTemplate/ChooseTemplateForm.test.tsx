@@ -1,15 +1,15 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { beforeEach, describe, expect, test, vi } from "vitest";
-import ChooseTemplateForm from "../../features/chooseTemplate/ChooseTemplateForm";
+import ChooseTemplateForm from "@features/chooseTemplate/ChooseTemplateForm";
 
 // Mock stores
-vi.mock("../../shared/hooks/useTemplateStore", () => ({
+vi.mock("@shared/hooks/useTemplateStore", () => ({
   useTemplateStore: vi.fn(),
 }));
 
 // Mock components - Handle both text prop and children
-vi.mock("../../components/ui/Button/Button", () => ({
+vi.mock("@components/ui/Button/Button", () => ({
   default: ({ text, onClick, type, children, disabled }: any) => (
     <button onClick={onClick} disabled={disabled} data-type={type}>
       {text || children}
@@ -17,7 +17,7 @@ vi.mock("../../components/ui/Button/Button", () => ({
   ),
 }));
 
-vi.mock("../../features/navigation", () => ({
+vi.mock("@features/navigation", () => ({
   FormNavigation: ({ nextDisabled }: any) => (
     <div data-testid="form-navigation">
       <button disabled={nextDisabled} data-testid="next-button">
@@ -29,10 +29,9 @@ vi.mock("../../features/navigation", () => ({
 
 // Mock react-router-dom
 vi.mock("react-router-dom", async () => {
-  const actual =
-    await vi.importActual<typeof import("react-router-dom")>(
-      "react-router-dom",
-    );
+  const actual = await vi.importActual<typeof import("react-router-dom")>(
+    "react-router-dom"
+  );
   return {
     ...actual,
     Form: ({ children, ...props }: any) => <form {...props}>{children}</form>,
@@ -41,13 +40,13 @@ vi.mock("react-router-dom", async () => {
 });
 
 import { useNavigation } from "react-router-dom";
-import { useTemplateStore } from "../../shared/hooks/useTemplateStore";
+import { useTemplateStore } from "@shared/hooks/useTemplateStore";
 
 const renderChooseTemplateForm = () => {
   return render(
     <MemoryRouter>
       <ChooseTemplateForm />
-    </MemoryRouter>,
+    </MemoryRouter>
   );
 };
 

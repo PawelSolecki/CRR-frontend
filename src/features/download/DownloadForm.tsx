@@ -3,10 +3,10 @@ import Error from "@/shared/components/Error/Error";
 import Icon from "@/shared/components/Icon/Icon";
 import { useEffect, useState } from "react";
 import { Form, useActionData, useNavigation } from "react-router-dom";
-import { prepareCv } from "../../api/career-service/sdk.gen";
-import type { SkillResult, UserCv } from "../../api/career-service/types.gen";
-import { CV_STORAGE_KEY } from "../../shared/hooks/useCvData";
-import { useJobOfferStore } from "../../shared/hooks/useJobOfferStore";
+import { prepareCv } from "@api/career-service/sdk.gen";
+import type { SkillResult, UserCv } from "@api/career-service/types.gen";
+import { CV_STORAGE_KEY } from "@shared/hooks/useCvData";
+import { useJobOfferStore } from "@shared/hooks/useJobOfferStore";
 import { FormNavigation } from "../navigation";
 import classes from "./DownloadForm.module.scss";
 
@@ -35,7 +35,7 @@ export default function DownloadForm() {
       }
       if (!skillResult) {
         setError(
-          "Skill analysis data is missing. Please analyze the job offer first.",
+          "Skill analysis data is missing. Please analyze the job offer first."
         );
         setIsLoading(false);
         return;

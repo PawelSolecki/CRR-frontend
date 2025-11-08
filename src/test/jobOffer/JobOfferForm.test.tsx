@@ -1,18 +1,31 @@
 import JobOfferForm from "@features/jobOffer/JobOfferForm";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter, useNavigation } from "react-router-dom";
 import { describe, expect, test, vi } from "vitest";
 
+type NavigationReturn = ReturnType<typeof useNavigation>;
+
 // Mock react-router-dom
 vi.mock("react-router-dom", async () => {
-  const actual =
-    await vi.importActual<typeof import("react-router-dom")>(
-      "react-router-dom",
-    );
+  const actual = await vi.importActual<typeof import("react-router-dom")>(
+    "react-router-dom"
+  );
   return {
     ...actual,
     Form: ({ children, ...props }: any) => <form {...props}>{children}</form>,
-    useNavigation: vi.fn(() => ({ state: "idle" })),
+    useNavigation: vi.fn(
+      () =>
+        ({
+          state: "idle",
+          location: undefined,
+          formMethod: undefined,
+          formAction: undefined,
+          formEncType: undefined,
+          formData: undefined,
+          json: undefined,
+          text: undefined,
+        } as NavigationReturn)
+    ),
   };
 });
 
@@ -20,7 +33,7 @@ const renderJobOfferForm = () => {
   return render(
     <MemoryRouter>
       <JobOfferForm />
-    </MemoryRouter>,
+    </MemoryRouter>
   );
 };
 
@@ -34,7 +47,7 @@ describe("JobOfferForm", () => {
     expect(screen.getByRole("button", { name: /next/i })).toBeInTheDocument();
   });
 
-  test("validates URL input - shows error for invalid URL", () => {
+  test("validates URL input - shows error for invalid URL", async () => {
     renderJobOfferForm();
 
     const input = screen.getByRole("textbox");
@@ -43,11 +56,13 @@ describe("JobOfferForm", () => {
     fireEvent.change(input, { target: { value: "not-a-url" } });
     fireEvent.blur(input);
 
-    expect(screen.getByText(/please enter a valid url/i)).toBeInTheDocument();
+    expect(
+      await screen.findByText(/please enter a valid url/i)
+    ).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /next/i })).toBeDisabled();
   });
 
-  test("accepts valid URL input", () => {
+  test("accepts valid URL input", async () => {
     renderJobOfferForm();
 
     const input = screen.getByRole("textbox");
@@ -56,9 +71,11 @@ describe("JobOfferForm", () => {
     fireEvent.change(input, { target: { value: "https://example.com/job" } });
     fireEvent.blur(input);
 
-    expect(
-      screen.queryByText(/please enter a valid url/i),
-    ).not.toBeInTheDocument();
+    await waitFor(() =>
+      expect(
+        screen.queryByText(/please enter a valid url/i)
+      ).not.toBeInTheDocument()
+    );
     expect(screen.getByRole("button", { name: /next/i })).toBeEnabled();
   });
 
@@ -81,17 +98,27 @@ describe("JobOfferForm", () => {
 
   test("shows loading state during form submission", () => {
     // Mock the navigation state as submitting
-    vi.mocked(useNavigation).mockImplementation(() => ({
-      state: "submitting",
-    }));
+    vi.mocked(useNavigation).mockImplementation(
+      () =>
+        ({
+          state: "submitting",
+          location: window.location as unknown as NavigationReturn["location"],
+          formMethod: "POST",
+          formAction: "/job-offer",
+          formEncType: "application/x-www-form-urlencoded",
+          formData: new FormData(),
+          json: undefined,
+          text: undefined,
+        } as NavigationReturn)
+    );
 
     renderJobOfferForm();
 
     expect(
-      screen.getByRole("button", { name: /scraping job offer/i }),
+      screen.getByRole("button", { name: /scraping job offer/i })
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("button", { name: /scraping job offer/i }),
+      screen.getByRole("button", { name: /scraping job offer/i })
     ).toBeDisabled();
     expect(screen.getByRole("textbox")).toBeDisabled();
   });

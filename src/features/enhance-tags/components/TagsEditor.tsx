@@ -26,7 +26,7 @@ export default function TagsEditor({
     experienceIndex: number,
     bulletIndex: number,
     technology: string,
-    action: "add" | "remove",
+    action: "add" | "remove"
   ) => {
     setEditedData((current) => {
       if (!current.experience) {
@@ -95,7 +95,7 @@ export default function TagsEditor({
     projectIndex: number,
     bulletIndex: number,
     technology: string,
-    action: "add" | "remove",
+    action: "add" | "remove"
   ) => {
     setEditedData((current) => {
       if (!current.projects) {
@@ -204,7 +204,7 @@ export default function TagsEditor({
                       entryIndex,
                       bulletIndex,
                       technology,
-                      "add",
+                      "add"
                     )
                   }
                   onTechnologyRemove={(entryIndex, bulletIndex, technology) =>
@@ -212,7 +212,7 @@ export default function TagsEditor({
                       entryIndex,
                       bulletIndex,
                       technology,
-                      "remove",
+                      "remove"
                     )
                   }
                 />
@@ -252,7 +252,7 @@ export default function TagsEditor({
                       entryIndex,
                       bulletIndex,
                       technology,
-                      "add",
+                      "add"
                     )
                   }
                   onTechnologyRemove={(entryIndex, bulletIndex, technology) =>
@@ -260,7 +260,7 @@ export default function TagsEditor({
                       entryIndex,
                       bulletIndex,
                       technology,
-                      "remove",
+                      "remove"
                     )
                   }
                 />
@@ -282,6 +282,7 @@ export default function TagsEditor({
           navigate("/job-offer");
         }}
         onBack={onCancel}
+        // nextText="Continue"
       />
     </div>
   );

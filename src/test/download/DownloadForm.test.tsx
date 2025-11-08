@@ -1,44 +1,43 @@
 import { act, render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { beforeEach, describe, expect, test, vi } from "vitest";
-import { prepareCv } from "../../api/career-service/sdk.gen";
-import DownloadForm from "../../features/download/DownloadForm";
+import { prepareCv } from "@api/career-service/sdk.gen";
+import DownloadForm from "@features/download/DownloadForm";
 
 // Mock API
-vi.mock("../../api/career-service/sdk.gen", () => ({
+vi.mock("@api/career-service/sdk.gen", () => ({
   prepareCv: vi.fn(),
 }));
 
 // Mock stores
-vi.mock("../../shared/hooks/useJobOfferStore", () => ({
+vi.mock("@shared/hooks/useJobOfferStore", () => ({
   useJobOfferStore: vi.fn(),
 }));
 
 // Mock components
-vi.mock("../../components/ui/Button/Button", () => ({
+vi.mock("@components/ui/Button/Button", () => ({
   default: ({ text }: { text: string }) => <button>{text}</button>,
 }));
 
-vi.mock("../../components/ui/Error/Error", () => ({
+vi.mock("@components/ui/Error/Error", () => ({
   default: ({ message }: { message: string }) => (
     <div data-testid="error">{message}</div>
   ),
 }));
 
-vi.mock("../../components/ui/Icon/Icon", () => ({
+vi.mock("@components/ui/Icon/Icon", () => ({
   default: () => <div data-testid="icon">Icon</div>,
 }));
 
-vi.mock("../../features/navigation", () => ({
+vi.mock("@features/navigation", () => ({
   FormNavigation: () => <div data-testid="form-navigation">Navigation</div>,
 }));
 
 // Mock react-router-dom
 vi.mock("react-router-dom", async () => {
-  const actual =
-    await vi.importActual<typeof import("react-router-dom")>(
-      "react-router-dom",
-    );
+  const actual = await vi.importActual<typeof import("react-router-dom")>(
+    "react-router-dom"
+  );
   return {
     ...actual,
     Form: ({ children }: any) => <form>{children}</form>,
@@ -48,7 +47,7 @@ vi.mock("react-router-dom", async () => {
 });
 
 import { useActionData, useNavigation } from "react-router-dom";
-import { useJobOfferStore } from "../../shared/hooks/useJobOfferStore";
+import { useJobOfferStore } from "@shared/hooks/useJobOfferStore";
 
 const mockLocalStorage = {
   getItem: vi.fn(),
@@ -64,7 +63,7 @@ const renderDownloadForm = () => {
   return render(
     <MemoryRouter>
       <DownloadForm />
-    </MemoryRouter>,
+    </MemoryRouter>
   );
 };
 
@@ -103,7 +102,7 @@ describe("DownloadForm Component", () => {
     await waitFor(() => {
       expect(screen.getByTestId("error")).toBeInTheDocument();
       expect(
-        screen.getByText(/job offer data is missing/i),
+        screen.getByText(/job offer data is missing/i)
       ).toBeInTheDocument();
     });
   });
@@ -121,7 +120,7 @@ describe("DownloadForm Component", () => {
     await waitFor(() => {
       expect(screen.getByTestId("error")).toBeInTheDocument();
       expect(
-        screen.getByText(/skill analysis data is missing/i),
+        screen.getByText(/skill analysis data is missing/i)
       ).toBeInTheDocument();
     });
   });
@@ -184,7 +183,7 @@ describe("DownloadForm Component", () => {
     await waitFor(() => {
       expect(screen.getByTestId("error")).toBeInTheDocument();
       expect(
-        screen.getByText(/an unexpected error occurred/i),
+        screen.getByText(/an unexpected error occurred/i)
       ).toBeInTheDocument();
     });
   });

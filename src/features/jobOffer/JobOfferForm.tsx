@@ -20,6 +20,7 @@ export default function JobOfferForm() {
 
   const {
     register,
+    watch,
     formState: { errors },
   } = useForm<JobOfferFormData>({
     resolver: zodResolver(jobOfferSchema),
@@ -28,6 +29,7 @@ export default function JobOfferForm() {
       jobUrl: jobOffer ? jobOffer.url : "",
     },
   });
+  const jobUrlValue = watch("jobUrl");
   return (
     <Form method="post" className={classes.form}>
       <div className={classes.formSection}>
@@ -50,7 +52,7 @@ export default function JobOfferForm() {
       <FormNavigation
         nextButtonType="submit"
         nextText={isLoading ? "Scraping job offer..." : "Next"}
-        nextDisabled={isLoading || !!errors.jobUrl}
+        nextDisabled={isLoading || !!errors.jobUrl || !jobUrlValue?.trim()}
         isLoading={isLoading}
       />
     </Form>
