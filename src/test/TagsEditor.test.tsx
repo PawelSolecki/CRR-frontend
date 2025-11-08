@@ -1,18 +1,19 @@
-import TagsEditor from "@features/enhance-tags/components/TagsEditor";
-import type { AnalyzedCvData } from "@features/enhance-tags/types";
+import TagsEditor from "@/features/enhanceTags/components/TagsEditor";
+import type { AnalyzedCvData } from "@/features/enhanceTags/types";
 import { act, fireEvent, render } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 interface ExperienceHandler {
   onTechnologyAdd: (
     entryIndex: number,
     bulletIndex: number,
-    technology: string,
+    technology: string
   ) => void;
   onTechnologyRemove: (
     entryIndex: number,
     bulletIndex: number,
-    technology: string,
+    technology: string
   ) => void;
 }
 
@@ -20,12 +21,12 @@ interface ProjectHandler {
   onTechnologyAdd: (
     entryIndex: number,
     bulletIndex: number,
-    technology: string,
+    technology: string
   ) => void;
   onTechnologyRemove: (
     entryIndex: number,
     bulletIndex: number,
-    technology: string,
+    technology: string
   ) => void;
 }
 
@@ -95,7 +96,9 @@ describe("TagsEditor", () => {
     const cvData = buildCvData();
 
     const { getByRole } = render(
-      <TagsEditor cvData={cvData} onSave={onSave} />,
+      <MemoryRouter>
+        <TagsEditor cvData={cvData} onSave={onSave} />
+      </MemoryRouter>
     );
 
     expect(experienceHandlers[0]).toBeDefined();
@@ -119,7 +122,9 @@ describe("TagsEditor", () => {
     const cvData = buildCvData();
 
     const { getByRole } = render(
-      <TagsEditor cvData={cvData} onSave={onSave} />,
+      <MemoryRouter>
+        <TagsEditor cvData={cvData} onSave={onSave} />
+      </MemoryRouter>
     );
 
     expect(projectHandlers[0]).toBeDefined();

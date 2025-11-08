@@ -1,8 +1,8 @@
 import type { PostApiV1CvAnalyzeCvResponse } from "@api/career-ai-service";
 import { postApiV1CvAnalyzeCv } from "@api/career-ai-service";
-import type { AnalyzedCvData } from "@features/enhance-tags";
-import { TagsEditor } from "@features/enhance-tags";
-import { convertAnalyzedCvToUserCv } from "@features/enhance-tags/utils";
+import type { AnalyzedCvData } from "@/features/enhanceTags";
+import { TagsEditor } from "@/features/enhanceTags";
+import { convertAnalyzedCvToUserCv } from "@/features/enhanceTags/utils";
 import { CV_STORAGE_KEY } from "@shared/hooks/useCvData";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import styles from "./PageTwo.module.scss";

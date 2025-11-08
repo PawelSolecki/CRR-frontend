@@ -4,30 +4,29 @@ import { beforeEach, describe, expect, test, vi } from "vitest";
 import ChooseTemplate, {
   action,
   loader,
-} from "../../pages/chooseTemplate/ChooseTemplate";
-
+} from "@pages/chooseTemplate/ChooseTemplate";
 // Mock Error component
-vi.mock("../../components/ui/Error/Error", () => ({
+vi.mock("@components/ui/Error/Error", () => ({
   default: ({ message }: { message: string }) => (
     <div data-testid="error">{message}</div>
   ),
 }));
 
 // Mock ChooseTemplateForm component
-vi.mock("../../features/chooseTemplate/ChooseTemplateForm", () => ({
+vi.mock("@features/chooseTemplate/ChooseTemplateForm", () => ({
   default: () => (
     <div data-testid="choose-template-form">Choose Template Form</div>
   ),
 }));
 
 // Mock stores
-vi.mock("../../shared/hooks/useJobOfferStore", () => ({
+vi.mock("@shared/hooks/useJobOfferStore", () => ({
   useJobOfferStore: {
     getState: vi.fn(),
   },
 }));
 
-vi.mock("../../shared/hooks/useTemplateStore", () => ({
+vi.mock("@shared/hooks/useTemplateStore", () => ({
   useTemplateStore: {
     getState: vi.fn(),
   },
@@ -35,10 +34,9 @@ vi.mock("../../shared/hooks/useTemplateStore", () => ({
 
 // Mock react-router-dom
 vi.mock("react-router-dom", async () => {
-  const actual =
-    await vi.importActual<typeof import("react-router-dom")>(
-      "react-router-dom",
-    );
+  const actual = await vi.importActual<typeof import("react-router-dom")>(
+    "react-router-dom"
+  );
   return {
     ...actual,
     useActionData: vi.fn(),
@@ -47,8 +45,8 @@ vi.mock("react-router-dom", async () => {
 });
 
 import { redirect, useActionData } from "react-router-dom";
-import { useJobOfferStore } from "../../shared/hooks/useJobOfferStore";
-import { useTemplateStore } from "../../shared/hooks/useTemplateStore";
+import { useJobOfferStore } from "@shared/hooks/useJobOfferStore";
+import { useTemplateStore } from "@shared/hooks/useTemplateStore";
 
 // Mock localStorage
 const mockLocalStorage = {
@@ -63,7 +61,7 @@ const renderChooseTemplate = () => {
   return render(
     <MemoryRouter>
       <ChooseTemplate />
-    </MemoryRouter>,
+    </MemoryRouter>
   );
 };
 
@@ -77,7 +75,7 @@ describe("ChooseTemplate Component", () => {
     renderChooseTemplate();
 
     expect(
-      screen.getByRole("heading", { name: /choose language & template/i }),
+      screen.getByRole("heading", { name: /choose language & template/i })
     ).toBeInTheDocument();
     expect(screen.getByTestId("choose-template-form")).toBeInTheDocument();
   });

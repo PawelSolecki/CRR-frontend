@@ -45,7 +45,7 @@ vi.mock("react-dropzone", () => ({
   },
 }));
 
-import UploadView from "../features/cv-upload/components/UploadView";
+import UploadView from "../features/cvUpload/components/UploadView";
 
 describe("UploadView", () => {
   const validCv = {

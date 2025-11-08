@@ -57,18 +57,21 @@ vi.mock("@features/navigation", () => ({
 }));
 
 // Mock modal components individually
-vi.mock("@features/reviewCV/components/personalInfo/PersonalInfoModal", () => ({
-  default: ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) =>
-    isOpen ? (
-      <div data-testid="personalinfomodal">
-        <button onClick={onClose} data-testid="close-personalinfomodal">
-          Close
-        </button>
-      </div>
-    ) : null,
-}));
+vi.mock(
+  "@features/reviewCV/components/personalInfo/modal/PersonalInfoModal",
+  () => ({
+    default: ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) =>
+      isOpen ? (
+        <div data-testid="personalinfomodal">
+          <button onClick={onClose} data-testid="close-personalinfomodal">
+            Close
+          </button>
+        </div>
+      ) : null,
+  })
+);
 
-vi.mock("@features/reviewCV/components/skills/SkillsModal", () => ({
+vi.mock("@features/reviewCV/components/skills/modal/SkillsModal", () => ({
   default: ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) =>
     isOpen ? (
       <div data-testid="skillsmodal">
@@ -79,18 +82,21 @@ vi.mock("@features/reviewCV/components/skills/SkillsModal", () => ({
     ) : null,
 }));
 
-vi.mock("@features/reviewCV/components/experience/ExperienceModal", () => ({
-  default: ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) =>
-    isOpen ? (
-      <div data-testid="experiencemodal">
-        <button onClick={onClose} data-testid="close-experiencemodal">
-          Close
-        </button>
-      </div>
-    ) : null,
-}));
+vi.mock(
+  "@features/reviewCV/components/experience/modal/ExperienceModal",
+  () => ({
+    default: ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) =>
+      isOpen ? (
+        <div data-testid="experiencemodal">
+          <button onClick={onClose} data-testid="close-experiencemodal">
+            Close
+          </button>
+        </div>
+      ) : null,
+  })
+);
 
-vi.mock("@features/reviewCV/components/projects/ProjectsModal", () => ({
+vi.mock("@features/reviewCV/components/projects/modal/ProjectsModal", () => ({
   default: ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) =>
     isOpen ? (
       <div data-testid="projectsmodal">
@@ -101,7 +107,7 @@ vi.mock("@features/reviewCV/components/projects/ProjectsModal", () => ({
     ) : null,
 }));
 
-vi.mock("features/reviewCV/components/education/EducationModal", () => ({
+vi.mock("@features/reviewCV/components/education/modal/EducationModal", () => ({
   default: ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) =>
     isOpen ? (
       <div data-testid="educationmodal">
@@ -112,7 +118,7 @@ vi.mock("features/reviewCV/components/education/EducationModal", () => ({
     ) : null,
 }));
 
-vi.mock("@features/reviewCV/components/languages/LanguagesModal", () => ({
+vi.mock("@features/reviewCV/components/languages/modal/LanguagesModal", () => ({
   default: ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) =>
     isOpen ? (
       <div data-testid="languagesmodal">
@@ -124,7 +130,7 @@ vi.mock("@features/reviewCV/components/languages/LanguagesModal", () => ({
 }));
 
 vi.mock(
-  "@features/reviewCV/components/certifications/CertificationsModal",
+  "@features/reviewCV/components/certifications/modal/CertificationsModal",
   () => ({
     default: ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) =>
       isOpen ? (
@@ -134,15 +140,14 @@ vi.mock(
           </button>
         </div>
       ) : null,
-  }),
+  })
 );
 
 // Mock react-router-dom
 vi.mock("react-router-dom", async () => {
-  const actual =
-    await vi.importActual<typeof import("react-router-dom")>(
-      "react-router-dom",
-    );
+  const actual = await vi.importActual<typeof import("react-router-dom")>(
+    "react-router-dom"
+  );
   return {
     ...actual,
     Form: ({ children, ...props }: any) => <form {...props}>{children}</form>,
@@ -151,6 +156,8 @@ vi.mock("react-router-dom", async () => {
 });
 
 import { useNavigation } from "react-router-dom";
+
+type NavigationReturn = ReturnType<typeof useNavigation>;
 
 const mockUserCv: UserCv = {
   personalInfo: {
@@ -189,7 +196,7 @@ const mockUserCv: UserCv = {
   languages: [
     {
       language: "English",
-      level: "Native",
+      level: "C2",
     },
   ],
   certifications: [
@@ -205,14 +212,23 @@ const renderReviewCVForm = (userCv = mockUserCv) => {
   return render(
     <MemoryRouter>
       <ReviewCVForm userCv={userCv} />
-    </MemoryRouter>,
+    </MemoryRouter>
   );
 };
 
 describe("ReviewCVForm", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.mocked(useNavigation).mockReturnValue({ state: "idle" });
+    vi.mocked(useNavigation).mockReturnValue({
+      state: "idle",
+      location: undefined,
+      formMethod: undefined,
+      formAction: undefined,
+      formEncType: undefined,
+      formData: undefined,
+      json: undefined,
+      text: undefined,
+    } as unknown as NavigationReturn);
   });
 
   test("renders all CV sections with correct data", () => {
@@ -220,14 +236,14 @@ describe("ReviewCVForm", () => {
 
     // Check all sections are rendered
     expect(
-      screen.getByTestId("cv-section-personal-information"),
+      screen.getByTestId("cv-section-personal-information")
     ).toBeInTheDocument();
     expect(
-      screen.getByTestId("cv-section-professional-summary"),
+      screen.getByTestId("cv-section-professional-summary")
     ).toBeInTheDocument();
     expect(screen.getByTestId("cv-section-skills")).toBeInTheDocument();
     expect(
-      screen.getByTestId("cv-section-work-experience"),
+      screen.getByTestId("cv-section-work-experience")
     ).toBeInTheDocument();
     expect(screen.getByTestId("cv-section-projects")).toBeInTheDocument();
     expect(screen.getByTestId("cv-section-education")).toBeInTheDocument();
@@ -249,8 +265,8 @@ describe("ReviewCVForm", () => {
 
     expect(
       screen.getByText(
-        "Experienced software engineer with 5+ years of experience",
-      ),
+        "Experienced software engineer with 5+ years of experience"
+      )
     ).toBeInTheDocument();
   });
 
@@ -267,10 +283,10 @@ describe("ReviewCVForm", () => {
 
     expect(screen.getByText("Senior Developer")).toBeInTheDocument();
     expect(
-      screen.getByText("Tech Corp • San Francisco, CA"),
+      screen.getByText("Tech Corp • San Francisco, CA")
     ).toBeInTheDocument();
     expect(
-      screen.getByText("January 2020 - December 2023"),
+      screen.getByText("January 2020 - December 2023")
     ).toBeInTheDocument();
   });
 
@@ -283,7 +299,7 @@ describe("ReviewCVForm", () => {
     expect(projectLink).toBeInTheDocument();
     expect(projectLink).toHaveAttribute(
       "href",
-      "https://github.com/user/project",
+      "https://github.com/user/project"
     );
     expect(projectLink).toHaveAttribute("target", "_blank");
     expect(projectLink).toHaveAttribute("rel", "noopener noreferrer");
@@ -304,7 +320,7 @@ describe("ReviewCVForm", () => {
 
     expect(screen.getByText("Internal Project")).toBeInTheDocument();
     expect(
-      screen.queryByRole("link", { name: "Internal Project" }),
+      screen.queryByRole("link", { name: "Internal Project" })
     ).not.toBeInTheDocument();
   });
 
@@ -312,7 +328,7 @@ describe("ReviewCVForm", () => {
     renderReviewCVForm();
 
     expect(
-      screen.getByText("Bachelor of Science in Computer Science"),
+      screen.getByText("Bachelor of Science in Computer Science")
     ).toBeInTheDocument();
     expect(screen.getByText("Tech University")).toBeInTheDocument();
     expect(screen.getByText("September 2016 - May 2020")).toBeInTheDocument();
@@ -322,7 +338,7 @@ describe("ReviewCVForm", () => {
     renderReviewCVForm();
 
     expect(screen.getByText("English")).toBeInTheDocument();
-    expect(screen.getByText("Native")).toBeInTheDocument();
+    expect(screen.getByText("C2")).toBeInTheDocument();
   });
 
   test("displays certifications with issuer and date", () => {
@@ -393,7 +409,16 @@ describe("ReviewCVForm", () => {
   });
 
   test("shows loading state during form submission", () => {
-    vi.mocked(useNavigation).mockReturnValue({ state: "submitting" });
+    vi.mocked(useNavigation).mockReturnValue({
+      state: "submitting",
+      location: window.location as unknown as NavigationReturn["location"],
+      formMethod: "POST",
+      formAction: "/submit",
+      formEncType: "application/x-www-form-urlencoded",
+      formData: new FormData(),
+      json: undefined,
+      text: undefined,
+    } as unknown as NavigationReturn);
 
     renderReviewCVForm();
 
@@ -406,7 +431,7 @@ describe("ReviewCVForm", () => {
     const { container } = renderReviewCVForm();
 
     const hiddenInput = container.querySelector(
-      'input[type="hidden"][name="cvData"]',
+      'input[type="hidden"][name="cvData"]'
     );
     expect(hiddenInput).toHaveValue(JSON.stringify(mockUserCv));
   });
@@ -431,7 +456,7 @@ describe("ReviewCVForm", () => {
 
     // Check various date formats
     expect(
-      screen.getByText("January 2020 - December 2023"),
+      screen.getByText("January 2020 - December 2023")
     ).toBeInTheDocument();
     expect(screen.getByText("September 2016 - May 2020")).toBeInTheDocument();
     expect(screen.getByText("June 2023")).toBeInTheDocument();
@@ -496,7 +521,7 @@ describe("ReviewCVForm", () => {
     // All sections should still render
     expect(screen.getByTestId("cv-section-skills")).toBeInTheDocument();
     expect(
-      screen.getByTestId("cv-section-work-experience"),
+      screen.getByTestId("cv-section-work-experience")
     ).toBeInTheDocument();
 
     // Item counts should show 0
@@ -514,7 +539,7 @@ describe("ReviewCVForm", () => {
     fireEvent.click(screen.getByTestId("close-skillsmodal"));
 
     const hiddenInput = container.querySelector(
-      'input[type="hidden"][name="cvData"]',
+      'input[type="hidden"][name="cvData"]'
     );
     expect(hiddenInput).toHaveValue(JSON.stringify(mockUserCv));
   });

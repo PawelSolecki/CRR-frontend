@@ -1,4 +1,4 @@
-import type { PostApiV1CvAnalyzeCvResponse } from "../../../api/career-ai-service";
+import type { PostApiV1CvAnalyzeCvResponse } from "@api/career-ai-service/types.gen";
 
 export type AnalyzedCvData = PostApiV1CvAnalyzeCvResponse;
 

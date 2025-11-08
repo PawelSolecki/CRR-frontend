@@ -1,9 +1,9 @@
 import LandingLayout from "@layouts/LandingLayout/LandingLayout";
 import MainLayout from "@layouts/MainLayout/MainLayout";
-import Home from "@pages/Home/Home";
+import Home from "@/pages/home/Home";
 import JobOffer, { action as jobOfferAction } from "@pages/jobOffer/JobOffer";
-import PageOne, { action as pageOneAction } from "@pages/PageOne/PageOne";
-import PageTwo, { loader as pageTwoLoader } from "@pages/PageTwo/PageTwo";
+import PageOne, { action as pageOneAction } from "@/pages/uploadCv/PageOne";
+import PageTwo, { loader as pageTwoLoader } from "@/pages/enhanceTags/PageTwo";
 import ReviewBio, {
   action as reviewBioAction,
 } from "@pages/reviewBio/ReviewBio";

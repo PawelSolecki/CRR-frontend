@@ -33,10 +33,9 @@ vi.mock("@shared/hooks/useJobOfferStore", () => ({
 
 // Mock react-router-dom
 vi.mock("react-router-dom", async () => {
-  const actual =
-    await vi.importActual<typeof import("react-router-dom")>(
-      "react-router-dom",
-    );
+  const actual = await vi.importActual<typeof import("react-router-dom")>(
+    "react-router-dom"
+  );
   return {
     ...actual,
     useActionData: vi.fn(),
@@ -55,8 +54,12 @@ const mockJobOffer = {
 };
 
 const mockSkillResult = {
-  skills: ["React", "TypeScript"],
-  analysis: "Good match",
+  hardSkills: [
+    { name: "React", score: 0.9 },
+    { name: "TypeScript", score: 0.85 },
+  ],
+  softSkills: [{ name: "Teamwork", score: 0.8 }],
+  tools: [{ name: "Jest", score: 0.75 }],
 };
 
 const mockCvData = {
@@ -71,7 +74,7 @@ const renderReviewBio = () => {
   return render(
     <MemoryRouter>
       <ReviewBio />
-    </MemoryRouter>,
+    </MemoryRouter>
   );
 };
 
@@ -106,12 +109,12 @@ describe("ReviewBio Component", () => {
     renderReviewBio();
 
     expect(
-      screen.getByRole("heading", { name: /review your professional bio/i }),
+      screen.getByRole("heading", { name: /review your professional bio/i })
     ).toBeInTheDocument();
     expect(
       screen.getByText(
-        /review and edit your ai-generated professional summary/i,
-      ),
+        /review and edit your ai-generated professional summary/i
+      )
     ).toBeInTheDocument();
   });
 
@@ -119,16 +122,16 @@ describe("ReviewBio Component", () => {
     renderReviewBio();
 
     expect(
-      screen.getByText(/generating your professional summary/i),
+      screen.getByText(/generating your professional summary/i)
     ).toBeInTheDocument();
     expect(screen.queryByTestId("review-bio-form")).not.toBeInTheDocument();
   });
 
   test("generates bio successfully and shows form", async () => {
     const mockBioResponse = {
-      response: { status: 200 },
+      response: new Response(null, { status: 200 }),
       data: { bio: "Generated professional bio" },
-    };
+    } as Awaited<ReturnType<typeof postApiV1CvGenerateBio>>;
 
     vi.mocked(postApiV1CvGenerateBio).mockResolvedValue(mockBioResponse);
 
@@ -139,22 +142,22 @@ describe("ReviewBio Component", () => {
     });
 
     expect(screen.getByTestId("generated-bio")).toHaveTextContent(
-      "Generated professional bio",
+      "Generated professional bio"
     );
     expect(postApiV1CvGenerateBio).toHaveBeenCalledWith({
       body: {
-        userCV: mockCvData,
-        jobOffer: mockJobOffer,
-        skillResult: mockSkillResult,
+        user_cv: mockCvData,
+        job_offer: mockJobOffer,
+        skill_result: mockSkillResult,
       },
     });
   });
 
   test("handles API failure gracefully", async () => {
     vi.mocked(postApiV1CvGenerateBio).mockResolvedValue({
-      response: { status: 500 },
-      data: null,
-    });
+      response: new Response(null, { status: 500 }),
+      data: undefined,
+    } as Awaited<ReturnType<typeof postApiV1CvGenerateBio>>);
 
     renderReviewBio();
 
@@ -183,7 +186,7 @@ describe("ReviewBio Component", () => {
 
   test("handles unexpected errors", async () => {
     vi.mocked(postApiV1CvGenerateBio).mockRejectedValue(
-      new Error("Network error"),
+      new Error("Network error")
     );
 
     renderReviewBio();
@@ -193,7 +196,7 @@ describe("ReviewBio Component", () => {
     });
 
     expect(
-      screen.getByText(/an unexpected error occurred/i),
+      screen.getByText(/an unexpected error occurred/i)
     ).toBeInTheDocument();
   });
 
@@ -220,7 +223,7 @@ describe("ReviewBio Action", () => {
     mockLocalStorage.getItem.mockReturnValue(JSON.stringify(mockCvData));
     vi.mocked(redirect).mockImplementation(
       (url: string) =>
-        new Response(null, { status: 302, headers: { Location: url } }),
+        new Response(null, { status: 302, headers: { Location: url } })
     );
   });
 
@@ -239,7 +242,7 @@ describe("ReviewBio Action", () => {
           ...mockCvData.personalInfo,
           summary: enhancedBio,
         },
-      }),
+      })
     );
     expect(redirect).toHaveBeenCalledWith("/review-cv");
   });

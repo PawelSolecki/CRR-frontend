@@ -1,5 +1,5 @@
 import { zUserCv } from "@api/career-service/zod.gen";
-import { ContentSwitcher, CvInputSection } from "@features/cv-upload";
+import { ContentSwitcher, CvInputSection } from "@/features/cvUpload";
 import { CV_STORAGE_KEY } from "@shared/hooks/useCvData";
 import { useState } from "react";
 import { redirect } from "react-router-dom";
@@ -35,7 +35,7 @@ export async function action({ request }: { request: Request }) {
     if (validation.success) {
       window.localStorage.setItem(
         CV_STORAGE_KEY,
-        JSON.stringify(validation.data),
+        JSON.stringify(validation.data)
       );
       return redirect("/enhance-tags");
     } else {

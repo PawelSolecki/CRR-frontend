@@ -43,7 +43,7 @@ export default function ReviewBio() {
       }
       if (!skillResult) {
         setError(
-          "Skill analysis data is missing. Please analyze the job offer first.",
+          "Skill analysis data is missing. Please analyze the job offer first."
         );
         setIsLoading(false);
         return;
@@ -54,7 +54,7 @@ export default function ReviewBio() {
 
     const generateBioData = async (
       jobOfferData: JobOffer,
-      skillResultData: SkillResult,
+      skillResultData: SkillResult
     ) => {
       try {
         const data = window.localStorage.getItem(CV_STORAGE_KEY);
@@ -103,6 +103,7 @@ export default function ReviewBio() {
             <div className={classes.loadingSpinner}></div>
             <p className={classes.loadingText}>
               Generating your professional summary...
+            </p>
             <p className={classes.loadingText}>
               It can take couple of minutes, please be patient.
             </p>
