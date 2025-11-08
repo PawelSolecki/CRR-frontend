@@ -1,4 +1,4 @@
-import { action as pageOneAction } from "@pages/PageOne/PageOne";
+import { action as pageOneAction } from "@/pages/uploadCv/PageOne";
 import { CV_STORAGE_KEY } from "@shared/hooks/useCvData";
 import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 

@@ -1,5 +1,5 @@
-import TagsEditor from "@features/enhance-tags/components/TagsEditor";
-import type { AnalyzedCvData } from "@features/enhance-tags/types";
+import TagsEditor from "@/features/enhanceTags/components/TagsEditor";
+import type { AnalyzedCvData } from "@/features/enhanceTags/types";
 import { act, fireEvent, render } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { beforeEach, describe, expect, it, vi } from "vitest";

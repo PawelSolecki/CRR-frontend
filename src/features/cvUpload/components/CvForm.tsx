@@ -6,11 +6,11 @@ import { useFieldArray, useForm } from "react-hook-form";
 import { Form, useSubmit } from "react-router-dom";
 import { z } from "zod";
 import styles from "./CvForm.module.scss";
-import EducationSection from "./form-sections/EducationSection";
-import ExperienceSection from "./form-sections/ExperienceSection";
-import PersonalInfoSection from "./form-sections/PersonalInfoSection";
-import ProjectsSection from "./form-sections/ProjectsSection";
-import SkillsLanguagesCertsSection from "./form-sections/SkillsLanguagesCertsSection";
+import EducationSection from "./formSections/EducationSection";
+import ExperienceSection from "./formSections/ExperienceSection";
+import PersonalInfoSection from "./formSections/PersonalInfoSection";
+import ProjectsSection from "./formSections/ProjectsSection";
+import SkillsLanguagesCertsSection from "./formSections/SkillsLanguagesCertsSection";
 
 type UserCvForm = z.infer<typeof zUserCv>;
 
@@ -35,7 +35,7 @@ const STEP_TITLES = {
 export default function CvForm() {
   const { cvData, updateCvData } = useCvData();
   const [currentStep, setCurrentStep] = useState<FormStep>(
-    FormStep.PERSONAL_INFO,
+    FormStep.PERSONAL_INFO
   );
   const submit = useSubmit();
 

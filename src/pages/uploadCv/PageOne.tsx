@@ -1,5 +1,5 @@
 import { zUserCv } from "@api/career-service/zod.gen";
-import { ContentSwitcher, CvInputSection } from "@/features/cv-upload";
+import { ContentSwitcher, CvInputSection } from "@/features/cvUpload";
 import { CV_STORAGE_KEY } from "@shared/hooks/useCvData";
 import { useState } from "react";
 import { redirect } from "react-router-dom";
